@@ -1,11 +1,11 @@
 import discord
 import os
-from pip 
+from dotenv import load_dotenv
 
+load_dotenv()
 client = discord.Client()
 TOKEN = os.getenv('TOKEN')
-print(TOKEN)
-print(os.getenv('ciao'))
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -17,6 +17,11 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.lower().startswith('hello there'):
+    msg = message.content.lower()
+    if msg.__contains__('hello there'):
         await message.channel.send('General Kenobi!')
+    elif msg.startswith('n/'):
+        if msg.__contains__('gigi'):
+            await message.author.create_dm()
+            await message.author.dm_channel.send("GIGI IL MIO ACERRIMO NEMICO")
 client.run(TOKEN)
