@@ -69,7 +69,15 @@ async def mostra_infrazioni(ctx, *, member: discord.Member):
     for i, infrazione in enumerate(infrazioni, 1):
         await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
 
-
+@bot.command()
+async def pulisci_fedina(ctx, *, member: discord.Member):
+    await check_admin(ctx)
+    conn = sqlite3.connect('generale.db')
+    c = conn.cursor()
+    c.execute(f"DELETE FROM fedina WHERE user_id = {member.id}")
+    conn.commit()
+    conn.close()
+    await ctx.send(f'Fedina penale di {member.mention} pulita con successo!')
 
 @bot.command()
 async def somma(ctx, a : float, b : float):
@@ -118,6 +126,7 @@ async def somma_error(ctx, error):
 
 @warn.error
 @mostra_infrazioni.error
+@pulisci_fedina.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
