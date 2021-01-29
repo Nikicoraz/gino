@@ -58,9 +58,8 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     conn.commit()
     conn.close()
 
-@bot.command()
+@bot.command(aliases=['mi'])
 async def mostra_infrazioni(ctx, *, member: discord.Member):
-    await check_admin(ctx)
     conn = sqlite3.connect('generale.db')
     c = conn.cursor()
     c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
@@ -68,8 +67,10 @@ async def mostra_infrazioni(ctx, *, member: discord.Member):
     conn.close()
     for i, infrazione in enumerate(infrazioni, 1):
         await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
+    if len(infrazioni) == 0:
+        await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
 
-@bot.command()
+@bot.command(aliases=['pf'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_admin(ctx)
     conn = sqlite3.connect('generale.db')
@@ -91,7 +92,7 @@ async def dividi(ctx, a : float, b : float):
 async def moltiplica(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} * {b} = {a * b}')
 
-@bot.command()
+@bot.command(aliases=['ai'])
 async def aggiungi_insulto(ctx, *, arg):
     #TODO regex per controllare il pattern
     conn = sqlite3.connect('generale.db')
