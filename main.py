@@ -45,7 +45,15 @@ async def dividi(ctx, a : float, b : float):
 async def moltiplica(ctx, a : float, b : float):
     await ctx.send(f'{insulti[ra.randint(0, len(insulti))]}, non sai neanche fare {a} * {b} = {a * b}')
 
-
+@bot.command()
+async def aggiungi_insulto(ctx, *, arg):
+    #TODO regex per controllare il pattern
+    conn = sqlite3.connect('insulti.db')
+    c = conn.cursor()
+    c.execute(f"INSERT INTO insulti VALUES ('{arg}')")
+    conn.commit()
+    conn.close()
+    await ctx.send("Insulto aggiunto!")
 
 # Sezione intercettazione messaggi
 
