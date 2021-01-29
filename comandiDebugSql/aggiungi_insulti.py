@@ -2,7 +2,7 @@ import sqlite3
 from typing import Pattern
 import re
 
-conn = sqlite3.connect('insulti.db')
+conn = sqlite3.connect('generale.db')
 c = conn.cursor()
 
 insulti = []
