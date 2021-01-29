@@ -44,6 +44,9 @@ async def dividi(ctx, a : float, b : float):
 @bot.command()
 async def moltiplica(ctx, a : float, b : float):
     await ctx.send(f'{insulti[ra.randint(0, len(insulti))]}, non sai neanche fare {a} * {b} = {a * b}')
+
+
+
 # Sezione intercettazione messaggi
 
 
