@@ -4,7 +4,6 @@ from sqlite3.dbapi2 import Error
 import discord
 from discord.ext import commands
 import os
-from discord.ext.commands.core import command
 from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
@@ -22,12 +21,11 @@ load_dotenv()
 bot = commands.Bot(command_prefix='$')
 TOKEN = os.getenv('TOKEN')
 creator_id = os.getenv("CREATORE")
-
 # Funzioni
 
 async def check_admin(ctx):
-    if not ctx.author.id == creator_id:
-        await ctx.send("Solo il creatore di questo bot può usare questo comando!")
+    if ctx.message.author.id != int(creator_id):
+        await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
         raise Error("Comando admin da persone non admin!")
     
 def genera_insulto():
@@ -50,6 +48,7 @@ async def test(ctx, *, arg):
 
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
+    
     await check_admin(ctx)
     await ctx.send(f'{member.mention} è stato avvertito per {reason}')
     data = datetime.now().strftime('%D %H:%M:%S')
@@ -67,7 +66,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member):
     c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
     infrazioni = c.fetchall()
     conn.close()
-    for i, infrazione in enumerate(infrazioni):
+    for i, infrazione in enumerate(infrazioni, 1):
         await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
 
 
