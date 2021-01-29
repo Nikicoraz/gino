@@ -1,3 +1,2 @@
--- SQLite
-DELETE FROM insulti WHERE oid = 18;
+DELETE FROM insulti WHERE oid = 24;
 SELECT *, oid FROM insulti;

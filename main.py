@@ -19,9 +19,11 @@ for i in _:
 del _
 load_dotenv()
 bot = commands.Bot(command_prefix='$')
+main(bot)
 TOKEN = os.getenv('TOKEN')
 creator_id = os.getenv("CREATORE")
-# Funzioni
+bot.remove_command('help')
+# region Funzioni
 
 async def check_admin(ctx):
     if ctx.message.author.id != int(creator_id):
@@ -31,8 +33,9 @@ async def check_admin(ctx):
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti))]
 
+#endregion
 
-# Sezione comandi bot
+#region Sezione comandi bot
 
 @bot.event
 async def on_ready():
@@ -102,7 +105,9 @@ async def aggiungi_insulto(ctx, *, arg):
     conn.close()
     await ctx.send("Insulto aggiunto!")
 
-# Sezione intercettazione messaggi
+#endregion
+
+#region Sezione intercettazione messaggi
 
 @bot.event
 async def on_message(message):
@@ -115,8 +120,9 @@ async def on_message(message):
 
     await bot.process_commands(message) # Vai alla parte comandi dopo aver controllato
 
+#endregion
 
-# Error handler
+#region Error handler
 
 @somma.error
 @dividi.error
@@ -131,5 +137,46 @@ async def somma_error(ctx, error):
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
+
+#endregion
+
+#region help
+
+@bot.group(invoke_without_command=True)
+async def help(ctx):
+    em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
+    em.add_field(name='Admin', value='warn, pulisci_fedina(pf)')
+    em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi)')
+    em.add_field(name='Matematica', value='somma, dividi, moltiplica')
+    await ctx.send(embed = em)
+
+@help.command()
+async def warn(ctx):
+    em = discord.Embed(title='Warn', description='Aggiunge una infrazione sulla fedina di una persona', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$warn <persona> [ragione]')
+    await ctx.send(embed=em)
+
+@help.command()
+async def pulisci_fedina(ctx):
+    em = discord.Embed(title='Pulisci Fedina', description='Pulisce la fedina penale di una persona', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$pulisci_fedina <persona>')
+    em.add_field(name='alias', value='$pf')
+    await ctx.send(embed=em)
+
+@help.command()
+async def mostra_infrazioni(ctx):
+    em = discord.Embed(title='Mostra Infrazioni', description='Mostra le infrazioni penali di una persona', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$mostra_infrazioni <persona>')
+    em.add_field(name='alias', value='$mi')
+    await ctx.send(embed=em)
+
+@help.command()
+async def aggiungi_insulto(ctx):
+    em = discord.Embed(title='Aggiungi Insulto', description='In caso hai un insulto simpatico da aggiungere al database', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$aggiungi_insulto [insulto]')
+    em.add_field(name='alias', value='$ai')
+    await ctx.send(embed=em)
+
+#endregion
 
 bot.run(TOKEN)
