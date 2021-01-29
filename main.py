@@ -44,13 +44,13 @@ async def on_ready():
 
 @bot.command()
 async def test(ctx, *, arg):
-    check_admin(ctx)
+    await check_admin(ctx)
     name = ctx.author.nick or ctx.author.name
     await ctx.send(f'{name} sent {arg}')
 
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
-    check_admin(ctx)
+    await check_admin(ctx)
     await ctx.send(f'{member.mention} è stato avvertito per {reason}')
     data = datetime.now().strftime('%D %H:%M:%S')
     conn = sqlite3.connect('generale.db')
@@ -61,7 +61,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
 
 @bot.command()
 async def mostra_infrazioni(ctx, *, member: discord.Member):
-    check_admin(ctx)
+    await check_admin(ctx)
     conn = sqlite3.connect('generale.db')
     c = conn.cursor()
     c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
