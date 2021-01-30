@@ -2,9 +2,11 @@
 import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
+from discord.client import _cancel_tasks
 from discord.errors import DiscordServerError
 from discord.ext import commands
 import os
+from discord.ext.commands import errors
 from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import random as ra
@@ -191,6 +193,11 @@ async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
 
+@cancella_insulto_dalla_lista.error
+async def cosa_non_trovata(ctx, error):
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.send('Id non trovato! ' + genera_insulto().lower())
+
 #endregion
 
 #region help
@@ -198,7 +205,7 @@ async def membro_non_trovato(ctx, error):
 @bot.group(invoke_without_command=True)
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
-    em.add_field(name='Admin', value='warn, pulisci_fedina(pf)')
+    em.add_field(name='Admin', value='warn, pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
     em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
@@ -235,6 +242,20 @@ async def insulta(ctx):
     em = discord.Embed(title='Insulta', description='Insulta una persona', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$insulta <persona>')
     em.add_field(name='alias', value='$i')
+    await ctx.send(embed=em)
+
+@help.command()
+async def visualizza_lista_insulti(ctx):
+    em = discord.Embed(title='Visualizza lista insulti', description='Visualizza la lista degli insulti', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$visualizza_lista_insulti')
+    em.add_field(name='alias', value='Nessuno')
+    await ctx.send(embed=em)
+
+@help.command()
+async def cancella_insulto_dalla_lista(ctx):
+    em = discord.Embed(title='Cancella insulto dalla lista', description='Cancella un insulto dal database, comando lungo apposta per essere certi di quello che si fa', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$cancella_insulto_dalla_lista [id]')
+    em.add_field(name='alias', value='Nessuno')
     await ctx.send(embed=em)
 
 #endregion
