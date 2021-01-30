@@ -139,7 +139,7 @@ async def visualizza_lista_insulti(ctx):
     c = conn.cursor()
     c.execute('SELECT *, oid FROM insulti')
     for i in c.fetchall():
-        await ctx.send('> ' + i)
+        await ctx.send('> ' + i[0] + ' ' + i[1])
     conn.close()
 
 #endregion
