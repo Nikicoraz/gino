@@ -196,7 +196,7 @@ async def membro_non_trovato(ctx, error):
 @cancella_insulto_dalla_lista.error
 async def cosa_non_trovata(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        await ctx.send('Id non trovato! ' + genera_insulto().lower())
+        await ctx.send('Id non trovato!dwadwa ' + genera_insulto().lower())
 
 #endregion
 
