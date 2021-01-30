@@ -155,21 +155,21 @@ async def warn(ctx):
     em.add_field(name='**Sintassi**', value='$warn <persona> [ragione]')
     await ctx.send(embed=em)
 
-@help.command()
+@help.command(aliases=['pf'])
 async def pulisci_fedina(ctx):
     em = discord.Embed(title='Pulisci Fedina', description='Pulisce la fedina penale di una persona', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$pulisci_fedina <persona>')
     em.add_field(name='alias', value='$pf')
     await ctx.send(embed=em)
 
-@help.command()
+@help.command(aliases=['mi'])
 async def mostra_infrazioni(ctx):
     em = discord.Embed(title='Mostra Infrazioni', description='Mostra le infrazioni penali di una persona', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$mostra_infrazioni <persona>')
     em.add_field(name='alias', value='$mi')
     await ctx.send(embed=em)
 
-@help.command()
+@help.command(aliases=['ai'])
 async def aggiungi_insulto(ctx):
     em = discord.Embed(title='Aggiungi Insulto', description='In caso hai un insulto simpatico da aggiungere al database', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$aggiungi_insulto [insulto]')
