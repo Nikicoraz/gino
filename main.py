@@ -19,7 +19,6 @@ for i in _:
 del _
 load_dotenv()
 bot = commands.Bot(command_prefix='$')
-main(bot)
 TOKEN = os.getenv('TOKEN')
 creator_id = os.getenv("CREATORE")
 bot.remove_command('help')
