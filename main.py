@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
 
+#region init
 conn =  sqlite3.connect('generale.db')
 c = conn.cursor()
 c.execute('SELECT *, oid FROM insulti')
@@ -22,7 +23,14 @@ bot = commands.Bot(command_prefix='$')
 TOKEN = os.getenv('TOKEN')
 creator_id = os.getenv("CREATORE")
 bot.remove_command('help')
+#endregion
+
 # region Funzioni
+
+def get_name(ctx):
+    name = ctx.author.nick or ctx.author.name
+    return name
+
 
 async def check_admin(ctx):
     if ctx.message.author.id != int(creator_id):
@@ -57,8 +65,11 @@ async def on_ready():
 @bot.command()
 async def test(ctx, *, arg):
     await check_admin(ctx)
-    name = ctx.author.nick or ctx.author.name
-    await ctx.send(f'{name} sent {arg}')
+    await ctx.send(f'{get_name(ctx)} sent {arg}')
+
+@bot.command(aliases=['i'])
+async def insulta(ctx, *, member: discord.Member):
+    await ctx.send(f'{member.mention} è un {genera_insulto().lower()}\n\n> Messaggio cordialmente inviato da {get_name(ctx)}')
 
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
@@ -146,6 +157,7 @@ async def somma_error(ctx, error):
 @warn.error
 @mostra_infrazioni.error
 @pulisci_fedina.error
+@insulta.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
@@ -158,7 +170,7 @@ async def membro_non_trovato(ctx, error):
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
     em.add_field(name='Admin', value='warn, pulisci_fedina(pf)')
-    em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi)')
+    em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
 
@@ -187,6 +199,13 @@ async def aggiungi_insulto(ctx):
     em = discord.Embed(title='Aggiungi Insulto', description='In caso hai un insulto simpatico da aggiungere al database', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$aggiungi_insulto [insulto]')
     em.add_field(name='alias', value='$ai')
+    await ctx.send(embed=em)
+
+@help.command(aliases=['i'])
+async def insulta(ctx):
+    em = discord.Embed(title='Insulta', description='Insulta una persona', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$insulta <persona>')
+    em.add_field(name='alias', value='$i')
     await ctx.send(embed=em)
 
 #endregion
