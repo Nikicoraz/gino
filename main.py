@@ -156,7 +156,7 @@ async def cancella_insulto_dalla_lista(ctx, num):
     c.execute('DELETE FROM insulti WHERE oid = ' + num)
     conn.commit()
     conn.close()
-    await ctx.send('Insulto id: ' + num + ' cancellato')
+    await ctx.send('Insulto id: ' + num + ' cancellato se esiste')
 
 #endregion
 
@@ -196,7 +196,7 @@ async def membro_non_trovato(ctx, error):
 @cancella_insulto_dalla_lista.error
 async def cosa_non_trovata(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
-        await ctx.send('Id non trovato!dwadwa ' + genera_insulto().lower())
+        await ctx.send('L\' id deve essere un numero ' + genera_insulto().lower() + '!')
 
 #endregion
 
