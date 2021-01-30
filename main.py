@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
+import re
 
 #region init
 conn =  sqlite3.connect('generale.db')
@@ -31,7 +32,6 @@ def get_name(ctx):
     name = ctx.author.nick or ctx.author.name
     return name
 
-
 async def check_admin(ctx):
     if ctx.message.author.id != int(creator_id):
         await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
@@ -43,10 +43,11 @@ def genera_insulto():
 def switch_messaggi(msg):
     dic = {
         'hello there': 'General Kenobi!',
-        'dio porco': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
-        'dio cane': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
-        'gigi': 'IL MIO ACERRIMO NEMICO'
-    }
+        'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
+        'gigi': 'IL MIO ACERRIMO NEMICO',
+        'nigga': 'Un po\' razzista ma ok'
+        }
+
     for key in dic.keys():
         if msg.__contains__(key):
             return dic[key]
@@ -119,7 +120,10 @@ async def moltiplica(ctx, a : float, b : float):
 
 @bot.command(aliases=['ai'])
 async def aggiungi_insulto(ctx, *, arg):
-    #TODO regex per controllare il pattern
+    pattern = r'[a-zA-Z0-9 ]+'
+    if not re.match(pattern, arg):
+        await ctx.send('Formato messaggio non supportato :(')
+        return
     conn = sqlite3.connect('generale.db')
     c = conn.cursor()
     c.execute(f"INSERT INTO insulti VALUES ('{arg}')")
