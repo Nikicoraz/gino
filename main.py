@@ -135,7 +135,7 @@ async def aggiungi_insulto(ctx, *, arg):
 
 @bot.command()
 async def visualizza_lista_insulti(ctx):
-    check_admin(ctx)
+    await check_admin(ctx)
     conn = sqlite3.connect('generale.db')
     c = conn.cursor()
     c.execute('SELECT *, oid FROM insulti')
@@ -145,6 +145,16 @@ async def visualizza_lista_insulti(ctx):
     em = discord.Embed(title='Lista insulti', description=insulti)
     await ctx.send(embed=em)
     conn.close()
+
+@bot.command()
+async def cancella_insulto_dalla_lista(ctx, num):
+    await check_admin(ctx)
+    conn = sqlite3.connect('generale.db')
+    c = conn.cursor()
+    c.execute('DELETE FROM insulti WHERE oid = ' + num)
+    conn.commit()
+    conn.close()
+    await ctx.send('Insulto id: ' + num + ' cancellato')
 
 #endregion
 
