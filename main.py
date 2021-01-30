@@ -30,7 +30,19 @@ async def check_admin(ctx):
         raise Error("Comando admin da persone non admin!")
     
 def genera_insulto():
-    return insulti[ra.randint(0, len(insulti))]
+    return insulti[ra.randint(0, len(insulti) - 1)]
+
+def switch_messaggi(msg):
+    dic = {
+        'hello there': 'General Kenobi!',
+        'dio porco': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
+        'dio cane': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
+        'gigi': 'IL MIO ACERRIMO NEMICO'
+    }
+    for key in dic.keys():
+        if msg.__contains__(key):
+            return dic[key]
+    return 404 
 
 #endregion
 
@@ -114,8 +126,9 @@ async def on_message(message):
         return
 
     msg = message.content.lower()
-    if msg.__contains__('hello there'):
-        await message.channel.send('General Kenobi!')
+    messaggio = switch_messaggi(msg)
+    if messaggio != 404:
+        await message.channel.send(messaggio)
 
     await bot.process_commands(message) # Vai alla parte comandi dopo aver controllato
 
