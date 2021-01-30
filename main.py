@@ -2,6 +2,7 @@
 import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
+from discord.errors import DiscordServerError
 from discord.ext import commands
 import os
 from discord.ext.commands.core import check
@@ -138,8 +139,11 @@ async def visualizza_lista_insulti(ctx):
     conn = sqlite3.connect('generale.db')
     c = conn.cursor()
     c.execute('SELECT *, oid FROM insulti')
+    insulti = ''
     for i in c.fetchall():
-        await ctx.send('> ' + i[0] + ' ' + i[1])
+        insulti += '> ' + str(i[0]) + ' id:' + str(i[1]) + '\n'
+    em = discord.Embed(title='Lista insulti', description=insulti)
+    await ctx.send(embed=em)
     conn.close()
 
 #endregion
