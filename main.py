@@ -4,6 +4,7 @@ from sqlite3.dbapi2 import Error
 import discord
 from discord.ext import commands
 import os
+from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
@@ -130,6 +131,16 @@ async def aggiungi_insulto(ctx, *, arg):
     conn.commit()
     conn.close()
     await ctx.send("Insulto aggiunto!")
+
+@bot.command()
+async def visualizza_lista_insulti(ctx):
+    check_admin(ctx)
+    conn = sqlite3.connect('generale.db')
+    c = conn.cursor()
+    c.execute('SELECT *, oid FROM insulti')
+    for i in c.fetchall():
+        await ctx.send('> ' + i)
+    conn.close()
 
 #endregion
 
