@@ -231,4 +231,4 @@ async def probabilita(ctx):
 
 #endregion
 
-bot.run(TOKEN)
+bot.run('ODAzNjE3MTY2NDEwMTIxMjc3.YBAYzg.XdtZvjG9ac_5luQ6eHwjrPlW_2A')
