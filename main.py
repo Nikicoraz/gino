@@ -15,15 +15,24 @@ from datetime import datetime
 import re
 
 #region init
-conn =  sqlite3.connect('generale.db')
-c = conn.cursor()
-c.execute('SELECT *, oid FROM insulti')
-_ = c.fetchall()
-conn.close()
 insulti = []
-for i in _:
-    insulti.append(i[0])
-del _
+
+def rigenera_insulti():
+    global insulti
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
+    c = conn.cursor()
+    c.execute('SELECT * FROM insulti')
+    _ = c.fetchall()
+    conn.close()
+    for i in _:
+        insulti.append(i[1])
+    del _
+
+rigenera_insulti()
 load_dotenv()
 bot = commands.Bot(command_prefix='$')
 TOKEN = os.getenv('TOKEN')
