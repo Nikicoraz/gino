@@ -1,6 +1,8 @@
+#!venv/Scripts/python.exe
 import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
+import mysql.connector
 from discord.client import _cancel_tasks
 from discord.errors import DiscordServerError
 from discord.ext import commands
