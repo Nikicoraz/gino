@@ -97,7 +97,11 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     await ctx.send(f'{member.mention} è stato avvertito per {reason}')
     data = datetime.now().strftime('%D %H:%M:%S')
-    conn = sqlite3.connect('generale.db')
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
     conn.commit()
