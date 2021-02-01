@@ -106,23 +106,30 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
     conn.commit()
     conn.close()
-
 @bot.command(aliases=['mi'])
 async def mostra_infrazioni(ctx, *, member: discord.Member):
-    conn = sqlite3.connect('generale.db')
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
     infrazioni = c.fetchall()
     conn.close()
     for i, infrazione in enumerate(infrazioni, 1):
-        await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
+        await ctx.send(f'> infrazione {i}: `{infrazione[1]}` in data `{infrazione[0]}`')
     if len(infrazioni) == 0:
         await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
 
 @bot.command(aliases=['pf'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_admin(ctx)
-    conn = sqlite3.connect('generale.db')
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f"DELETE FROM fedina WHERE user_id = {member.id}")
     conn.commit()
@@ -144,15 +151,52 @@ async def moltiplica(ctx, a : float, b : float):
 @bot.command()
 async def visualizza_lista_insulti(ctx):
     await check_admin(ctx)
-    conn = sqlite3.connect('generale.db')
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
     c = conn.cursor()
-    c.execute('SELECT *, oid FROM insulti')
+    c.execute('SELECT * FROM insulti')
     insulti = ''
     for i in c.fetchall():
-        insulti += '> ' + str(i[0]) + ' id:' + str(i[1]) + '\n'
+        insulti += '> ' + str(i[1]) + ' id:' + str(i[0]) + '\n'
     em = discord.Embed(title='Lista insulti', description=insulti)
     await ctx.send(embed=em)
     conn.close()
+
+@bot.command()
+async def cancella_insulto_dalla_lista(ctx, num):
+    await check_admin(ctx)
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
+    c = conn.cursor()
+    c.execute('DELETE FROM insulti WHERE id = ' + num)
+    conn.commit()
+    conn.close()
+    await ctx.send('Insulto id: ' + num + ' cancellato se esiste')
+    rigenera_insulti()
+
+@bot.command(aliases=['ai'])
+async def aggiungi_insulto(ctx, *, arg):
+    pattern = r'[a-zA-Z0-9 ]+'
+    if not re.match(pattern, arg):
+        await ctx.send('Formato messaggio non supportato :(')
+        return
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password='bJGoz5qBPHo$#i5k',
+    database='freedbtech_generale')
+    c = conn.cursor()
+    c.execute(f"INSERT INTO insulti VALUES (null, '{arg}')")
+    conn.commit()
+    conn.close()
+    await ctx.send("Insulto aggiunto!")
+    rigenera_insulti()
 
 #endregion
 
@@ -189,6 +233,11 @@ async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
 
+@cancella_insulto_dalla_lista.error
+async def cosa_non_trovata(ctx, error):
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.send('L\' id deve essere un numero ' + genera_insulto().lower() + '!')
+
 
 #endregion
 
@@ -197,8 +246,8 @@ async def membro_non_trovato(ctx, error):
 @bot.group(invoke_without_command=True)
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
-    em.add_field(name='Admin', value='warn, pulisci_fedina(pf), visualizza_lista_insulti')
-    em.add_field(name='Casual', value='mostra_infrazioni(mi), insulta(i), probabilita(p)')
+    em.add_field(name='Admin', value='warn, pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
+    em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
 
@@ -243,7 +292,20 @@ async def probabilita(ctx):
     em.add_field(name='alias', value='$p')
     await ctx.send(embed=em)
 
+@help.command(aliases=['ai'])
+async def aggiungi_insulto(ctx):
+    em = discord.Embed(title='Aggiungi Insulto', description='In caso hai un insulto simpatico da aggiungere al database', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$aggiungi_insulto [insulto]')
+    em.add_field(name='alias', value='$ai')
+    await ctx.send(embed=em)
 
+
+@help.command()
+async def cancella_insulto_dalla_lista(ctx):
+    em = discord.Embed(title='Cancella insulto dalla lista', description='Cancella un insulto dal database, comando lungo apposta per essere certi di quello che si fa', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$cancella_insulto_dalla_lista [id]')
+    em.add_field(name='alias', value='Nessuno')
+    await ctx.send(embed=em)
 #endregion
 
 bot.run('ODAzNjE3MTY2NDEwMTIxMjc3.YBAYzg.tV27awWMLwMjbN4D7To6r3gwgac')
