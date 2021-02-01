@@ -118,7 +118,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member):
     infrazioni = c.fetchall()
     conn.close()
     for i, infrazione in enumerate(infrazioni, 1):
-        await ctx.send(f'> infrazione {i}: `{infrazione[1]}` in data `{infrazione[0]}`')
+        await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
     if len(infrazioni) == 0:
         await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
 
@@ -308,4 +308,4 @@ async def cancella_insulto_dalla_lista(ctx):
     await ctx.send(embed=em)
 #endregion
 
-bot.run('ODAzNjE3MTY2NDEwMTIxMjc3.YBAYzg.tV27awWMLwMjbN4D7To6r3gwgac')
+bot.run(TOKEN)
