@@ -72,6 +72,11 @@ async def test(ctx, *, arg):
     await check_admin(ctx)
     await ctx.send(f'{get_name(ctx)} sent {arg}')
 
+@bot.command(aliases=['p'])
+async def probabilita(ctx, *, arg):
+    import random
+    await ctx.send(f'{arg} ha una probabilità del {random.randint(0, 100)}%')
+
 @bot.command(aliases=['i'])
 async def insulta(ctx, *, member: discord.Member):
     await ctx.send(f'{member.mention} è un {genera_insulto().lower()}\n\n> Messaggio cordialmente inviato da {get_name(ctx)}')
@@ -179,7 +184,7 @@ async def membro_non_trovato(ctx, error):
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
     em.add_field(name='Admin', value='warn, pulisci_fedina(pf), visualizza_lista_insulti')
-    em.add_field(name='Casual', value='mostra_infrazioni(mi), insulta(i)')
+    em.add_field(name='Casual', value='mostra_infrazioni(mi), insulta(i), probabilita(p)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
 
@@ -216,6 +221,14 @@ async def visualizza_lista_insulti(ctx):
     em.add_field(name='**Sintassi**', value='$visualizza_lista_insulti')
     em.add_field(name='alias', value='Nessuno')
     await ctx.send(embed=em)
+
+@help.command(aliases=['p'])
+async def probabilita(ctx):
+    em = discord.Embed(title='Probabilita', description='Probabilità che succeda una cosa', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$probabilita [cosa che deve accadere]')
+    em.add_field(name='alias', value='$p')
+    await ctx.send(embed=em)
+
 
 #endregion
 
