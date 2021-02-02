@@ -19,6 +19,7 @@ from time import sleep
 insulti = []
 
 url_pattern = r'(http|https)://.*'
+youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
 
 def rigenera_insulti():
     global insulti
@@ -69,7 +70,7 @@ def switch_messaggi(msg):
         'gigi': 'IL MIO ACERRIMO NEMICO',
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
-        'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts'],
+        'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts', 'https://youtu.be/z54MpfR3XE4'],
         '🍷':'🍷',
         'grazie':'Prego'
         }
@@ -249,7 +250,7 @@ async def on_message(message):
     if messaggio != 404:
         if isinstance(messaggio, list):
             for m in messaggio:
-                if re.match(url_pattern, m):
+                if re.match(url_pattern, m) and not re.match(youtube_url, m):
                     e = discord.Embed()
                     e.set_image(url=m)
                     await message.channel.send(embed=e)
