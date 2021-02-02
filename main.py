@@ -1,8 +1,8 @@
 #!venv/Scripts/python.exe
 import sqlite3
-from boto.s3.connection import S3Connection
 from sqlite3.dbapi2 import Error
 import discord
+from dotenv import load_dotenv
 import mysql.connector
 from discord.ext import commands
 import os
@@ -31,7 +31,7 @@ def rigenera_insulti():
     for i in _:
         insulti.append(i[1])
     del _
-
+load_dotenv()
 rigenera_insulti()
 bot = commands.Bot(command_prefix='$')
 TOKEN = os.environ.get('TOKEN')
