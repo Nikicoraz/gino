@@ -64,13 +64,14 @@ def genera_insulto():
 
 def switch_messaggi(msg):
     dic = {
-        'hello there': 'General Kenobi!',
+        'hellothere': 'General Kenobi!',
         'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
         'gigi': 'IL MIO ACERRIMO NEMICO',
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
         'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts'],
-        '🍷':'🍷'
+        '🍷':'🍷',
+        'grazie':'Prego'
         }
 
     for key in dic.keys():
@@ -246,13 +247,16 @@ async def on_message(message):
     msg = message.content.replace(' ', '').lower()
     messaggio = switch_messaggi(msg)
     if messaggio != 404:
-        for m in messaggio:
-            if re.match(url_pattern, m):
-                e = discord.Embed()
-                e.set_image(url=m)
-                await message.channel.send(embed=e)
-            else:
-                await message.channel.send(m)
+        if isinstance(messaggio, list):
+            for m in messaggio:
+                if re.match(url_pattern, m):
+                    e = discord.Embed()
+                    e.set_image(url=m)
+                    await message.channel.send(embed=e)
+                else:
+                    await message.channel.send(m)
+        else:
+            await message.channel.send(messaggio)
         
     await bot.process_commands(message) # Vai alla parte comandi dopo aver controllato
 
