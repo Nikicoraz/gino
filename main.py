@@ -101,7 +101,7 @@ async def insulta(ctx, *, member: discord.Member):
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     await ctx.send(f'{member.mention} è stato avvertito per {reason}')
-    data = datetime.now().strftime(r'%d-%m-%Y %H:%M:%S')
+    data = datetime.now().strftime(r'%Y-%d-%m %H:%M:%S')
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
@@ -263,6 +263,8 @@ async def somma_error(ctx, error):
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
+    else:
+        print(error)
 
 @cancella_insulto_dalla_lista.error
 async def cosa_non_trovata(ctx, error):
