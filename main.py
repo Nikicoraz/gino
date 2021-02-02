@@ -1,12 +1,12 @@
 #!venv/Scripts/python.exe
 import sqlite3
+from boto.s3.connection import S3Connection
 from sqlite3.dbapi2 import Error
 import discord
 import mysql.connector
 from discord.ext import commands
 import os
 from discord.ext.commands import errors
-from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
 import re
@@ -33,10 +33,9 @@ def rigenera_insulti():
     del _
 
 rigenera_insulti()
-load_dotenv()
 bot = commands.Bot(command_prefix='$')
-TOKEN = os.getenv('TOKEN')
-creator_id = os.getenv("CREATORE")
+TOKEN = os.environ.get('TOKEN')
+creator_id = os.environ.get("CREATORE")
 bot.remove_command('help')
 #endregion
 
