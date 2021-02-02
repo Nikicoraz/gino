@@ -1,22 +1,15 @@
 #!venv/Scripts/python.exe
 import sqlite3
 from sqlite3.dbapi2 import Error
-from typing import final
 import discord
-from discord import role
-from discord.utils import sane_wait_for
 import mysql.connector
-from discord.client import _cancel_tasks
-from discord.errors import DiscordServerError
 from discord.ext import commands
 import os
 from discord.ext.commands import errors
-from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
 import re
-from time import sleep
 import asyncio
 #region init
 insulti = []
