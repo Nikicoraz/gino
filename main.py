@@ -244,6 +244,7 @@ async def clean(ctx, arg):
     except errors.MemberNotFound:
         await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
+    await m.add_reaction('🕵️‍♂️')
     await asyncio.sleep(4)
     await m.delete()
 
