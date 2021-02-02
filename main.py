@@ -18,6 +18,8 @@ from time import sleep
 #region init
 insulti = []
 
+url_pattern = r'(http|https)://.*'
+
 def rigenera_insulti():
     global insulti
     conn = mysql.connector.connect(
@@ -66,11 +68,13 @@ def switch_messaggi(msg):
         'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
         'gigi': 'IL MIO ACERRIMO NEMICO',
         'nigga': 'Un po\' razzista ma ok',
-        'negro': 'Un po\' razzista ma ok'
+        'negro': 'Un po\' razzista ma ok',
+        'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts']
         }
 
     for key in dic.keys():
         if msg.__contains__(key):
+            
             return dic[key]
     return 404 
 
@@ -238,11 +242,17 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    msg = message.content.lower()
+    msg = message.content.replace(' ', '').lower()
     messaggio = switch_messaggi(msg)
     if messaggio != 404:
-        await message.channel.send(messaggio)
-
+        for m in messaggio:
+            if re.match(url_pattern, m):
+                e = discord.Embed()
+                e.set_image(url=m)
+                await message.channel.send(embed=e)
+            else:
+                await message.channel.send(m)
+        
     await bot.process_commands(message) # Vai alla parte comandi dopo aver controllato
 
 #endregion
