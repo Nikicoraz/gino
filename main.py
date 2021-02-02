@@ -2,6 +2,7 @@
 import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
+from discord import role
 import mysql.connector
 from discord.client import _cancel_tasks
 from discord.errors import DiscordServerError
@@ -13,7 +14,7 @@ from dotenv import load_dotenv
 import random as ra
 from datetime import datetime
 import re
-
+from time import sleep
 #region init
 insulti = []
 
@@ -47,9 +48,14 @@ def get_name(ctx):
     return name
 
 async def check_admin(ctx):
+    if not ctx.message.author.guild_permissions.administrator:
+        await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
+        raise Error("Comando admin da persone non admin!")
+
+async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
         await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
-        raise Error("Comando admin da persone non admin!")
+        raise Error("Comando creatore da persone non creatore!")
     
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti) - 1)]
@@ -78,9 +84,9 @@ async def on_ready():
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
 
 @bot.command()
-async def test(ctx, *, arg):
-    await check_admin(ctx)
-    await ctx.send(f'{get_name(ctx)} sent {arg}')
+async def test(ctx, member : discord.Member):
+    await check_creator(ctx)
+    
 
 @bot.command(aliases=['p'])
 async def probabilita(ctx, *, arg):
@@ -89,7 +95,7 @@ async def probabilita(ctx, *, arg):
 
 @bot.command(aliases=['i'])
 async def insulta(ctx, *, member: discord.Member):
-    await ctx.send(f'{member.mention} è un {genera_insulto().lower()}\n\n> Messaggio cordialmente inviato da {get_name(ctx)}')
+    await ctx.send(f'{member.mention} è un {genera_insulto().lower()}\n\n> -Messaggio cordialmente inviato da *{get_name(ctx)}*')
 
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
@@ -106,6 +112,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
     conn.commit()
     conn.close()
+
 @bot.command(aliases=['mi'])
 async def mostra_infrazioni(ctx, *, member: discord.Member):
     conn = mysql.connector.connect(
@@ -124,7 +131,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member):
 
 @bot.command(aliases=['pf'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
-    await check_admin(ctx)
+    await check_creator(ctx)
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
@@ -150,7 +157,7 @@ async def moltiplica(ctx, a : float, b : float):
 
 @bot.command()
 async def visualizza_lista_insulti(ctx):
-    await check_admin(ctx)
+    await check_creator(ctx)
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
@@ -167,7 +174,7 @@ async def visualizza_lista_insulti(ctx):
 
 @bot.command()
 async def cancella_insulto_dalla_lista(ctx, num):
-    await check_admin(ctx)
+    await check_creator(ctx)
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
@@ -197,6 +204,30 @@ async def aggiungi_insulto(ctx, *, arg):
     conn.close()
     await ctx.send("Insulto aggiunto!")
     rigenera_insulti()
+
+@bot.command()
+async def kick(ctx, member : discord.Member, *, reason='no reason'):
+    await check_admin(ctx)
+    if not ctx.message.author.guild_permissions.kick_members:
+        await ctx.channel.send('Non hai i permessi per kiccare le persone! ' + genera_insulto())
+        return
+    elif member.guild_permissions.administrator:
+        await ctx.channel.send('Non si può kiccare l\'amministratore! :(')
+        return
+    else:
+        await member.kick(reason=reason)
+
+@bot.command()
+async def ban(ctx, member : discord.Member, *, reason='no reason'):
+    await check_admin(ctx)
+    if not ctx.message.author.guild_permissions.ban_members:
+        await ctx.channel.send('Non hai i permessi per bannare le persone! ' + genera_insulto())
+        return
+    elif member.guild_permissions.administrator:
+        await ctx.channel.send('Non si può bannare l\'amministratore! :(')
+        return
+    else:
+        await member.ban(reason=reason)
 
 #endregion
 
@@ -229,6 +260,7 @@ async def somma_error(ctx, error):
 @mostra_infrazioni.error
 @pulisci_fedina.error
 @insulta.error
+@kick.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
@@ -246,7 +278,8 @@ async def cosa_non_trovata(ctx, error):
 @bot.group(invoke_without_command=True)
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
-    em.add_field(name='Admin', value='warn, pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
+    em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
+    em.add_field(name='Admin', value='warn, kick, ban')
     em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
@@ -306,6 +339,21 @@ async def cancella_insulto_dalla_lista(ctx):
     em.add_field(name='**Sintassi**', value='$cancella_insulto_dalla_lista [id]')
     em.add_field(name='alias', value='Nessuno')
     await ctx.send(embed=em)
+
+@help.command()
+async def kick(ctx):
+    em = discord.Embed(title='Kick', description='Caccia una persona dal server', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$kick <persona> [motivo]')
+    em.add_field(name='alias', value='Nessuno')
+    await ctx.send(embed=em)
+
+@help.command()
+async def ban(ctx):
+    em = discord.Embed(title='ban', description='Banna una persona dal server', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$ban <persona> [motivo]')
+    em.add_field(name='alias', value='Nessuno')
+    await ctx.send(embed=em)
+
 #endregion
 
 bot.run(TOKEN)
