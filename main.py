@@ -312,7 +312,7 @@ async def cosa_non_trovata(ctx, error):
 async def help(ctx):
     em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
     em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
-    em.add_field(name='Admin', value='warn, kick, ban')
+    em.add_field(name='Admin', value='warn, kick, ban, clean')
     em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p)')
     em.add_field(name='Matematica', value='somma, dividi, moltiplica')
     await ctx.send(embed = em)
@@ -383,6 +383,13 @@ async def kick(ctx):
 async def ban(ctx):
     em = discord.Embed(title='ban', description='Banna una persona dal server', color = ctx.message.author.color)
     em.add_field(name='**Sintassi**', value='$ban <persona> [motivo]')
+    em.add_field(name='alias', value='Nessuno')
+    await ctx.send(embed=em)
+
+@help.command()
+async def clean(ctx):
+    em = discord.Embed(title='clean', description='Pulisce la chat', color = ctx.message.author.color)
+    em.add_field(name='**Sintassi**', value='$clean {persona o numero di messaggi}')
     em.add_field(name='alias', value='Nessuno')
     await ctx.send(embed=em)
 
