@@ -70,12 +70,12 @@ def switch_messaggi(msg):
         'grazie':'Prego',
         ':pepesad:':'F',
         ':(':':)))',
-        ':)':':('
+        ':)':':(',
+        '69': 'nice'
         }
 
     for key in dic.keys():
         if msg.__contains__(key):
-            
             return dic[key]
     return 404 
 
