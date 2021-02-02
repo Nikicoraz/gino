@@ -251,6 +251,11 @@ async def clean(ctx, arg):
     await asyncio.sleep(4)
     await m.delete()
 
+@bot.command()
+async def dado(ctx):
+    await ctx.channel.send(f'Lanciando il dado...')
+    await asyncio.sleep(2)
+    await ctx.channel.send(ra.randint(1, 6))
 
 #endregion
 

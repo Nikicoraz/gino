@@ -10,7 +10,7 @@ class Help(commands.Cog):
         em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean')
-        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p)')
+        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -87,5 +87,12 @@ class Help(commands.Cog):
     async def clean(self, ctx):
         em = discord.Embed(title='clean', description='Pulisce la chat', color = ctx.message.author.color)
         em.add_field(name='**Sintassi**', value='$clean {persona o numero di messaggi}')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def dado(self, ctx):
+        em = discord.Embed(title='dado', description='Lancia un dado e sceglie un numero tra 1 e 6', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$dado')
         em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
