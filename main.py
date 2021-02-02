@@ -104,7 +104,8 @@ async def insulta(ctx, *, member: discord.Member):
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
-    await ctx.send(f'{member.mention} è stato avvertito per {reason}')
+    m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
+    m.add_reaction('🕵🏻‍♂️')
     data = datetime.now().strftime(r'%Y-%d-%m %H:%M:%S')
     conn = mysql.connector.connect(
     host='freedb.tech',
@@ -244,7 +245,7 @@ async def clean(ctx, arg):
     except errors.MemberNotFound:
         await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
-    await m.add_reaction('🕵️‍♂️')
+    await m.add_reaction('🧹')
     await asyncio.sleep(4)
     await m.delete()
 
