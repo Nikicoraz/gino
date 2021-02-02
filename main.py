@@ -69,7 +69,8 @@ def switch_messaggi(msg):
         'gigi': 'IL MIO ACERRIMO NEMICO',
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
-        'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts']
+        'pepsiman': ['Pepsi Man!🍶', 'https://lh3.googleusercontent.com/proxy/FSpQFPlPO8ac96WB44FOI0aLlEV_7tudsOpTAcRBEtodKVbwqo8fO1I_Zy5ztQ43mUtAKBjuezACQFLihjkZWjUVvkJvZXri7PhSJBH_yMtOEhjlToNTH7UCbts'],
+        '🍷':'🍷'
         }
 
     for key in dic.keys():
