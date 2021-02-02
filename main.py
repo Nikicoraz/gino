@@ -1,8 +1,10 @@
 #!venv/Scripts/python.exe
 import sqlite3
 from sqlite3.dbapi2 import Error
+from typing import final
 import discord
 from discord import role
+from discord.utils import sane_wait_for
 import mysql.connector
 from discord.client import _cancel_tasks
 from discord.errors import DiscordServerError
@@ -15,6 +17,7 @@ import random as ra
 from datetime import datetime
 import re
 from time import sleep
+import asyncio
 #region init
 insulti = []
 
@@ -236,6 +239,22 @@ async def ban(ctx, member : discord.Member, *, reason='no reason'):
     else:
         await member.ban(reason=reason)
 
+@bot.command()
+async def clean(ctx, arg):
+    await check_admin(ctx)
+    def check_member(ctx, arg):
+        return ctx.author == arg
+    try:
+        converter = commands.MemberConverter()
+        member = await converter.convert(ctx, arg)
+        await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
+    except errors.MemberNotFound:
+        await ctx.channel.purge(limit=int(arg))
+    m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
+    await asyncio.sleep(4)
+    await m.delete()
+
+
 #endregion
 
 #region Sezione intercettazione messaggi
@@ -268,9 +287,10 @@ async def on_message(message):
 @somma.error
 @dividi.error
 @moltiplica.error
+@clean.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Non hai messo 2 numeri!!!")
+        await ctx.send("Hai messo tutti i parametri? :thinking:")
 
 @warn.error
 @mostra_infrazioni.error
@@ -287,6 +307,7 @@ async def membro_non_trovato(ctx, error):
 async def cosa_non_trovata(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send('L\' id deve essere un numero ' + genera_insulto().lower() + '!')
+
 
 
 #endregion
@@ -349,7 +370,6 @@ async def aggiungi_insulto(ctx):
     em.add_field(name='**Sintassi**', value='$aggiungi_insulto [insulto]')
     em.add_field(name='alias', value='$ai')
     await ctx.send(embed=em)
-
 
 @help.command()
 async def cancella_insulto_dalla_lista(ctx):
