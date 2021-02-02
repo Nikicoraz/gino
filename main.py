@@ -48,7 +48,7 @@ def get_name(ctx):
     return name
 
 async def check_admin(ctx):
-    if not ctx.message.author.guild_permissions.administrator:
+    if not ctx.message.author.guild_permissions.administrator and ctx.message.author.id != int(creator_id):
         await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
         raise Error("Comando admin da persone non admin!")
 
@@ -65,7 +65,8 @@ def switch_messaggi(msg):
         'hello there': 'General Kenobi!',
         'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
         'gigi': 'IL MIO ACERRIMO NEMICO',
-        'nigga': 'Un po\' razzista ma ok'
+        'nigga': 'Un po\' razzista ma ok',
+        'negro': 'Un po\' razzista ma ok'
         }
 
     for key in dic.keys():
