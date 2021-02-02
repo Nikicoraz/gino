@@ -99,10 +99,9 @@ async def insulta(ctx, *, member: discord.Member):
 
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
-    
     await check_admin(ctx)
     await ctx.send(f'{member.mention} è stato avvertito per {reason}')
-    data = datetime.now().strftime('%D %H:%M:%S')
+    data = datetime.now().strftime(r'%d-%m-%Y %H:%M:%S')
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
