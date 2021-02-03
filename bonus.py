@@ -1,6 +1,9 @@
 from discord.ext import commands
 import discord
 import re
+from timer.timer import Timer
+from threading import Thread
+import asyncio
 
 from discord.ext.commands.core import check
 
@@ -110,6 +113,7 @@ class Tris(commands.Cog):
         self.turn = 0
         self.initializer = None
         self.guest = None
+        self.timeout_timer = Timer(60)
         #TODO votazione e timer
     
     async def DrawBoard(self, ctx, tris_board):
@@ -138,7 +142,7 @@ class Tris(commands.Cog):
             await ctx.channel.send('Vuoi giocare con un bot? :thinking:')
             return
         num_tris_board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-        await ctx.channel.send('Iniziando sessione di tris...')
+        await ctx.channel.send('Iniziando sessione di tris...\nˢᵉ ⁿᵒⁿ ˢᶦ ʳᶦˢᵖᵒⁿᵈᵉ ᵖᵉʳ ⁶⁰ ˢᵉᶜᵒⁿᵈᶦ ᶦˡ ᵍᶦᵒᶜᵒ ᶠᶦⁿᶦʳᵃ')
         if member == self.bot.user:
             await ctx.send.channel('Non puoi sfidare il bot!')
             return
@@ -147,8 +151,15 @@ class Tris(commands.Cog):
         self.tris = True
         self.initializer = ctx.author
         self.guest = member
-
+        loop = asyncio.get_event_loop()
+        self.timeout_timer.call_at_end(lambda:(self.timeout(ctx, loop)))
+        t = Thread(target=self.timeout_timer.start)
+        t.start()
     
+    def timeout(self, ctx, loop):
+        loop.create_task(ctx.channel.send('Nessuna risposta da 60 secondi, mi ignorate :cry:? Addio'))
+        self.end_game()
+
     @commands.Cog.listener()
     async def on_message(self, ctx):
         if not self.tris or ctx.author == self.bot.user or (ctx.author != self.initializer and ctx.author != self.guest):
@@ -172,6 +183,7 @@ class Tris(commands.Cog):
             self.tris_board[num] = 'x' if self.turn % 2 == 0 else 'o'
             self.turn += 1
             await self.DrawBoard(ctx, self.tris_board)
+            self.timeout_timer.reset()
     
     
     def check_board(self):
@@ -199,13 +211,13 @@ class Tris(commands.Cog):
             return 404
         return False
 
-
     def end_game(self):
         self.tris = False
         self.initializer = None
         self.guest = None
         self.tris_board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
         self.turn = 0
+        self.timeout_timer.stop()
     
     @tris.error
     async def error(self, ctx, error):
