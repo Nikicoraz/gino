@@ -71,7 +71,9 @@ def switch_messaggi(msg):
         ':pepesad:':'F',
         ':(':':)))',
         ':)':':(',
-        '69': 'nice'
+        '69': 'nice',
+        'flymetothemoon':'🚀🌑🌠',
+        'mussolini':['VIVA IL DVCE!🤚', 'https://youtu.be/i4J4xSzpSuA']
         }
 
     for key in dic.keys():
