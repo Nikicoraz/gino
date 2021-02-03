@@ -267,6 +267,8 @@ async def gaymeter(ctx, member : discord.Member):
     VUOTO = '░'
     if str(member.id) == creator_id:
         perc = 0
+    elif member.id == bot.user.id:
+        perc = 100
     quanti = int(perc/10)
     restanti = 10-quanti
     await ctx.channel.send(f'{member.mention} è gay al {BARRA*quanti}{VUOTO*restanti} {perc}%\n')
