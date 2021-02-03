@@ -260,6 +260,15 @@ async def dado(ctx):
     await asyncio.sleep(2)
     await ctx.channel.send(ra.randint(1, 6))
 
+@bot.command(aliases=['gm'])
+async def gaymeter(ctx, member : discord.Member):
+    perc = ra.randint(0, 100)
+    BARRA = '█'
+    VUOTO = '░'
+    quanti = int(perc/10)
+    restanti = 10-quanti
+    await ctx.channel.send(f'{member.mention} è gay al {BARRA*quanti}{VUOTO*restanti} {perc}%\n')
+
 #endregion
 
 #region Sezione intercettazione messaggi
