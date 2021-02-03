@@ -315,8 +315,9 @@ async def cosa_non_trovata(ctx, error):
 #endregion
 
 #region help
-from help_commands import Help
+from bonus import Help, Tris
 bot.add_cog(Help(bot))
+bot.add_cog(Tris(bot))
 
 #endregion
 
