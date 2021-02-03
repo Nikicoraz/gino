@@ -73,7 +73,8 @@ def switch_messaggi(msg):
         ':)':':(',
         '69': 'nice',
         'flymetothemoon':'🚀🌑🌠',
-        'mussolini':['VIVA IL DVCE!🤚', 'https://youtu.be/i4J4xSzpSuA']
+        'mussolini':['VIVA IL DVCE!🤚', 'https://youtu.be/i4J4xSzpSuA'],
+        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail 😞']
         }
 
     for key in dic.keys():
