@@ -18,7 +18,7 @@ class Help(commands.Cog):
         em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean')
-        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris')
+        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -135,7 +135,6 @@ class Tris(commands.Cog):
         self.initializer = None
         self.guest = None
         self.timeout_timer = Timer(60)
-        #TODO votazione e timer
     
     async def DrawBoard(self, ctx, tris_board):
             await ctx.channel.send("""`+---+---+---+
@@ -225,7 +224,6 @@ class Tris(commands.Cog):
             self.turn += 1
             await self.DrawBoard(ctx, self.tris_board)
             self.timeout_timer.reset()
-    
     
     def check_board(self):
         # Orizzontale

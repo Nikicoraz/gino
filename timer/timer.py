@@ -91,14 +91,3 @@ class Timer:
         seconds_remaining = self.get_remaining_seconds()
         self._seconds = seconds_remaining
         
-
-if __name__ == '__main__':
-    def hello_world(pizza):
-        print('hello world!' + pizza)
-    t = Timer(10)
-    t.call_at_end(lambda:hello_world('ciao'))
-    d = Thread(target=t.start)
-    d.start()
-    while True:
-        sleep(1)
-        print(t.get_seconds())
