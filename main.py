@@ -279,7 +279,7 @@ async def gaymeter(ctx, member : discord.Member):
 @bot.command()
 async def coin(ctx):
     num = ra.randint(1, 2)
-    coin = 'testa' if num == 1 else 'coda' 
+    coin = 'testa' if num == 1 else 'croce' 
     await ctx.channel.send(f"è uscito {coin}")
 
 #endregion
