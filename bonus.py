@@ -166,7 +166,7 @@ class Tris(commands.Cog):
         for r in react:
             await msg.add_reaction(r)
         def check_react(reaction, user):
-            if user != member or reaction.message.id != msg.id:
+            if user != member or reaction.message.id != msg.id or not str(reaction.emoji) in react:
                 return False
             return True
         try:
