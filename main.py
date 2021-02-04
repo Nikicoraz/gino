@@ -78,7 +78,7 @@ def switch_messaggi(msg):
         'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
         ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
         'pepe':copypasta.PEPE,
-        'ea sports':copypasta.EA
+        'easports':copypasta.EA
         }
 
     for key in dic.keys():
