@@ -273,6 +273,12 @@ async def gaymeter(ctx, member : discord.Member):
     restanti = 10-quanti
     await ctx.channel.send(f'{member.mention} è gay al {BARRA*quanti}{VUOTO*restanti} {perc}%\n')
 
+@bot.command()
+async def coin(ctx):
+    num = ra.randint(1, 2)
+    coin = 'testa' if num == 1 else 'coda' 
+    await ctx.channel.send(f"è uscito {coin}")
+
 #endregion
 
 #region Sezione intercettazione messaggi

@@ -119,6 +119,13 @@ class Help(commands.Cog):
         em.add_field(name='alias', value='gm')
         await ctx.send(embed=em)
 
+    @help.command()
+    async def coin(self, ctx):
+        em = discord.Embed(title='coin', description='Lancia una monetina', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$coin')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+
 class Tris(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
