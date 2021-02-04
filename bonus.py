@@ -18,7 +18,7 @@ class Help(commands.Cog):
         em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean')
-        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin')
+        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin, gaymeter(gm)')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -134,6 +134,7 @@ class Tris(commands.Cog):
         self.turn = 0
         self.initializer = None
         self.guest = None
+        self.running = False
         self.timeout_timer = Timer(60)
     
     async def DrawBoard(self, ctx, tris_board):
@@ -156,6 +157,9 @@ class Tris(commands.Cog):
     @commands.command()
     async def tris(self, ctx, member : discord.Member):
         react = ['✅', '❌']
+        if self.running == True:
+            await ctx.channel.send('Una partita è già in corso!')
+            return
         if ctx.author == member:
             await ctx.channel.send('Non pensavo fossi così triste')
             return
@@ -163,6 +167,7 @@ class Tris(commands.Cog):
             await ctx.channel.send('Vuoi giocare con un bot? :thinking:')
             return
         msg = await ctx.channel.send(f"{member.mention} accetti la sfida?")
+        self.running = True
         for r in react:
             await msg.add_reaction(r)
         def check_react(reaction, user):
@@ -173,12 +178,14 @@ class Tris(commands.Cog):
             res, user = await self.bot.wait_for('reaction_add', check=check_react, timeout=15)
         except asyncio.TimeoutError:
             await ctx.channel.send(f'{member.mention} non ha risposto in tempo')
+            self.running = False
             return
 
         if react[0] in str(res.emoji):
             await ctx.channel.send(f'{member.mention} ha accettato la sfida!')
         elif react[1] in str(res.emoji):
             await ctx.channel.send(f'{member.mention} è un codardo e ha rifiutato la sfida!')
+            self.running = False
             return
 
         num_tris_board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -257,6 +264,7 @@ class Tris(commands.Cog):
         self.tris_board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
         self.turn = 0
         self.timeout_timer.stop()
+        self.running = False
     
     @tris.error
     async def error(self, ctx, error):

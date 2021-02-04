@@ -11,6 +11,7 @@ import random as ra
 from datetime import datetime
 import re
 import asyncio
+
 #region init
 insulti = []
 
@@ -321,6 +322,7 @@ async def somma_error(ctx, error):
 @pulisci_fedina.error
 @insulta.error
 @kick.error
+@gaymeter.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
@@ -331,8 +333,6 @@ async def membro_non_trovato(ctx, error):
 async def cosa_non_trovata(ctx, error):
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send('L\' id deve essere un numero ' + genera_insulto().lower() + '!')
-
-
 
 #endregion
 
