@@ -11,7 +11,7 @@ import random as ra
 from datetime import datetime
 import re
 import asyncio
-from copypasta import COCK
+import copypasta
 
 #region init
 insulti = []
@@ -68,7 +68,7 @@ def switch_messaggi(msg):
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
         'pepsiman': ['Pepsi Man!🍶', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
-        '🍷':COCK,
+        '🍷':copypasta.WINE,
         'grazie':'Prego',
         ':pepesad:':'F',
         ':(':':)))',
@@ -76,7 +76,8 @@ def switch_messaggi(msg):
         '69': 'nice',
         'flymetothemoon':'🚀🌑🌠',
         'mussolini':['VIVA IL DVCE!🤚', 'https://youtu.be/i4J4xSzpSuA'],
-        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail 😞']
+        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail 😞'],
+        'pepe':copypasta.PEPE
         }
 
     for key in dic.keys():
