@@ -11,6 +11,7 @@ import random as ra
 from datetime import datetime
 import re
 import asyncio
+from copypasta import COCK
 
 #region init
 insulti = []
@@ -67,7 +68,7 @@ def switch_messaggi(msg):
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
         'pepsiman': ['Pepsi Man!🍶', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
-        '🍷':'🍷',
+        '🍷':COCK,
         'grazie':'Prego',
         ':pepesad:':'F',
         ':(':':)))',
