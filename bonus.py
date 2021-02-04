@@ -156,12 +156,32 @@ class Tris(commands.Cog):
 
     @commands.command()
     async def tris(self, ctx, member : discord.Member):
+        react = ['✅', '❌']
         if ctx.author == member:
             await ctx.channel.send('Non pensavo fossi così triste')
             return
         if member.bot:
             await ctx.channel.send('Vuoi giocare con un bot? :thinking:')
             return
+        msg = await ctx.channel.send(f"{member.mention} accetti la sfida?")
+        for r in react:
+            await msg.add_reaction(r)
+        def check_react(reaction, user):
+            if user != member or reaction.message.id != msg.id:
+                return False
+            return True
+        try:
+            res, user = await self.bot.wait_for('reaction_add', check=check_react, timeout=15)
+        except asyncio.TimeoutError:
+            await ctx.channel.send(f'{member.mention} non ha risposto in tempo')
+            return
+
+        if react[0] in str(res.emoji):
+            await ctx.channel.send(f'{member.mention} ha accettato la sfida!')
+        elif react[1] in str(res.emoji):
+            await ctx.channel.send(f'{member.mention} è un codardo e ha rifiutato la sfida!')
+            return
+
         num_tris_board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
         await ctx.channel.send('Iniziando sessione di tris...\nˢᵉ ⁿᵒⁿ ˢᶦ ʳᶦˢᵖᵒⁿᵈᵉ ᵖᵉʳ ⁶⁰ ˢᵉᶜᵒⁿᵈᶦ ᶦˡ ᵍᶦᵒᶜᵒ ᶠᶦⁿᶦʳᵃ')
         if member == self.bot.user:
