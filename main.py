@@ -1,4 +1,4 @@
-#!venv/Scripts/python.exe
+﻿#!venv/Scripts/python.exe
 import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
@@ -67,17 +67,18 @@ def switch_messaggi(msg):
         'gigi': 'IL MIO ACERRIMO NEMICO',
         'nigga': 'Un po\' razzista ma ok',
         'negro': 'Un po\' razzista ma ok',
-        'pepsiman': ['Pepsi Man!🍶', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
-        '🍷':copypasta.WINE,
+        'pepsiman': ['Pepsi Man!ðﾟﾍﾶ', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
+        'ðﾟﾍﾷ':copypasta.WINE,
         'grazie':'Prego',
         ':pepesad:':'F',
         ':(':':)))',
         ':)':':(',
         '69': 'nice',
-        'flymetothemoon':'🚀🌑🌠',
-        'mussolini':['VIVA IL DVCE!🤚', 'https://youtu.be/i4J4xSzpSuA'],
-        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail 😞'],
-        'pepe':copypasta.PEPE
+        'flymetothemoon':'ðﾟﾚﾀðﾟﾌﾑðﾟﾌﾠ',
+        'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
+        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
+        'pepe':copypasta.PEPE,
+        'ea sports':copypasta.EA
         }
 
     for key in dic.keys():
@@ -113,7 +114,7 @@ async def insulta(ctx, *, member: discord.Member):
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
-    await m.add_reaction('🕵🏻‍♂️')
+    await m.add_reaction('ðﾟﾕﾵðﾟﾏﾻ‍♂️')
     data = datetime.now().strftime(r'%Y-%d-%m %H:%M:%S')
     conn = mysql.connector.connect(
     host='freedb.tech',
@@ -253,7 +254,7 @@ async def clean(ctx, arg):
     except errors.MemberNotFound:
         await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
-    await m.add_reaction('🧹')
+    await m.add_reaction('ðﾟﾧﾹ')
     await asyncio.sleep(4)
     await m.delete()
 
