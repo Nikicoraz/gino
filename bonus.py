@@ -182,7 +182,7 @@ class Tris(commands.Cog):
             return
 
         num_tris_board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-        await ctx.channel.send('Iniziando sessione di tris...\nˢᵉ ⁿᵒⁿ ˢᶦ ʳᶦˢᵖᵒⁿᵈᵉ ᵖᵉʳ ⁶⁰ ˢᵉᶜᵒⁿᵈᶦ ᶦˡ ᵍᶦᵒᶜᵒ ᶠᶦⁿᶦʳᵃ')
+        await ctx.channel.send('Iniziando sessione di tris...')
         if member == self.bot.user:
             await ctx.send.channel('Non puoi sfidare il bot!')
             return
