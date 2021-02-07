@@ -18,6 +18,7 @@ insulti = []
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
+animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 def rigenera_insulti():
     global insulti
@@ -78,7 +79,8 @@ def switch_messaggi(msg):
         'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
         ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
         'pepe':copypasta.PEPE,
-        'easports':copypasta.EA
+        'easports':copypasta.EA,
+        ':ezgif:': '<a:ezgif:807940843892768778>'
         }
 
     for key in dic.keys():
@@ -254,7 +256,7 @@ async def clean(ctx, arg):
     except errors.MemberNotFound:
         await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
-    await m.add_reaction('ðﾟﾧﾹ')
+    await m.add_reaction('🧹')
     await asyncio.sleep(4)
     await m.delete()
 
@@ -303,6 +305,9 @@ async def on_message(message):
                     await message.channel.send(embed=e)
                 else:
                     await message.channel.send(m)
+        elif re.match(animated_emoji_pattern, messaggio):
+            await message.delete()
+            await message.channel.send(messaggio)
         else:
             await message.channel.send(messaggio)
         
