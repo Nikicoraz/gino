@@ -86,7 +86,10 @@ risposte_dic = {
     ':pepehype:': '<a:pepehype:807990347099537429>',
     ':pepesimp:': '<a:pepesimp:807990373167267870>',
     ':pepegacredit:': '<a:pepegacredit:807990388160987227>',
-    ':ultrayaya:': '<a:ultrayaya:807990399155044373>'
+    ':ultrayaya:': '<a:ultrayaya:807990399155044373>',
+    ':catjamdisco:': '<a:catjamdisco:808006353594482728>',
+    ':cringepepepet:': '<a:cringepepepet:808006318359052378>',
+    ':dogdance:': '<a:ultrayaya:808006262834724866>'
     }
 def switch_messaggi(msg):
     for key in risposte_dic.keys():
