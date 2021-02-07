@@ -8,17 +8,19 @@ import asyncio
 from discord.ext.commands.core import check
 
 numbers = r'[1-9]'
+animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 class Help(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot, dizionario_emoji):
         self.bot = bot
+        self.dic = dizionario_emoji
         
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):
         em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean')
-        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin, gaymeter(gm)')
+        em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -125,6 +127,19 @@ class Help(commands.Cog):
         em.add_field(name='**Sintassi**', value='$coin')
         em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
+
+    @help.command()
+    async def emoji_animate(self, ctx):
+        emoji = []
+        for k, v in self.dic.items():
+            if isinstance(v, list):
+                continue
+            if re.match(animated_emoji_pattern, v):
+                emoji.append(k)
+        em = discord.Embed(title='Emoji Animate', description='Lista della emoji animate')
+        em.add_field(name='Lista', value=emoji)
+        await ctx.send(embed=em)
+
 
 class Tris(commands.Cog):
     def __init__(self, bot):

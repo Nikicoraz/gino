@@ -61,32 +61,31 @@ async def check_creator(ctx):
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti) - 1)]
 
+risposte_dic = {
+    'hellothere': 'General Kenobi!',
+    'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
+    'gigi': 'IL MIO ACERRIMO NEMICO',
+    'nigga': 'Un po\' razzista ma ok',
+    'negro': 'Un po\' razzista ma ok',
+    'pepsiman': ['Pepsi Man!ðﾟﾍﾶ', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
+    'ðﾟﾍﾷ':copypasta.WINE,
+    'grazie':'Prego',
+    ':pepesad:':'F',
+    ':(':':)))',
+    ':)':':(',
+    '69': 'nice',
+    'flymetothemoon':'ðﾟﾚﾀðﾟﾌﾑðﾟﾌﾠ',
+    'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
+    ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
+    'pepe':copypasta.PEPE,
+    'easports':copypasta.EA,
+    ':love:': '<a:love:807947104164118558>',
+    ':index:': '<a:index:807948759047733268>'
+    }
 def switch_messaggi(msg):
-    dic = {
-        'hellothere': 'General Kenobi!',
-        'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
-        'gigi': 'IL MIO ACERRIMO NEMICO',
-        'nigga': 'Un po\' razzista ma ok',
-        'negro': 'Un po\' razzista ma ok',
-        'pepsiman': ['Pepsi Man!ðﾟﾍﾶ', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
-        'ðﾟﾍﾷ':copypasta.WINE,
-        'grazie':'Prego',
-        ':pepesad:':'F',
-        ':(':':)))',
-        ':)':':(',
-        '69': 'nice',
-        'flymetothemoon':'ðﾟﾚﾀðﾟﾌﾑðﾟﾌﾠ',
-        'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
-        ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
-        'pepe':copypasta.PEPE,
-        'easports':copypasta.EA,
-        ':love:': '<a:love:807947104164118558>',
-        ':index:': '<a:index:807948759047733268>'
-        }
-
-    for key in dic.keys():
+    for key in risposte_dic.keys():
         if msg.__contains__(key):
-            return dic[key]
+            return risposte_dic[key]
     return 404 
 
 #endregion
@@ -347,7 +346,7 @@ async def cosa_non_trovata(ctx, error):
 
 #region help
 from bonus import Help, Tris
-bot.add_cog(Help(bot))
+bot.add_cog(Help(bot, risposte_dic))
 bot.add_cog(Tris(bot))
 
 #endregion
