@@ -80,7 +80,8 @@ def switch_messaggi(msg):
         ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
         'pepe':copypasta.PEPE,
         'easports':copypasta.EA,
-        ':ezgif:': '<a:ezgif:807940843892768778>'
+        ':love:': '<a:love:807947104164118558>',
+        ':index:': '<a:index:807948759047733268>'
         }
 
     for key in dic.keys():
