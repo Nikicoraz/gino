@@ -76,11 +76,17 @@ risposte_dic = {
     '69': 'nice',
     'flymetothemoon':'ðﾟﾚﾀðﾟﾌﾑðﾟﾌﾠ',
     'mussolini':['VIVA IL DVCE!ðﾟﾤﾚ', 'https://youtu.be/i4J4xSzpSuA'],
-    ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail ðﾟﾘﾞ'],
-    'pepe':copypasta.PEPE,
+    ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
     'easports':copypasta.EA,
     ':love:': '<a:love:807947104164118558>',
-    ':index:': '<a:index:807948759047733268>'
+    ':index:': '<a:index:807948759047733268>',
+    ':ncry:': '<a:ncry:807989716011712532>',
+    ':dance:': '<a:dance:807989758151360562>',
+    ':pepelaugh:': '<a:pepelaugh:807990173282467840>',
+    ':pepehype:': '<a:pepehype:807990347099537429>',
+    ':pepesimp:': '<a:pepesimp:807990373167267870>',
+    ':pepegacredit:': '<a:pepegacredit:807990388160987227>',
+    ':ultrayaya:': '<a:ultrayaya:807990399155044373>'
     }
 def switch_messaggi(msg):
     for key in risposte_dic.keys():
