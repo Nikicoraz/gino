@@ -296,6 +296,7 @@ async def coin(ctx):
 
 @bot.command()
 async def modify_role(ctx, member : discord.Member, role_input : discord.Role, add_remove : bool):
+    check_creator(ctx)
     role = discord.utils.get(ctx.guild.roles, name=role_input)
     if add_remove:
         await member.add_roles(role_input)
