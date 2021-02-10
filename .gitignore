@@ -1,8 +1,0 @@
-/venv/
-/.vscode/
-*.code-workspace
-/__pycache__/
-test.py
-.env
-timer/__pycache__/
-/comandiDebugSql/
