@@ -72,7 +72,6 @@ risposte_dic = {
     ':pepesad:':'F',
     ':(':':)))',
     ':)':':(',
-    '69': 'nice',
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
     ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
