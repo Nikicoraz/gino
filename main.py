@@ -1,5 +1,4 @@
 ﻿#!venv/Scripts/python.exe
-from sqlite3.dbapi2 import Error
 import discord
 from dotenv import load_dotenv
 import mysql.connector
@@ -11,6 +10,8 @@ from datetime import datetime
 import re
 import asyncio
 import copypasta
+import cv2 as cv
+import opencv
 
 #region init
 insulti = []
@@ -50,12 +51,12 @@ def get_name(ctx):
 async def check_admin(ctx):
     if not ctx.message.author.guild_permissions.administrator and ctx.message.author.id != int(creator_id):
         await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
-        raise Error("Comando admin da persone non admin!")
+        raise Exception("Comando admin da persone non admin!")
 
 async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
         await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
-        raise Error("Comando creatore da persone non creatore!")
+        raise Exception("Comando creatore da persone non creatore!")
     
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti) - 1)]
@@ -303,6 +304,14 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.add_roles(role_input)
     else:
         await member.remove_roles(role_input)
+
+@bot.command()
+async def grigio(ctx, member : discord.Member):
+    print(member.avatar_url)
+    print(member)
+    file, filename = await opencv.grey(member)
+    await ctx.channel.send('yee', file=file)
+    os.remove(filename)
 
 #endregion
 
