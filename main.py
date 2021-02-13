@@ -1,5 +1,4 @@
 ﻿#!venv/Scripts/python.exe
-import sqlite3
 from sqlite3.dbapi2 import Error
 import discord
 from dotenv import load_dotenv
