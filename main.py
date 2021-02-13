@@ -307,8 +307,6 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
 
 @bot.command()
 async def grigio(ctx, member : discord.Member):
-    print(member.avatar_url)
-    print(member)
     file, filename = await opencv.grey(member)
     await ctx.channel.send('yee', file=file)
     os.remove(filename)
