@@ -363,9 +363,13 @@ async def somma_error(ctx, error):
 @insulta.error
 @kick.error
 @gaymeter.error
+@grigio.error
+@linee.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Devi indicare una pesona su cui eseguire questo comando ' + genera_insulto() + '!')
     else:
         print(error)
 
