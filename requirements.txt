@@ -2,4 +2,3 @@ discord
 python-dotenv
 mysql-connector-python
 opencv-contrib-python
-python-opencv
