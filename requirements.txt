@@ -1,4 +1,4 @@
 discord
 python-dotenv
 mysql-connector-python
-opencv-contrib-python
+opencv-python-headless==4.2.0.32
