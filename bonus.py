@@ -21,6 +21,7 @@ class Help(commands.Cog):
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean')
         em.add_field(name='Casual', value='aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i), probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate')
+        em.add_field(name='Immagini', value='grigio, linee')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -138,6 +139,20 @@ class Help(commands.Cog):
                 emoji.append(k)
         em = discord.Embed(title='Emoji Animate', description='Lista della emoji animate')
         em.add_field(name='Lista', value=emoji)
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def grigio(self, ctx):
+        em = discord.Embed(title='grigio', description='Visualizza una immagine profilo in una scala di grigi', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$grigio <persona>')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def linee(self, ctx):
+        em = discord.Embed(title='linee', description='Visualizza le linee di una immagine profilo', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$linee <persona>')
+        em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
 
 
