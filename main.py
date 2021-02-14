@@ -1,5 +1,4 @@
 ﻿#!venv/Scripts/python.exe
-from sqlite3.dbapi2 import Error
 import discord
 from dotenv import load_dotenv
 import mysql.connector
@@ -11,6 +10,8 @@ from datetime import datetime
 import re
 import asyncio
 import copypasta
+import cv2 as cv
+import opencv
 
 #region init
 insulti = []
@@ -50,12 +51,12 @@ def get_name(ctx):
 async def check_admin(ctx):
     if not ctx.message.author.guild_permissions.administrator and ctx.message.author.id != int(creator_id):
         await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
-        raise Error("Comando admin da persone non admin!")
+        raise Exception("Comando admin da persone non admin!")
 
 async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
         await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
-        raise Error("Comando creatore da persone non creatore!")
+        raise Exception("Comando creatore da persone non creatore!")
     
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti) - 1)]
@@ -304,6 +305,18 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
     else:
         await member.remove_roles(role_input)
 
+@bot.command()
+async def grigio(ctx, member : discord.Member):
+    file, filename = await opencv.grey(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
+
+@bot.command()
+async def linee(ctx, member : discord.Member):
+    file, filename = await opencv.canny(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
+
 #endregion
 
 #region Sezione intercettazione messaggi
@@ -350,9 +363,13 @@ async def somma_error(ctx, error):
 @insulta.error
 @kick.error
 @gaymeter.error
+@grigio.error
+@linee.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Devi indicare una pesona su cui eseguire questo comando ' + genera_insulto() + '!')
     else:
         print(error)
 
