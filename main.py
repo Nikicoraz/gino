@@ -12,6 +12,7 @@ import asyncio
 import copypasta
 import cv2 as cv
 import opencv
+import requests
 
 #region init
 insulti = []
@@ -328,6 +329,13 @@ async def pirata(ctx, member : discord.Member):
     file, filename = await opencv.pirate(member)
     await ctx.channel.send(file=file)
     os.remove(filename)
+
+@bot.command()
+async def ispira(ctx):
+    html = requests.get('https://inspirobot.me/api?generate=true')
+    em = discord.Embed()
+    em.set_image(url=html.text)
+    await ctx.channel.send(embed=em)
 
 #endregion
 
