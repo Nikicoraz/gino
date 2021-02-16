@@ -335,7 +335,7 @@ async def ispira(ctx):
     html = requests.get('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
     em.set_image(url=html.text)
-    await ctx.channel.send(embed=em)
+    await ctx.channel.send('Eccoti una immagine motivante :wink:', embed=em)
 
 #endregion
 
