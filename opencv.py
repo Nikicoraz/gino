@@ -19,6 +19,10 @@ def blend_transparent(src, over, x=0, y=0):
 
     return src
 
+def sovrapponi(src, over, x=0, y=0):
+    src[y+over.shape[1]:x+over.shape[0]] = over[over.shape[1]:over.shape[0]]
+    return src
+
 def resize(img, width=500):
     const = img.shape[0]/img.shape[1]
     height = int(const * width)
