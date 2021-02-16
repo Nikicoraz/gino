@@ -371,6 +371,7 @@ async def somma_error(ctx, error):
 @gaymeter.error
 @grigio.error
 @linee.error
+@buff.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
