@@ -317,6 +317,12 @@ async def linee(ctx, member : discord.Member):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
+@bot.command()
+async def buff(ctx, member : discord.Member):
+    file, filename = await opencv.rock(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
+
 #endregion
 
 #region Sezione intercettazione messaggi
