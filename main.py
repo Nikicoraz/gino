@@ -12,7 +12,7 @@ import asyncio
 import copypasta
 import cv2 as cv
 import opencv
-import requests
+from Network import get_html
 
 #region init
 insulti = []
@@ -332,9 +332,9 @@ async def pirata(ctx, member : discord.Member):
 
 @bot.command()
 async def ispira(ctx):
-    html = requests.get('https://inspirobot.me/api?generate=true')
+    html = get_html('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
-    em.set_image(url=html.text)
+    em.set_image(url=html)
     await ctx.channel.send('Eccoti una immagine motivante :wink:', embed=em)
 
 #endregion
