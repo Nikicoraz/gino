@@ -20,7 +20,12 @@ def blend_transparent(src, over, x=0, y=0):
     return src
 
 def sovrapponi(src, over, x=0, y=0):
-    src[y+over.shape[1]:x+over.shape[0]] = over[over.shape[1]:over.shape[0]]
+    for r, row in enumerate(over):
+        for c, pixel in enumerate(row):
+            src[y+r][x+c][0] = pixel[0]
+            src[y+r][x+c][1] = pixel[1]
+            src[y+r][x+c][2] = pixel[2]
+            
     return src
 
 def resize(img, width=500):
@@ -50,5 +55,15 @@ async def canny(member : discord.Member):
     img = resize(img)
     canny = cv.Canny(img, 100, 200)
     cv.imwrite(name, canny)
+    file = discord.File(name)
+    return(file, name)
+
+async def rock(member : discord.Member):
+    file, name = await avatar_url_to_image(member)
+    img = cv.imread(name)
+    img = resize(img, width=152)
+    rock = cv.imread(r'Images\rock.jpg')
+    final = sovrapponi(rock, img, 320, 70)
+    cv.imwrite(name, final)
     file = discord.File(name)
     return(file, name)
