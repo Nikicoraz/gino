@@ -62,7 +62,7 @@ async def rock(member : discord.Member):
     file, name = await avatar_url_to_image(member)
     img = cv.imread(name)
     img = resize(img, width=152)
-    rock = cv.imread(r'Images\rock.jpg')
+    rock = cv.imread(r'Images/rock.jpg')
     final = sovrapponi(rock, img, 320, 70)
     cv.imwrite(name, final)
     file = discord.File(name)
