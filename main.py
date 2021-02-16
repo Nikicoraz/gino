@@ -323,6 +323,12 @@ async def buff(ctx, member : discord.Member):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
+@bot.command()
+async def pirata(ctx, member : discord.Member):
+    file, filename = await opencv.pirate(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
+
 #endregion
 
 #region Sezione intercettazione messaggi

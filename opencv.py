@@ -2,7 +2,6 @@ import cv2 as cv
 import discord
 import random as ra
 
-
 def blend_transparent(src, over, x=0, y=0):
     try:
         _ = over[0][0][3]
@@ -67,3 +66,13 @@ async def rock(member : discord.Member):
     cv.imwrite(name, final)
     file = discord.File(name)
     return(file, name)
+
+async def pirate(member : discord.Member):
+    file, filename = await avatar_url_to_image(member)
+    img = cv.imread(filename)
+    img = resize(img)
+    pirate = cv.imread(r'Images/pirate.png')
+    final = cv.addWeighted(img, 0.3, pirate, 0.7, 0)
+    cv.imwrite(filename, final)
+    file = discord.File(filename)
+    return(file, filename)
