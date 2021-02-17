@@ -307,6 +307,7 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.add_roles(role_input)
     else:
         await member.remove_roles(role_input)
+    await ctx.delete()
 
 @bot.command()
 async def grigio(ctx, member : discord.Member = None):
