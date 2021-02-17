@@ -142,7 +142,9 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     conn.close()
 
 @bot.command(aliases=['mi'])
-async def mostra_infrazioni(ctx, *, member: discord.Member):
+async def mostra_infrazioni(ctx, *, member: discord.Member = None):
+    if not member:
+        member = ctx.author
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
@@ -307,25 +309,33 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.remove_roles(role_input)
 
 @bot.command()
-async def grigio(ctx, member : discord.Member):
+async def grigio(ctx, member : discord.Member = None):
+    if not member:
+        member = ctx.author
     file, filename = await opencv.grey(member)
     await ctx.channel.send(file=file)
     os.remove(filename)
 
 @bot.command()
-async def linee(ctx, member : discord.Member):
+async def linee(ctx, member : discord.Member = None):
+    if not member:
+        member = ctx.author
     file, filename = await opencv.canny(member)
     await ctx.channel.send(file=file)
     os.remove(filename)
 
 @bot.command()
-async def buff(ctx, member : discord.Member):
+async def buff(ctx, member : discord.Member = None):
+    if not member:
+        member = ctx.author
     file, filename = await opencv.rock(member)
     await ctx.channel.send(file=file)
     os.remove(filename)
 
 @bot.command()
-async def pirata(ctx, member : discord.Member):
+async def pirata(ctx, member : discord.Member = None):
+    if not member:
+        member = ctx.author
     file, filename = await opencv.pirate(member)
     await ctx.channel.send(file=file)
     os.remove(filename)
