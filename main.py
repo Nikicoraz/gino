@@ -26,7 +26,7 @@ def rigenera_insulti():
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute('SELECT * FROM insulti')
@@ -134,7 +134,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
@@ -148,7 +148,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member = None):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
@@ -165,7 +165,7 @@ async def pulisci_fedina(ctx, *, member: discord.Member):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f"DELETE FROM fedina WHERE user_id = {member.id}")
@@ -191,7 +191,7 @@ async def visualizza_lista_insulti(ctx):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute('SELECT * FROM insulti')
@@ -208,7 +208,7 @@ async def cancella_insulto_dalla_lista(ctx, num):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute('DELETE FROM insulti WHERE id = ' + num)
@@ -226,7 +226,7 @@ async def aggiungi_insulto(ctx, *, arg):
     conn = mysql.connector.connect(
     host='freedb.tech',
     user='freedbtech_Nikicoraz',
-    password='bJGoz5qBPHo$#i5k',
+    password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
     c.execute(f"INSERT INTO insulti VALUES (null, '{arg}')")
