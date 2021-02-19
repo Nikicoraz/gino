@@ -6,7 +6,7 @@ def blend_transparent(src, over, x=0, y=0):
     try:
         _ = over[0][0][3]
     except:
-        raise Exception('Manca il canale alpha!')
+        raise Exception('Manca il canale alfa!')
     assert src.shape[:2] > over.shape[:2], 'L\'immangine su cui sovrapporre è più piccola di quella che verrà sovrapposta!'
 
     for r, row in enumerate(over):
