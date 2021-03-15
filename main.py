@@ -93,7 +93,8 @@ risposte_dic = {
     ':ultrayaya:': '<a:ultrayaya:807990399155044373>',
     ':catjamdisco:': '<a:catjamdisco:808006353594482728>',
     ':cringepepepet:': '<a:cringepepepet:808006318359052378>',
-    ':dogdance:': '<a:ultrayaya:808006262834724866>'
+    ':dogdance:': '<a:ultrayaya:808006262834724866>',
+    ':frogroll:': '<a:frogroll:820979762977439744>'
     }
 def switch_messaggi(msg):
     for key in risposte_dic.keys():
