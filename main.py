@@ -70,6 +70,7 @@ risposte_dic = {
     'negro': 'Un po\' razzista ma ok',
     'pepsiman': ['Pepsi Man!🍾', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
     'grazie':'Prego',
+    'uwu': 'OwO',
     ':pepesad:':'F',
     ':(':':)))',
     ':)':':(',
