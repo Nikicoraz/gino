@@ -184,7 +184,7 @@ class Help(commands.Cog):
         await ctx.send(embed=em)
     
     @help.command(aliases=['mc'])
-    async def ispira(self, ctx):
+    async def morracinese(self, ctx):
         em = discord.Embed(title='morra cinese', description='Sfida il bot a morra cinese!', color = ctx.message.author.color)
         em.add_field(name='**Sintassi**', value='$morracinese')
         em.add_field(name='alias', value='mc')
