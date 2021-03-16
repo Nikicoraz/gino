@@ -64,7 +64,7 @@ def genera_insulto():
 
 risposte_dic = {
     'hellothere': 'General Kenobi!',
-    'dio': ('func', "msgg = 'NON SI BESTEMMIA ' + genera_insulto().upper() + ' !'"),
+    'dio': ('func', "msgg = 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!'"),
     'gigi': 'IL MIO ACERRIMO NEMICO',
     'nigga': 'Un po\' razzista ma ok',
     'negro': 'Un po\' razzista ma ok',
