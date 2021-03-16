@@ -349,6 +349,19 @@ async def ispira(ctx):
     em.set_image(url=html)
     await ctx.channel.send('Eccoti una immagine motivante :wink:', embed=em)
 
+@bot.command(aliases=['mc'])
+async def morracinese(ctx, *,scelta : str):
+    if scelta.strip().lower() == 'carta':
+        msg = 'Ho scelto forbici, ho vinto io'
+    elif scelta.strip().lower() == 'forbici' or scelta.strip().lower() == 'forbice':
+        msg = 'Ho scelto sasso, ho vinto io'
+    elif scelta.strip().lower() == 'sasso':
+        msg = 'Ho scelto carta, ho vinto io'
+    else:
+        msg = 'Non ho riconosciuto una opzione valida, ho vinto io'
+    await ctx.channel.send(msg)
+
+
 #endregion
 
 #region Sezione intercettazione messaggi
