@@ -64,7 +64,7 @@ def genera_insulto():
 
 risposte_dic = {
     'hellothere': 'General Kenobi!',
-    'dio': 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!',
+    'dio': ('func', "msgg = 'NON SI BESTEMMIA ' + genera_insulto().upper() + ' !'"),
     'gigi': 'IL MIO ACERRIMO NEMICO',
     'nigga': 'Un po\' razzista ma ok',
     'negro': 'Un po\' razzista ma ok',
@@ -383,6 +383,10 @@ async def on_message(message):
                     await message.channel.send(embed=e)
                 else:
                     await message.channel.send(m)
+        elif messaggio[0] == 'func':
+            loc = {}
+            exec(messaggio[1], globals(), loc)
+            await message.channel.send(loc['msgg'])
         elif re.match(animated_emoji_pattern, messaggio):
             await message.delete()
             await message.channel.send(messaggio)
