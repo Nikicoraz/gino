@@ -368,12 +368,12 @@ async def morracinese(ctx, *,scelta : str):
 @bot.command()
 async def avatar(ctx, member : discord.Member):
     em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''Scaricalo! [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
-     [128]({str(member.avatar_url).replace("?size=1024", "?size=128")})
-     [256]({str(member.avatar_url).replace("?size=1024", "?size=256")})
-     [512]({str(member.avatar_url).replace("?size=1024", "?size=512")}) 
-     [1024]({str(member.avatar_url)}) 
-     [2048]({str(member.avatar_url).replace("?size=1024", "?size=2048")}) 
-     [4096]({str(member.avatar_url).replace("?size=1024", "?size=4096")})'''.replace('\n', ""))
+     | [128]({str(member.avatar_url).replace("?size=1024", "?size=128")})
+     | [256]({str(member.avatar_url).replace("?size=1024", "?size=256")})
+     | [512]({str(member.avatar_url).replace("?size=1024", "?size=512")}) 
+     | [1024]({str(member.avatar_url)}) 
+     | [2048]({str(member.avatar_url).replace("?size=1024", "?size=2048")}) 
+     | [4096]({str(member.avatar_url).replace("?size=1024", "?size=4096")})'''.replace('\n', ""))
     em.set_image(url=str(member.avatar_url))
     await ctx.channel.send(embed=em)
 
