@@ -1,5 +1,6 @@
 ﻿#!venv/Scripts/python.exe
 import discord
+from discord.embeds import Embed
 from dotenv import load_dotenv
 import mysql.connector
 from discord.ext import commands
@@ -73,7 +74,7 @@ risposte_dic = {
     'uwu': 'OwO',
     ':pepesad:':'F',
     ':(':':)))',
-    ':)':':(',
+    ':)':('embed', 'msgg = discord.Embed(description="[:(](https://www.youtube.com/watch?v=dQw4w9WgXcQ)")'),
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
     ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
@@ -388,6 +389,10 @@ async def on_message(message):
             loc = {}
             exec(messaggio[1], globals(), loc)
             await message.channel.send(loc['msgg'])
+        elif messaggio[0] == 'embed':
+            loc = {}
+            exec(messaggio[1], globals(), loc)
+            await message.channel.send(embed=loc['msgg'])
         elif re.match(animated_emoji_pattern, messaggio):
             await message.delete()
             await message.channel.send(messaggio)
