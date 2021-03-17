@@ -425,6 +425,7 @@ async def on_message(message):
 @somma.error
 @dividi.error
 @moltiplica.error
+@clean.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
