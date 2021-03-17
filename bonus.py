@@ -23,7 +23,7 @@ class Help(commands.Cog):
         em.add_field(name='Casual', value='''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
          probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
          crediti, morracinese(mc)''')
-        em.add_field(name='Immagini', value='grigio, linee, buff, pirata')
+        em.add_field(name='Immagini', value='avatar, grigio, linee, buff, pirata')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
 
@@ -188,6 +188,13 @@ class Help(commands.Cog):
         em = discord.Embed(title='morra cinese', description='Sfida il bot a morra cinese!', color = ctx.message.author.color)
         em.add_field(name='**Sintassi**', value='$morracinese')
         em.add_field(name='alias', value='mc')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def avatar(self, ctx):
+        em = discord.Embed(title='avatar', description='Scarica l\'avatar di una persona nel server!', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$avatar')
+        em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
 
 
