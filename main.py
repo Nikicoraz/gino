@@ -20,7 +20,7 @@ insulti = []
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
-animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
+emoji_pattern = r'^<.*:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 def rigenera_insulti():
     global insulti
@@ -96,7 +96,8 @@ risposte_dic = {
     ':catjamdisco:': '<a:catjamdisco:808006353594482728>',
     ':cringepepepet:': '<a:cringepepepet:808006318359052378>',
     ':dogdance:': '<a:ultrayaya:808006262834724866>',
-    ':frogroll:': '<a:frogroll:820979762977439744>'
+    ':frogroll:': '<a:frogroll:820979762977439744>',
+    '🔫': '<:pistola:821669164107825174>'
     }
 def switch_messaggi(msg):
     for key in risposte_dic.keys():
@@ -393,7 +394,7 @@ async def on_message(message):
             loc = {}
             exec(messaggio[1], globals(), loc)
             await message.channel.send(embed=loc['msgg'])
-        elif re.match(animated_emoji_pattern, messaggio):
+        elif re.match(emoji_pattern, messaggio):
             await message.delete()
             await message.channel.send(messaggio)
         else:
