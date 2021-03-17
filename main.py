@@ -435,6 +435,7 @@ async def somma_error(ctx, error):
 @grigio.error
 @linee.error
 @buff.error
+@avatar.error
 @pirata.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
