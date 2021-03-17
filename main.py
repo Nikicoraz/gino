@@ -266,13 +266,14 @@ async def ban(ctx, member : discord.Member, *, reason='no reason'):
 
 @bot.command()
 async def clean(ctx, arg):
-    if arg > 5000 and not check_creator(ctx):
-        await ctx.channel.send('Non puoi cancellare oltre 5000 messaggi!')
-        return
     await check_admin(ctx)
     def check_member(ctx, arg):
         return ctx.author == arg
-    try:
+    try: 
+        if isinstance(arg, int) and int(arg) > 5000:
+            if ctx.message.author.id != int(creator_id):
+                await ctx.channel.send('Non puoi cancellare più di 5000 messaggi!!!')
+                return
         converter = commands.MemberConverter()
         member = await converter.convert(ctx, arg)
         await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
@@ -424,7 +425,6 @@ async def on_message(message):
 @somma.error
 @dividi.error
 @moltiplica.error
-@clean.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
