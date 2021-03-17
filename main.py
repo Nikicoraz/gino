@@ -139,6 +139,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     password='8E!e#EcRr@Tqf9tK',
     database='freedbtech_generale')
     c = conn.cursor()
+    reason = reason.replace("'", "")
     c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
     conn.commit()
     conn.close()
