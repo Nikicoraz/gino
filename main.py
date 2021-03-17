@@ -266,6 +266,9 @@ async def ban(ctx, member : discord.Member, *, reason='no reason'):
 
 @bot.command()
 async def clean(ctx, arg):
+    if arg > 5000 and not check_creator(ctx):
+        await ctx.channel.send('Non puoi cancellare oltre 5000 messaggi!')
+        return
     await check_admin(ctx)
     def check_member(ctx, arg):
         return ctx.author == arg
