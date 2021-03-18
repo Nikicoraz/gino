@@ -1,6 +1,5 @@
 ﻿#!venv/Scripts/python.exe
 import discord
-from discord.embeds import Embed
 from dotenv import load_dotenv
 import mysql.connector
 from discord.ext import commands
@@ -11,7 +10,6 @@ from datetime import datetime
 import re
 import asyncio
 import copypasta
-import cv2 as cv
 import opencv
 from Network import get_html
 
