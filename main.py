@@ -24,21 +24,6 @@ animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
-def rigenera_insulti():
-    global insulti
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute('SELECT * FROM insulti')
-    _ = c.fetchall()
-    conn.close()
-    for i in _:
-        insulti.append(i[1])
-    del _
-rigenera_insulti()
 bot = commands.Bot(command_prefix='$')
 TOKEN = os.environ.get('TOKEN')
 creator_id = os.environ.get("CREATORE")
@@ -46,6 +31,31 @@ bot.remove_command('help')
 #endregion
 
 # region Funzioni
+
+def use_database(command, fetch=False, commit=False):
+    _ = None
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password=DATABASE_PASSWORD,
+    database='freedbtech_generale')
+    c = conn.cursor()
+    c.execute(command)
+    if fetch:
+        _ = c.fetchall()
+    if commit:
+        conn.commit()
+    conn.close()
+    return _
+
+
+def rigenera_insulti():
+    global insulti
+    _ = use_database('SELECT * FROM insulti', fetch=True)
+    for i in _:
+        insulti.append(i[1])
+    del _
+rigenera_insulti()
 
 def get_name(ctx):
     name = ctx.author.nick or ctx.author.name
@@ -136,30 +146,14 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
     await m.add_reaction('🕵🏻‍♂️')
     data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S')
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
     reason = reason.replace("'", "")
-    c.execute(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')")
-    conn.commit()
-    conn.close()
+    use_database(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')", commit=True)
 
 @bot.command(aliases=['mi'])
 async def mostra_infrazioni(ctx, *, member: discord.Member = None):
     if not member:
         member = ctx.author
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}')
-    infrazioni = c.fetchall()
-    conn.close()
+    infrazioni = use_database(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}', True)
     for i, infrazione in enumerate(infrazioni, 1):
         await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
     if len(infrazioni) == 0:
@@ -168,15 +162,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member = None):
 @bot.command(aliases=['pf'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_creator(ctx)
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute(f"DELETE FROM fedina WHERE user_id = {member.id}")
-    conn.commit()
-    conn.close()
+    use_database(f"DELETE FROM fedina WHERE user_id = {member.id}", commit=True)
     await ctx.send(f'Fedina penale di {member.mention} pulita con successo!')
 
 @bot.command()
@@ -194,32 +180,17 @@ async def moltiplica(ctx, a : float, b : float):
 @bot.command()
 async def visualizza_lista_insulti(ctx):
     await check_creator(ctx)
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute('SELECT * FROM insulti')
+    _ = use_database('SELECT * FROM insulti', True)
     insulti = ''
-    for i in c.fetchall():
+    for i in _:
         insulti += '> ' + str(i[1]) + ' id:' + str(i[0]) + '\n'
     em = discord.Embed(title='Lista insulti', description=insulti)
     await ctx.send(embed=em)
-    conn.close()
 
 @bot.command()
 async def cancella_insulto_dalla_lista(ctx, num):
     await check_creator(ctx)
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute('DELETE FROM insulti WHERE id = ' + num)
-    conn.commit()
-    conn.close()
+    use_database('DELETE FROM insulti WHERE id = ' + num, commit=True)
     await ctx.send('Insulto id: ' + num + ' cancellato se esiste')
     rigenera_insulti()
 
@@ -227,17 +198,9 @@ async def cancella_insulto_dalla_lista(ctx, num):
 async def aggiungi_insulto(ctx, *, arg):
     pattern = r'[a-zA-Z0-9 ]+'
     if not re.match(pattern, arg):
-        await ctx.send('Formato messaggio non supportato :(')
+        await ctx.send('Formato insulto non supportato :(, sono accettate solo lettere e numeri')
         return
-    conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
-    password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
-    c = conn.cursor()
-    c.execute(f"INSERT INTO insulti VALUES (null, '{arg}')")
-    conn.commit()
-    conn.close()
+    use_database(f"INSERT INTO insulti VALUES (null, '{arg}')", commit=True)
     await ctx.send("Insulto aggiunto!")
     rigenera_insulti()
 
