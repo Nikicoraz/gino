@@ -355,6 +355,13 @@ async def mute(ctx, member : discord.Member):
         await guild.create_role(name=ROLE_NAME, permissions=perms)
     await member.add_roles(role)
     await ctx.channel.send(f'{member.nick} è stato silenziato')
+    
+async def brucia(ctx, member : discord.Member = None):
+    if not member:
+        member = ctx.author
+    file, filename = await opencv.burn(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
 
 
 #endregion
@@ -416,6 +423,7 @@ async def somma_error(ctx, error):
 @buff.error
 @avatar.error
 @pirata.error
+@brucia.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')

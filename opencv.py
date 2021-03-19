@@ -7,7 +7,7 @@ def blend_transparent(src, over, x=0, y=0):
         _ = over[0][0][3]
     except:
         raise Exception('Manca il canale alfa!')
-    assert src.shape[:2] > over.shape[:2], 'L\'immangine su cui sovrapporre è più piccola di quella che verrà sovrapposta!'
+    assert src.shape[:2] >= over.shape[:2], 'L\'immangine su cui sovrapporre è più piccola di quella che verrà sovrapposta!'
 
     for r, row in enumerate(over):
         for c, pixel in enumerate(row):
@@ -73,6 +73,16 @@ async def pirate(member : discord.Member):
     img = resize(img)
     pirate = cv.imread(r'Images/pirate.png')
     final = cv.addWeighted(img, 0.3, pirate, 0.7, 0)
+    cv.imwrite(filename, final)
+    file = discord.File(filename)
+    return(file, filename)
+
+async def burn(member : discord.Member):
+    file, filename = await avatar_url_to_image(member)
+    img = cv.imread(filename)
+    img = resize(img)
+    fire = cv.imread(r'Images/fire.png', -1)
+    final = blend_transparent(img, fire)
     cv.imwrite(filename, final)
     file = discord.File(filename)
     return(file, filename)
