@@ -1,5 +1,6 @@
 ﻿#!venv/Scripts/python.exe
 import discord
+from discord import permissions
 from dotenv import load_dotenv
 import mysql.connector
 from discord.ext import commands
@@ -342,6 +343,18 @@ async def avatar(ctx, member : discord.Member):
      | [4096]({str(member.avatar_url).replace("?size=1024", "?size=4096")})'''.replace('\n', ""))
     em.set_image(url=str(member.avatar_url))
     await ctx.channel.send(embed=em)
+
+@bot.command()
+async def mute(ctx, member : discord.Member):
+    check_admin(ctx)
+    ROLE_NAME = 'Silenziato'
+    guild = ctx.guild
+    role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
+    if not guild.has_role(name=ROLE_NAME):
+        perms = discord.Permissions(send_messages=False, speak=False)
+        await guild.create_role(name=ROLE_NAME, permissions=perms)
+    await member.add_roles(role)
+    await ctx.channel.send(f'{member.nick} è stato silenziato')
 
 
 #endregion
