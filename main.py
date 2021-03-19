@@ -354,6 +354,9 @@ silenziati = []
 @bot.command()
 async def mute(ctx, member : discord.Member):
     global silenziati
+    if member.id in set(silenziati):
+        await ctx.channel.send(f'{member.display_name} è già stato silenziato!')
+        return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
     guild = ctx.guild
@@ -371,9 +374,11 @@ async def mute(ctx, member : discord.Member):
 @bot.command()
 async def unmute(ctx, member : discord.Member):
     global silenziati
+    if member.id not in set(silenziati):
+        await ctx.channel.send(f'{member.display_name} non è stato silenziato!')
+        return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
-    guild = ctx.guild
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
     del silenziati[silenziati.index(member.id)]
     use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True)
@@ -457,6 +462,8 @@ async def somma_error(ctx, error):
 @avatar.error
 @pirata.error
 @brucia.error
+@mute.error
+@unmute.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
