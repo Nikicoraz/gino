@@ -344,7 +344,7 @@ async def avatar(ctx, member : discord.Member):
     await ctx.channel.send(embed=em)
 
 @bot.command()
-async def brucia(ctx, member : discord.Member):
+async def brucia(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
     file, filename = await opencv.burn(member)
