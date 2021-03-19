@@ -344,7 +344,7 @@ async def avatar(ctx, member : discord.Member):
     await ctx.channel.send(embed=em)
 
 @bot.command()
-async def ebreofuoco(ctx, member : discord.Member):
+async def brucia(ctx, member : discord.Member):
     if not member:
         member = ctx.author
     file, filename = await opencv.burn(member)
@@ -411,6 +411,7 @@ async def somma_error(ctx, error):
 @buff.error
 @avatar.error
 @pirata.error
+@brucia.error
 async def membro_non_trovato(ctx, error):
     if isinstance(error, commands.MemberNotFound):
         await ctx.send('Persona non trovata! Ma sei ' + genera_insulto() + '?')
