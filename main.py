@@ -142,7 +142,7 @@ async def insulta(ctx, *, member: discord.Member):
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
-    await m.add_reaction('🕵🏻‍♂️')
+    await m.add_reaction('<:pepefedora:822422976796295198>')
     data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S')
     reason = reason.replace("'", "")
     use_database(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')", commit=True)
