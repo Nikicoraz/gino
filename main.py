@@ -1,6 +1,7 @@
 ﻿#!venv/Scripts/python.exe
 import discord
 from discord import permissions
+from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import mysql.connector
 from discord.ext import commands
@@ -27,6 +28,9 @@ bot = commands.Bot(command_prefix='$')
 TOKEN = os.environ.get('TOKEN')
 creator_id = os.environ.get("CREATORE")
 bot.remove_command('help')
+
+
+
 #endregion
 
 # region Funzioni
@@ -344,18 +348,42 @@ async def avatar(ctx, member : discord.Member):
     em.set_image(url=str(member.avatar_url))
     await ctx.channel.send(embed=em)
 
+silenziati = []
+[silenziati.append(int(x[0])) for x in use_database('SELECT * FROM silenziati', True)]
+
 @bot.command()
 async def mute(ctx, member : discord.Member):
-    check_admin(ctx)
+    global silenziati
+    await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
     guild = ctx.guild
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
-    if not guild.has_role(name=ROLE_NAME):
+    if not role:
         perms = discord.Permissions(send_messages=False, speak=False)
-        await guild.create_role(name=ROLE_NAME, permissions=perms)
+        role = await guild.create_role(name=ROLE_NAME, permissions=perms)
+    for channel in guild.channels:
+        await channel.set_permissions(role, speak=False, send_messages=False)
     await member.add_roles(role)
-    await ctx.channel.send(f'{member.nick} è stato silenziato')
-    
+    silenziati.append(member.id)
+    use_database(f"INSERT INTO silenziati VALUES ('{member.id}')", commit=True)
+    await ctx.channel.send(f'{member.display_name} è stato silenziato')
+
+@bot.command()
+async def unmute(ctx, member : discord.Member):
+    global silenziati
+    await check_admin(ctx)
+    ROLE_NAME = 'Silenziato'
+    guild = ctx.guild
+    role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
+    del silenziati[silenziati.index(member.id)]
+    use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True)
+    if role:
+        await member.remove_roles(role)
+        if len(silenziati) == 0:
+            await role.delete()
+    await ctx.channel.send(f'{member.display_name} si è ricordato come parlare!')
+
+@bot.command()
 async def brucia(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -371,6 +399,11 @@ async def brucia(ctx, member : discord.Member = None):
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
+        return
+    
+    # Per quelli silenziati
+    if message.author.id in set(silenziati) and str(message.author.id) != creator_id:
+        await message.delete()
         return
 
     msg = message.content.replace(' ', '').lower()
