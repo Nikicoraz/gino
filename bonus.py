@@ -19,7 +19,7 @@ class Help(commands.Cog):
     async def help(self, ctx):
         em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
         em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
-        em.add_field(name='Admin', value='warn, kick, ban, clean')
+        em.add_field(name='Admin', value='warn, kick, ban, clean, mute, unmute')
         em.add_field(name='Casual', value='''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
          probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
          crediti, morracinese(mc)''')
@@ -201,6 +201,20 @@ class Help(commands.Cog):
     async def brucia(self, ctx):
         em = discord.Embed(title='brucia', description='Brucia una persona', color = ctx.message.author.color)
         em.add_field(name='**Sintassi**', value='$brucia <persona>')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def mute(self, ctx):
+        em = discord.Embed(title='mute', description='Togli il diritto di parola ad una persona', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$mute <persona>')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def unmute(self, ctx):
+        em = discord.Embed(title='unmute', description='Ridai tristemente il diritto di parola ad una persona', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$unmute <persona>')
         em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
 
