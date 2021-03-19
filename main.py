@@ -343,6 +343,14 @@ async def avatar(ctx, member : discord.Member):
     em.set_image(url=str(member.avatar_url))
     await ctx.channel.send(embed=em)
 
+@bot.command()
+async def ebreofuoco(ctx, member : discord.Member):
+    if not member:
+        member = ctx.author
+    file, filename = await opencv.burn(member)
+    await ctx.channel.send(file=file)
+    os.remove(filename)
+
 
 #endregion
 
