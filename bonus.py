@@ -22,7 +22,7 @@ class Help(commands.Cog):
         em.add_field(name='Admin', value='warn, kick, ban, clean, mute, unmute')
         em.add_field(name='Casual', value='''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
          probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
-         crediti, morracinese(mc)''')
+         crediti, morracinese(mc), choose''')
         em.add_field(name='Immagini', value='avatar, grigio, linee, buff, pirata, brucia')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
