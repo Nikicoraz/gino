@@ -218,6 +218,14 @@ class Help(commands.Cog):
         em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
 
+    @help.command()
+    async def choose(self, ctx):
+        em = discord.Embed(title='choose', description='Scegli tra alcune opzioni', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$choose [opzioni separate da ","]')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+    
+
 
 class Tris(commands.Cog):
     def __init__(self, bot):

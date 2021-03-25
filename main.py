@@ -396,6 +396,12 @@ async def brucia(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
+@bot.command()
+async def choose(ctx, *, scelte : str):
+    lista_scelte = scelte.split(',')
+    num = ra.randint(0, len(lista_scelte) - 1)
+    await ctx.channel.send(lista_scelte[num])
+
 
 #endregion
 
