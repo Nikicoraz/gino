@@ -98,6 +98,7 @@ risposte_dic = {
     'obama':copypasta.OBAMA,
     'ahegao':copypasta.AHEGAO,
     'bitcoin':copypasta.BITCOIN,
+    'bruh':copypasta.BRUH,
     ':love:': '<a:love:807947104164118558>',
     ':index:': '<a:index:807948759047733268>',
     ':ncry:': '<a:ncry:807989716011712532>',
