@@ -399,7 +399,7 @@ async def brucia(ctx, member : discord.Member = None):
 @bot.command()
 async def choose(ctx, *, scelte : str = None):
     lista_scelte = scelte.split(',') if scelte != None else []
-    if len(lista_scelte) <= 1:
+    if len(lista_scelte) <= 1 or all(x == lista_scelte[0] for x in lista_scelte):
         await ctx.channel.send('Quando non hai scelta <:pepesad:806184708655808543>')
         return
     num = ra.randint(0, len(lista_scelte) - 1)
