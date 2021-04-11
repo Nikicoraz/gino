@@ -135,9 +135,7 @@ class Help(commands.Cog):
     async def emoji_animate(self, ctx):
         emoji = []
         for k, v in self.dic.items():
-            if isinstance(v, list):
-                continue
-            if re.match(animated_emoji_pattern, v):
+            if isinstance(v, str) and re.match(animated_emoji_pattern, v):
                 emoji.append(k)
         em = discord.Embed(title='Emoji Animate', description='Lista della emoji animate')
         em.add_field(name='Lista', value=emoji)
