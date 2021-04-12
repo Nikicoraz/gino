@@ -437,6 +437,8 @@ async def on_message(message):
         elif messaggio[0] == 'func':
             loc = {}
             exec(messaggio[1], globals(), loc)
+            if loc['msgg'].__contains__('NON SI BESTEMMIA') and message.channel.guild.id == 829765996771803157:
+                return
             await message.channel.send(loc['msgg'])
         elif messaggio[0] == 'embed':
             loc = {}
