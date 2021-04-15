@@ -80,7 +80,7 @@ def genera_insulto():
 risposte_dic = {
     'hellothere': 'General Kenobi!',
     'dio': ('func', "msgg = 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!'"),
-    'gigi': 'IL MIO ACERRIMO NEMICO',
+    'gigi': ('func','msgg = "IL MIO ACERRIMO NEMICO"'),
     'nigga': 'Un po\' razzista ma ok',
     'negro': 'Un po\' razzista ma ok',
     'pepsiman': ['Pepsi Man!🍾', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
@@ -437,7 +437,7 @@ async def on_message(message):
         elif messaggio[0] == 'func':
             loc = {}
             exec(messaggio[1], globals(), loc)
-            if loc['msgg'].__contains__('NON SI BESTEMMIA') and message.channel.guild.id == 829765996771803157:
+            if loc['msgg'].__contains__('NON SI BESTEMMIA') or loc['msgg'].__contains__('IL MIO ACERRIMO NEMICO') and message.channel.guild.id == 829765996771803157:
                 return
             await message.channel.send(loc['msgg'])
         elif messaggio[0] == 'embed':
