@@ -22,7 +22,7 @@ class Help(commands.Cog):
         em.add_field(name='Admin', value='warn, kick, ban, clean, mute, unmute')
         em.add_field(name='Casual', value='''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
          probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
-         crediti, morracinese(mc), choose''')
+         crediti, morracinese(mc), choose, impersona''')
         em.add_field(name='Immagini', value='avatar, grigio, linee, buff, pirata, brucia')
         em.add_field(name='Matematica', value='somma, dividi, moltiplica')
         await ctx.send(embed = em)
@@ -184,7 +184,7 @@ class Help(commands.Cog):
     @help.command(aliases=['mc'])
     async def morracinese(self, ctx):
         em = discord.Embed(title='morra cinese', description='Sfida il bot a morra cinese!', color = ctx.message.author.color)
-        em.add_field(name='**Sintassi**', value='$morracinese')
+        em.add_field(name='**Sintassi**', value='$morracinese [scelta]')
         em.add_field(name='alias', value='mc')
         await ctx.send(embed=em)
 
@@ -222,6 +222,15 @@ class Help(commands.Cog):
         em.add_field(name='**Sintassi**', value='$choose [opzioni separate da ","]')
         em.add_field(name='alias', value='Nessuno')
         await ctx.send(embed=em)
+    
+    @help.command()
+    async def impersona(self, ctx):
+        em = discord.Embed(title='impersona', description='Fai finta di essere qualcun altro', color = ctx.message.author.color)
+        em.add_field(name='**Sintassi**', value='$impersona <persona> [messaggio]')
+        em.add_field(name='alias', value='Nessuno')
+        await ctx.send(embed=em)
+    
+    
     
 
 

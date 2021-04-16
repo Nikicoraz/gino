@@ -132,10 +132,6 @@ async def on_ready():
 
 @bot.command()
 async def test(ctx : discord.Message, member : discord.Member,*,message):
-    # await check_creator(ctx)
-    # webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
-    # await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
-    # await webhook.delete()
     pass
 
 @bot.command(aliases=['p'])
@@ -410,6 +406,13 @@ async def choose(ctx, *, scelte : str = None):
         return
     num = ra.randint(0, len(lista_scelte) - 1)
     await ctx.channel.send(lista_scelte[num])
+
+@bot.command()
+async def impersona(ctx, member: discord.Member, *, message):
+    await ctx.message.delete()
+    webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
+    await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
+    await webhook.delete()
 
 
 #endregion
