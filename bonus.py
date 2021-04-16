@@ -235,9 +235,10 @@ class Tris(commands.Cog):
         self.guest = None
         self.running = False
         self.timeout_timer = Timer(60)
+        self.lastBoard = None
     
     async def DrawBoard(self, ctx, tris_board):
-            await ctx.channel.send("""`+---+---+---+
+            self.lastBoard = await ctx.channel.send("""`+---+---+---+
 | %c | %c | %c |
 +---+---+---+
 | %c | %c | %c |
@@ -328,6 +329,9 @@ class Tris(commands.Cog):
                 return
             self.tris_board[num] = 'x' if self.turn % 2 == 0 else 'o'
             self.turn += 1
+            if self.lastBoard != None:
+                await self.lastBoard.delete()
+                await ctx.delete()
             await self.DrawBoard(ctx, self.tris_board)
             self.timeout_timer.reset()
     
