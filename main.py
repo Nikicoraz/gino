@@ -1,6 +1,7 @@
 ﻿#!venv/Scripts/python.exe
 import discord
 from discord import permissions
+from discord import webhook
 from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import mysql.connector
@@ -79,7 +80,6 @@ def genera_insulto():
 
 risposte_dic = {
     'hellothere': 'General Kenobi!',
-    'dio': ('func', "msgg = 'NON SI BESTEMMIA ' + genera_insulto().upper() + '!'"),
     'gigi': ('func','msgg = "IL MIO ACERRIMO NEMICO"'),
     'nigga': 'Un po\' razzista ma ok',
     'negro': 'Un po\' razzista ma ok',
@@ -131,9 +131,12 @@ async def on_ready():
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
 
 @bot.command()
-async def test(ctx, member : discord.Member):
-    await check_creator(ctx)
-    
+async def test(ctx : discord.Message, member : discord.Member,*,message):
+    # await check_creator(ctx)
+    # webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
+    # await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
+    # await webhook.delete()
+    pass
 
 @bot.command(aliases=['p'])
 async def probabilita(ctx, *, arg):
@@ -414,8 +417,8 @@ async def choose(ctx, *, scelte : str = None):
 #region Sezione intercettazione messaggi
 
 @bot.event
-async def on_message(message):
-    if message.author == bot.user:
+async def on_message(message: discord.Message):
+    if message.author == bot.user or message.webhook_id:
         return
     
     # Per quelli silenziati
@@ -445,8 +448,11 @@ async def on_message(message):
             exec(messaggio[1], globals(), loc)
             await message.channel.send(embed=loc['msgg'])
         elif re.match(animated_emoji_pattern, messaggio):
+            author = message.author
             await message.delete()
-            await message.channel.send(messaggio)
+            webhook = await message.channel.create_webhook(name='IDKWNTPH')
+            await webhook.send(content=messaggio, username=author.display_name, avatar_url=author.avatar_url)
+            await webhook.delete()
         else:
             await message.channel.send(messaggio)
         
