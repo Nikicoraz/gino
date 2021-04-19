@@ -82,12 +82,12 @@ def get_name(ctx):
 
 async def check_admin(ctx):
     if not ctx.message.author.guild_permissions.administrator and ctx.message.author.id != int(creator_id):
-        await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
+        await ctx.send(get_string(ctx, 'admin_error') + genera_insulto())
         raise Exception("Comando admin da persone non admin!")
 
 async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
-        await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
+        await ctx.send(get_string(ctx, 'creator_error') + genera_insulto())
         raise Exception("Comando creatore da persone non creatore!")
     
 def genera_insulto():
@@ -161,7 +161,7 @@ async def insulta(ctx, *, member: discord.Member):
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
-    m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
+    m = await ctx.send(f'{member.mention}' + get_string(ctx, 'warn') + f'{reason}')
     await ctx.message.add_reaction('<:pepefedora:822422976796295198>')
     data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S')
     reason = reason.replace("'", "")
@@ -173,9 +173,9 @@ async def mostra_infrazioni(ctx, *, member: discord.Member = None):
         member = ctx.author
     infrazioni = use_database(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}', True)
     for i, infrazione in enumerate(infrazioni, 1):
-        await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
+        await ctx.send(f'> {get_string(ctx, "infrazione")} {i}: `{infrazione[0]}` {get_string(ctx, "in_data")} `{infrazione[1]}`')
     if len(infrazioni) == 0:
-        await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
+        await ctx.send(f"{member.mention} {get_string(ctx, 'mai_infra')}")
 
 @bot.command(aliases=['pf', 'clean_infractions'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
