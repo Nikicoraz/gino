@@ -13,6 +13,17 @@ STRINGS = {
     'ban_error':('Non hai i permessi per bannare le persone!', 'You don\'t have permission to ban people!'),
     'ban_amm':('Non si può bannare l\'amministratore! :(', 'You can\'t ban an administrator :('),
     'canc_errore':('Non puoi cancellare più di 5000 messaggi!!!', 'You can\'t delete more than 5000 messages!!!'),
-    'costo':('Messaggi cancellati, ora pagami', 'Messeges deleted, now pay me')
-
+    'costo':('Messaggi cancellati, ora pagami', 'Messeges deleted, now pay me'),
+    'dado':('Lanciando il dado...', 'Rolling the dice...'),
+    'testa':('testa', 'head'),
+    'croce':('croce', 'tails'),
+    'uscito':('è uscito ', ''),
+    'motivante':('Eccoti una immagine motivante :wink:', 'Here\'s a motivating image :wink:'),
+    'scaricalo':('Scaricalo!', 'Download it!'),
+    'gia_silenziato':('è già stato silenziato!', 'has already been silenced!'),
+    'silenziato': ('è stato silenziato', 'has been silenced'),
+    'no_silenziato':('non è stato silenziato!', 'hasn\'t been silenced!'),
+    'ricordato_parlare':('si è ricordato come parlare!', 'has remembered how to talk!'),
+    'no_scelta':('Quando non hai scelta', 'When you have no choice')
+    
     }

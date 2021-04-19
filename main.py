@@ -268,7 +268,7 @@ async def clean(ctx, arg):
 
 @bot.command(aliases=['dice'])
 async def dado(ctx):
-    await ctx.channel.send(f'Lanciando il dado...')
+    await ctx.channel.send(get_string(ctx, 'dado'))
     await asyncio.sleep(2)
     await ctx.channel.send(ra.randint(1, 6))
 
@@ -288,8 +288,8 @@ async def gaymeter(ctx, member : discord.Member):
 @bot.command()
 async def coin(ctx):
     num = ra.randint(1, 2)
-    coin = 'testa' if num == 1 else 'croce' 
-    await ctx.channel.send(f"è uscito {coin}")
+    coin = get_string(ctx, 'testa') if num == 1 else get_string(ctx, 'croce') 
+    await ctx.channel.send(f"{get_string(ctx, 'uscito')}{coin}")
 
 @bot.command()
 async def modify_role(ctx, member : discord.Member, role_input : discord.Role, add_remove : bool):
@@ -337,7 +337,7 @@ async def ispira(ctx):
     html = get_html('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
     em.set_image(url=html)
-    await ctx.channel.send('Eccoti una immagine motivante :wink:', embed=em)
+    await ctx.channel.send(get_string(ctx, 'motivante'), embed=em)
 
 @bot.command(aliases=['mc'])
 async def morracinese(ctx, *,scelta : str = ...):
@@ -355,7 +355,7 @@ async def morracinese(ctx, *,scelta : str = ...):
 
 @bot.command()
 async def avatar(ctx, member : discord.Member):
-    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''Scaricalo! [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
+    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''{get_string(ctx, 'scaricalo')} [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
      | [128]({str(member.avatar_url).replace("?size=1024", "?size=128")})
      | [256]({str(member.avatar_url).replace("?size=1024", "?size=256")})
      | [512]({str(member.avatar_url).replace("?size=1024", "?size=512")}) 
@@ -372,7 +372,7 @@ silenziati = []
 async def mute(ctx, member : discord.Member):
     global silenziati
     if member.id in set(silenziati):
-        await ctx.channel.send(f'{member.display_name} è già stato silenziato!')
+        await ctx.channel.send(f'{member.display_name} {get_string(ctx, "gia_silenziato")}')
         return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
@@ -386,13 +386,13 @@ async def mute(ctx, member : discord.Member):
     await member.add_roles(role)
     silenziati.append(member.id)
     use_database(f"INSERT INTO silenziati VALUES ('{member.id}')", commit=True)
-    await ctx.channel.send(f'{member.display_name} è stato silenziato')
+    await ctx.channel.send(f'{member.display_name} {get_string(ctx, "silenziato")}')
 
 @bot.command()
 async def unmute(ctx, member : discord.Member):
     global silenziati
     if member.id not in set(silenziati):
-        await ctx.channel.send(f'{member.display_name} non è stato silenziato!')
+        await ctx.channel.send(f'{member.display_name} {get_string(ctx, "no_silenziato")}')
         return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
@@ -403,7 +403,7 @@ async def unmute(ctx, member : discord.Member):
         await member.remove_roles(role)
         if len(silenziati) == 0:
             await role.delete()
-    await ctx.channel.send(f'{member.display_name} si è ricordato come parlare!')
+    await ctx.channel.send(f'{member.display_name} {get_string(ctx, "ricordato_parlare")}')
 
 @bot.command(aliases=['burn'])
 async def brucia(ctx, member : discord.Member = None):
@@ -417,7 +417,7 @@ async def brucia(ctx, member : discord.Member = None):
 async def choose(ctx, *, scelte : str = None):
     lista_scelte = scelte.split(',') if scelte != None else []
     if len(lista_scelte) <= 1 or all(x.strip() == lista_scelte[0] for x in lista_scelte):
-        await ctx.channel.send('Quando non hai scelta <:pepesad:806184708655808543>')
+        await ctx.channel.send(f'{get_string(ctx, "no_scelta")} <:pepesad:806184708655808543>')
         return
     num = ra.randint(0, len(lista_scelte) - 1)
     await ctx.channel.send(lista_scelte[num])
@@ -503,6 +503,7 @@ async def on_message(message: discord.Message):
 @dividi.error
 @moltiplica.error
 @clean.error
+@lang.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
