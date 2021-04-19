@@ -15,6 +15,7 @@ import asyncio
 import copypasta
 import opencv
 from Network import get_html
+from threading import Thread
 
 #region init
 insulti = []
@@ -427,13 +428,17 @@ async def impersona(ctx, member: discord.Member, *, message):
 
 @bot.command()
 async def lang(ctx : discord.Message, language : str):
-    if lang == 'it':
-        use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True)
-        use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True)
+    if language == 'it':
+        Thread(target=lambda:[
+            use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True)]
+            ).start()
         await ctx.channel.send('Lingua messa in italiano!')
-    elif lang == 'en':
-        use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True)
-        use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True)
+    elif language == 'en':
+        Thread(target=lambda:[
+            use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True)]
+            ).start()
         await ctx.channel.send('Language set in english!')
     else:
         ... # TODO: Messaggio di errore
@@ -493,7 +498,6 @@ async def on_message(message: discord.Message):
 @dividi.error
 @moltiplica.error
 @clean.error
-@lang.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
