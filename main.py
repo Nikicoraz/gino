@@ -18,6 +18,7 @@ from Network import get_html
 
 #region init
 insulti = []
+lang = {}
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
@@ -36,6 +37,8 @@ bot.remove_command('help')
 
 # region Funzioni
 
+
+
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
@@ -51,7 +54,15 @@ def use_database(command, fetch=False, commit=False):
         conn.commit()
     conn.close()
     return _
+git 
+for la, ch in use_database('SELECT * FROM lang', fetch=True):
+    lang[ch] = la
 
+def get_string(ctx : discord.Message, string):
+    if lang.get(ctx.guild()) == 'it' or lang.get(ctx.guild(), None) == None:
+        ...
+    elif lang.get(ctx.guild()) == 'en':
+        ...
 
 def rigenera_insulti():
     global insulti
