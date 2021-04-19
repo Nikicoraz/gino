@@ -16,10 +16,11 @@ import copypasta
 import opencv
 from Network import get_html
 from threading import Thread
+import strings
 
 #region init
 insulti = []
-lang = {}
+langs = {}
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
@@ -56,14 +57,15 @@ def use_database(command, fetch=False, commit=False):
     conn.close()
     return _
 
-for ch, la in use_database('SELECT * FROM lang', fetch=True):
-    lang[ch] = la
+def reload_lang():
+    for ch, la in use_database('SELECT * FROM lang', fetch=True):
+        langs[ch] = la
 
-def get_string(ctx : discord.Message, string):
-    if lang.get(ctx.guild) == 'it' or lang.get(ctx.guild, None) == None:
-        ...
-    elif lang.get(ctx.guild) == 'en':
-        ...
+def get_string(ctx : discord.Message, string_):
+    if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
+        return strings.STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
+    elif langs.get(ctx.guild.id) == 'en':
+        return strings.STRINGS.get(string_, 'TRANSLATION ERROR')[1]
 
 def rigenera_insulti():
     global insulti
@@ -144,7 +146,7 @@ async def on_ready():
 
 @bot.command()
 async def test(ctx : discord.Message):
-    pass
+    await ctx.channel.send(get_string(ctx, 'ciao'))
 
 @bot.command(aliases=['p'])
 async def probabilita(ctx, *, arg):
@@ -431,13 +433,15 @@ async def lang(ctx : discord.Message, language : str):
     if language == 'it':
         Thread(target=lambda:[
             use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
-            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True)]
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True),
+            reload_lang()]
             ).start()
         await ctx.channel.send('Lingua messa in italiano!')
     elif language == 'en':
         Thread(target=lambda:[
             use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
-            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True)]
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True),
+            reload_lang()]
             ).start()
         await ctx.channel.send('Language set in english!')
     else:
