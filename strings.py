@@ -1,0 +1,3 @@
+STRINGS = {
+    'ciao': ('ciao', 'hello')
+}
