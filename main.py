@@ -102,8 +102,6 @@ risposte_dic = {
     'grazie':'Prego',
     'uwu': 'OwO',
     ':pepesad:':'F',
-    ':(':':)))',
-    ':)':('embed', 'msgg = discord.Embed(description="[:(](https://www.youtube.com/watch?v=dQw4w9WgXcQ)")'),
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
     ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
@@ -181,7 +179,7 @@ async def mostra_infrazioni(ctx, *, member: discord.Member = None):
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_creator(ctx)
     use_database(f"DELETE FROM fedina WHERE user_id = {member.id}", commit=True)
-    await ctx.send(f'Fedina penale di {member.mention} pulita con successo!')
+    await ctx.send(f'{get_string(ctx, "fed_pen_di")} {member.mention} {get_string(ctx, "pulita_con_succ")}')
 
 @bot.command(aliases=['sum'])
 async def somma(ctx, a : float, b : float):
@@ -226,10 +224,10 @@ async def aggiungi_insulto(ctx, *, arg):
 async def kick(ctx, member : discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     if not ctx.message.author.guild_permissions.kick_members:
-        await ctx.channel.send('Non hai i permessi per kiccare le persone! ' + genera_insulto())
+        await ctx.channel.send(f'{get_string(ctx, "kick_error")} ' + genera_insulto())
         return
     elif member.guild_permissions.administrator:
-        await ctx.channel.send('Non si può kiccare l\'amministratore! :(')
+        await ctx.channel.send(f'{get_string(ctx, "kick_amm")}')
         return
     else:
         await member.kick(reason=reason)
@@ -238,10 +236,10 @@ async def kick(ctx, member : discord.Member, *, reason='no reason'):
 async def ban(ctx, member : discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     if not ctx.message.author.guild_permissions.ban_members:
-        await ctx.channel.send('Non hai i permessi per bannare le persone! ' + genera_insulto())
+        await ctx.channel.send(f'{get_string(ctx, "ban_error")} ' + genera_insulto())
         return
     elif member.guild_permissions.administrator:
-        await ctx.channel.send('Non si può bannare l\'amministratore! :(')
+        await ctx.channel.send(get_string(ctx, "ban_amm"))
         return
     else:
         await member.ban(reason=reason)
@@ -254,14 +252,14 @@ async def clean(ctx, arg):
     try: 
         if isinstance(arg, int) and int(arg) > 5000:
             if ctx.message.author.id != int(creator_id):
-                await ctx.channel.send('Non puoi cancellare più di 5000 messaggi!!!')
+                await ctx.channel.send(get_string(ctx, 'canc_errore'))
                 return
         converter = commands.MemberConverter()
         member = await converter.convert(ctx, arg)
         await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
     except errors.MemberNotFound:
         await ctx.channel.purge(limit=int(arg))
-    m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
+    m = await ctx.channel.send(f'{get_string(ctx, "costo")} {ra.randint(10, 200)}$')
     await m.add_reaction('🧹')
     await asyncio.sleep(4)
     await m.delete()
