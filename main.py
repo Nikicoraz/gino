@@ -250,15 +250,17 @@ async def clean(ctx, arg):
     def check_member(ctx, arg):
         return ctx.author == arg
     try: 
-        if isinstance(arg, int) and int(arg) > 5000:
+        if int(arg) > 5000:
             if ctx.message.author.id != int(creator_id):
                 await ctx.channel.send(get_string(ctx, 'canc_errore'))
                 return
-        converter = commands.MemberConverter()
-        member = await converter.convert(ctx, arg)
-        await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
-    except errors.MemberNotFound:
-        await ctx.channel.purge(limit=int(arg))
+    except:
+        try:
+            converter = commands.MemberConverter()
+            member = await converter.convert(ctx, arg)
+            await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
+        except errors.MemberNotFound:
+            await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'{get_string(ctx, "costo")} {ra.randint(10, 200)}$')
     await m.add_reaction('🧹')
     await asyncio.sleep(4)
