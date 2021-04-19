@@ -54,7 +54,7 @@ def use_database(command, fetch=False, commit=False):
         conn.commit()
     conn.close()
     return _
-git 
+
 for la, ch in use_database('SELECT * FROM lang', fetch=True):
     lang[ch] = la
 
@@ -142,7 +142,7 @@ async def on_ready():
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
 
 @bot.command()
-async def test(ctx : discord.Message, member : discord.Member,*,message):
+async def test(ctx : discord.Message):
     pass
 
 @bot.command(aliases=['p'])
@@ -425,6 +425,19 @@ async def impersona(ctx, member: discord.Member, *, message):
     await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
     await webhook.delete()
 
+@bot.command()
+async def lang(ctx : discord.Message, language : str):
+    if lang == 'it':
+        use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True)
+        use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True)
+        await ctx.channel.send('Lingua messa in italiano!')
+    elif lang == 'en':
+        use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True)
+        use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True)
+        await ctx.channel.send('Language set in english!')
+    else:
+        ... # TODO: Messaggio di errore
+    
 
 #endregion
 
@@ -480,6 +493,7 @@ async def on_message(message: discord.Message):
 @dividi.error
 @moltiplica.error
 @clean.error
+@lang.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
