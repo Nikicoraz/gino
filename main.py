@@ -56,13 +56,13 @@ def use_database(command, fetch=False, commit=False):
     conn.close()
     return _
 
-for la, ch in use_database('SELECT * FROM lang', fetch=True):
+for ch, la in use_database('SELECT * FROM lang', fetch=True):
     lang[ch] = la
 
 def get_string(ctx : discord.Message, string):
-    if lang.get(ctx.guild()) == 'it' or lang.get(ctx.guild(), None) == None:
+    if lang.get(ctx.guild) == 'it' or lang.get(ctx.guild, None) == None:
         ...
-    elif lang.get(ctx.guild()) == 'en':
+    elif lang.get(ctx.guild) == 'en':
         ...
 
 def rigenera_insulti():
