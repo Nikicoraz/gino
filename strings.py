@@ -1,3 +1,3 @@
 STRINGS = {
-    'ciao': ('ciao', 'hello')
+    'probabilita':(' ha una probabilità del ', ' has a probability of ')
 }

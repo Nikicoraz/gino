@@ -60,6 +60,7 @@ def use_database(command, fetch=False, commit=False):
 def reload_lang():
     for ch, la in use_database('SELECT * FROM lang', fetch=True):
         langs[ch] = la
+reload_lang()
 
 def get_string(ctx : discord.Message, string_):
     if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
@@ -146,12 +147,12 @@ async def on_ready():
 
 @bot.command()
 async def test(ctx : discord.Message):
-    await ctx.channel.send(get_string(ctx, 'ciao'))
+    pass
 
-@bot.command(aliases=['p'])
+@bot.command(aliases=['p', 'probability'])
 async def probabilita(ctx, *, arg):
     import random
-    await ctx.send(f'{arg} ha una probabilità del {random.randint(0, 100)}%')
+    await ctx.send(arg + get_string(ctx, 'probabilita') + str(random.randint(0, 100)) + '%')
 
 @bot.command(aliases=['i'])
 async def insulta(ctx, *, member: discord.Member):
@@ -166,7 +167,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     reason = reason.replace("'", "")
     use_database(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')", commit=True)
 
-@bot.command(aliases=['mi'])
+@bot.command(aliases=['mi', 'show_infractions'])
 async def mostra_infrazioni(ctx, *, member: discord.Member = None):
     if not member:
         member = ctx.author
@@ -176,21 +177,21 @@ async def mostra_infrazioni(ctx, *, member: discord.Member = None):
     if len(infrazioni) == 0:
         await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
 
-@bot.command(aliases=['pf'])
+@bot.command(aliases=['pf', 'clean_infractions'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_creator(ctx)
     use_database(f"DELETE FROM fedina WHERE user_id = {member.id}", commit=True)
     await ctx.send(f'Fedina penale di {member.mention} pulita con successo!')
 
-@bot.command()
+@bot.command(aliases=['sum'])
 async def somma(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} + {b} = {a + b}')
 
-@bot.command()
+@bot.command(aliases=['divide'])
 async def dividi(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} / {b} = {a / b}')
 
-@bot.command()
+@bot.command(aliases=['multiply'])
 async def moltiplica(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} * {b} = {a * b}')
 
@@ -265,7 +266,7 @@ async def clean(ctx, arg):
     await asyncio.sleep(4)
     await m.delete()
 
-@bot.command()
+@bot.command(aliases=['dice'])
 async def dado(ctx):
     await ctx.channel.send(f'Lanciando il dado...')
     await asyncio.sleep(2)
@@ -299,7 +300,7 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.remove_roles(role_input)
     await ctx.message.delete()
 
-@bot.command()
+@bot.command(aliases=['grey'])
 async def grigio(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -307,7 +308,7 @@ async def grigio(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['lines'])
 async def linee(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -323,7 +324,7 @@ async def buff(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['pirate'])
 async def pirata(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -331,7 +332,7 @@ async def pirata(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['inspire'])
 async def ispira(ctx):
     html = get_html('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
@@ -404,7 +405,7 @@ async def unmute(ctx, member : discord.Member):
             await role.delete()
     await ctx.channel.send(f'{member.display_name} si è ricordato come parlare!')
 
-@bot.command()
+@bot.command(aliases=['burn'])
 async def brucia(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -412,7 +413,7 @@ async def brucia(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['scegli'])
 async def choose(ctx, *, scelte : str = None):
     lista_scelte = scelte.split(',') if scelte != None else []
     if len(lista_scelte) <= 1 or all(x.strip() == lista_scelte[0] for x in lista_scelte):
@@ -421,7 +422,7 @@ async def choose(ctx, *, scelte : str = None):
     num = ra.randint(0, len(lista_scelte) - 1)
     await ctx.channel.send(lista_scelte[num])
 
-@bot.command()
+@bot.command(aliases=['impersonate'])
 async def impersona(ctx, member: discord.Member, *, message):
     await ctx.message.delete()
     webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
@@ -443,7 +444,7 @@ async def lang(ctx : discord.Message, language : str):
             use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True),
             reload_lang()]
             ).start()
-        await ctx.channel.send('Language set in english!')
+        await ctx.channel.send('Language set to english!')
     else:
         ... # TODO: Messaggio di errore
     
