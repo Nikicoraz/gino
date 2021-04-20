@@ -92,6 +92,7 @@ risposte_dic = {
     'pepsiman': ['Pepsi Man!🍾', 'https://www.player.it/wp-content/uploads/2018/12/Pepsiman-il-videogioco.jpg', 'https://youtu.be/z54MpfR3XE4'],
     'grazie':'Prego',
     'uwu': 'OwO',
+    'owo':'UwU',
     ':pepesad:':'F',
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
