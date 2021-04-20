@@ -103,7 +103,7 @@ class Help(commands.Cog):
 
     @help.command(aliases=['dice'])
     async def dado(self, ctx):
-        em = discord.Embed(title=get_string(ctx, 'dado'), description=get_string(ctx, 'd_dado'), color = ctx.message.author.color)
+        em = discord.Embed(title=get_string(ctx, 'dado_n'), description=get_string(ctx, 'd_dado'), color = ctx.message.author.color)
         em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_dado'))
         em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
         await ctx.send(embed=em)

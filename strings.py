@@ -90,7 +90,7 @@ STRINGS = {
     'nessuno':('Nessuno', 'None'),
     'd_clean':('Pulisce la chat', 'Cleans the chat'),
     'v_clean':('$clean {persona o numero di messaggi}', '$clean {person or number of messages}'),
-    'dado':('dado', 'dice'),
+    'dado_n':('dado', 'dice'),
     'd_dado':('Lancia un dado e sceglie un numero tra 1 e 6', 'Rolls a dice and chooses a number between 1 and 6'),
     'v_dado':('$dado', '$dice'),
     'd_tris':('Comincia una partita a tris', 'Begin a tris match'),
