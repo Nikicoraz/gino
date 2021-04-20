@@ -286,7 +286,7 @@ async def furrymeter(ctx, member : discord.Member):
         perc = 0
     quanti = int(perc/10)
     restanti = 10-quanti
-    await ctx.channel.send(f'{member.mention} {get_string(ctx, "furry:")} {BARRA*quanti}{VUOTO*restanti} {perc}%:cat:\n')
+    await ctx.channel.send(f'{member.mention} {get_string(ctx, "furry")} {BARRA*quanti}{VUOTO*restanti} {perc}%:cat:\n')
 
 @bot.command()
 async def coin(ctx):
