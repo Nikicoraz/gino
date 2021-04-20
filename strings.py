@@ -73,6 +73,22 @@ STRINGS = {
     'immagini':('Immagini', 'Images'),
     'v_immagini':('avatar, grigio, linee, buff, pirata, brucia', 'avatar, gray, lines, buff, pirate, burn'),
     'matematica':('Matematica', 'Math'),
-    'v_matematica':('somma, dividi, moltiplica', 'sum, divide, multiply')
+    'v_matematica':('somma, dividi, moltiplica', 'sum, divide, multiply'),
+    'warn_d':('Aggiunge una infrazione sulla fedina di una persona', 'Adds an infraction on a criminal record of a person'),
+    'sintassi':('**Sintassi**', '**Syntax**'),
+    'warn_v':('$warn <persona> [ragione]', '$warn <person> [motive]'),
+    'mostr_infr':('Mostra Infrazioni', 'Show Infractions'),
+    'd_mostr_infr':('Mostra le infrazioni penali di una persona', 'Show the infractions of a person'),
+    'v_mostr_infr':('$mostra_infrazioni <persona>', '$show_infractions <person>'),
+    'prob':('Probabilita', 'Probability'),
+    'd_prob':('Probabilità che succeda una cosa', 'Probability that something happens'),
+    'v_prob':('$probabilita [cosa che deve accadere]', '$probability [thing]'),
+    'd_kick':('Caccia una persona dal server', 'Kicks a person from the server'),
+    'v_kick':('$kick <persona> [motivo]', '$kick <person> [motive]'),
+    'd_ban':('Banna una persona dal server', 'Bans a person from the server'),
+    'v_ban':('$ban <persona> [motivo]', '$ban <person> [motive]'),
+    'nessuno':('Nessuno', 'None'),
+    'd_clean':('Pulisce la chat', 'Cleans the chat'),
+    'v_clean':('$clean {persona o numero di messaggi}', '$clean {person or number of messages}')
     
     }
