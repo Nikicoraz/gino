@@ -110,7 +110,7 @@ STRINGS = {
     'd_ispira':('Manda una immagine motivante dal sito https://inspirobot.me', 'Send a motivational image from the site https://inspirobot.me'),
     'v_ispira':('$ispira', '$ispire'),
     'crediti':('Crediti', 'Credits'),
-    'd_credits':('Creato da Nikicoraz\n[Github](https://github.com/Nikicoraz/gino)', 'Created by Nikicoraz\n[Github](https://github.com/Nikicoraz/gino'),
+    'd_credits':('Creato da Nikicoraz\n[Github](https://github.com/Nikicoraz/gino)', 'Created by Nikicoraz\n[Github](https://github.com/Nikicoraz/gino)'),
     'd_avatar':('Scarica l\'avatar di una persona nel server!', 'Download the avatar of a person!'),
     'v_avatar':('$avatar <persona>', '$avatar <person>'),
     'brucia':('brucia', 'burn'),
