@@ -291,7 +291,7 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.remove_roles(role_input)
     await ctx.message.delete()
 
-@bot.command(aliases=['grey'])
+@bot.command(aliases=['grey', 'gray'])
 async def grigio(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -437,7 +437,7 @@ async def lang(ctx : discord.Message, language : str):
             ).start()
         await ctx.channel.send('Language set to english!')
     else:
-        ... # TODO: Messaggio di errore
+        await ctx.channel.send(get_string(ctx, 'no_ling'))
     
 
 #endregion

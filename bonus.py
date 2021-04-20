@@ -4,6 +4,7 @@ import re
 from timer.timer import Timer
 from threading import Thread
 import asyncio
+from strings import get_string
 
 numbers = r'[1-9]'
 animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
@@ -16,14 +17,12 @@ class Help(commands.Cog):
         
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):
-        em = discord.Embed(title='Help', description='ciao, usa $help <comando> per avere piu\' informazioni!')
-        em.add_field(name='Creatore', value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
+        em = discord.Embed(title='Help', description=get_string(ctx, 'help'))
+        em.add_field(name=get_string(ctx, 'creatore'), value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value='warn, kick, ban, clean, mute, unmute')
-        em.add_field(name='Casual', value='''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
-         probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
-         crediti, morracinese(mc), choose, impersona''')
-        em.add_field(name='Immagini', value='avatar, grigio, linee, buff, pirata, brucia')
-        em.add_field(name='Matematica', value='somma, dividi, moltiplica')
+        em.add_field(name='Casual', value=get_string(ctx, 'v_casual'))
+        em.add_field(name=get_string(ctx, 'immagini'), value=get_string(ctx, 'v_immagini'))
+        em.add_field(name=get_string(ctx, 'matematica'), value=get_string(ctx, 'v_matematica'))
         await ctx.send(embed = em)
 
     @help.command()

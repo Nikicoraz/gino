@@ -37,6 +37,7 @@ def get_string(ctx : discord.Message, string_):
 
 
 STRINGS = {
+    'no_ling':('Lingua non riconosciuta', 'Language not recognized'),
     'probabilita':(' ha una probabilità del ', ' has a probability of '),
     'admin_error':('Solo un admin può usare questo comando! ', 'Only an admin user can use this command! '),
     'creator_error':('Solo il creatore di questo bot può usare questo comando! ', 'Only the bot creator can use this command! '),
@@ -62,6 +63,16 @@ STRINGS = {
     'silenziato': ('è stato silenziato', 'has been silenced'),
     'no_silenziato':('non è stato silenziato!', 'hasn\'t been silenced!'),
     'ricordato_parlare':('si è ricordato come parlare!', 'has remembered how to talk!'),
-    'no_scelta':('Quando non hai scelta', 'When you have no choice')
+    'no_scelta':('Quando non hai scelta', 'When you have no choice'),
+    'help':('ciao, usa $help <comando> per avere piu\' informazioni!', 'hello, use the $help <command> to have more information!'),
+    'creatore':('creatore', 'creator'),
+    'v_casual':('''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
+         probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
+         crediti, morracinese(mc), choose, impersona''', '''show_infractions(mi), probability(p), dice, tris, coin, animated_emojis, inspire,
+         credits, choose, impersonate'''),
+    'immagini':('Immagini', 'Images'),
+    'v_immagini':('avatar, grigio, linee, buff, pirata, brucia', 'avatar, gray, lines, buff, pirate, burn'),
+    'matematica':('Matematica', 'Math'),
+    'v_matematica':('somma, dividi, moltiplica', 'sum, divide, multiply')
     
     }
