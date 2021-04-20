@@ -1,3 +1,41 @@
+import mysql.connector
+import os
+import discord.message
+from dotenv import load_dotenv
+
+load_dotenv()
+DATABASE_PASSWORD = os.environ.get('DB_PASS')
+langs = {}
+def use_database(command, fetch=False, commit=False):
+    _ = None
+    conn = mysql.connector.connect(
+    host='freedb.tech',
+    user='freedbtech_Nikicoraz',
+    password=DATABASE_PASSWORD,
+    database='freedbtech_generale')
+    c = conn.cursor()
+    c.execute(command)
+    if fetch:
+        _ = c.fetchall()
+    if commit:
+        conn.commit()
+    conn.close()
+    return _
+
+def reload_lang():
+    for ch, la in use_database('SELECT * FROM lang', fetch=True):
+        langs[ch] = la
+reload_lang()
+
+def get_string(ctx : discord.Message, string_):
+    if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
+        return STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
+    elif langs.get(ctx.guild.id) == 'en':
+        return STRINGS.get(string_, 'TRANSLATION ERROR')[1]
+
+
+
+
 STRINGS = {
     'probabilita':(' ha una probabilità del ', ' has a probability of '),
     'admin_error':('Solo un admin può usare questo comando! ', 'Only an admin user can use this command! '),

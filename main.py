@@ -16,7 +16,8 @@ import copypasta
 import opencv
 from Network import get_html
 from threading import Thread
-import strings
+from strings import get_string
+from strings import reload_lang
 
 #region init
 insulti = []
@@ -57,16 +58,6 @@ def use_database(command, fetch=False, commit=False):
     conn.close()
     return _
 
-def reload_lang():
-    for ch, la in use_database('SELECT * FROM lang', fetch=True):
-        langs[ch] = la
-reload_lang()
-
-def get_string(ctx : discord.Message, string_):
-    if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
-        return strings.STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
-    elif langs.get(ctx.guild.id) == 'en':
-        return strings.STRINGS.get(string_, 'TRANSLATION ERROR')[1]
 
 def rigenera_insulti():
     global insulti

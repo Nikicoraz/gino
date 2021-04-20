@@ -5,10 +5,9 @@ from timer.timer import Timer
 from threading import Thread
 import asyncio
 
-from discord.ext.commands.core import check
-
 numbers = r'[1-9]'
 animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
+
 
 class Help(commands.Cog):
     def __init__(self, bot, dizionario_emoji):
