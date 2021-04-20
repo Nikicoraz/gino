@@ -68,8 +68,8 @@ STRINGS = {
     'creatore':('creatore', 'creator'),
     'v_casual':('''aggiungi_insulto(ai), mostra_infrazioni(mi), insulta(i),
          probabilita(p), dado, tris, coin, gaymeter(gm), emoji_animate, ispira,
-         crediti, morracinese(mc), choose, impersona''', '''show_infractions(mi), probability(p), dice, tris, coin, animated_emojis, inspire,
-         credits, choose, impersonate'''),
+         crediti, morracinese(mc), choose, impersona, furrymeter''', '''show_infractions(mi), probability(p), dice, tris, coin, animated_emojis, inspire,
+         credits, choose, impersonate, furrymeter'''),
     'immagini':('Immagini', 'Images'),
     'v_immagini':('avatar, grigio, linee, buff, pirata, brucia', 'avatar, gray, lines, buff, pirate, burn'),
     'matematica':('Matematica', 'Math'),
@@ -142,7 +142,11 @@ STRINGS = {
     'da_solo':("Vuoi giocare da solo? :thinking:", 'Do you want to play alone? :thinking:'),
     'immaginary':("Non conosco il tuo amico immaginario :neutral_face:", 'I don\'t know your immaginary friend :neutral_face:'),
     'gay':('è gay al', 'is gay at'),
-    'furry':('è furry al', 'is furry at')
+    'furry':('è furry al', 'is furry at'),
+    'd_gm':('Indica quanto è gay una persona', 'Show how much a person is gay'),
+    'v_gm':('$gaymeter <persona>', '$gaymeter <person>'),
+    'd_fm':('Indica quanto è furry una persona', 'Show how much a person is a furry'),
+    'v_fm':('$furrymeter <persona>', '$furrymeter <person>')
 
 
     }

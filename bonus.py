@@ -117,9 +117,16 @@ class Help(commands.Cog):
 
     @help.command(aliases=['gm'])
     async def gaymeter(self, ctx):
-        em = discord.Embed(title='gaymeter', description='Indica quanto è gay una persona', color = ctx.message.author.color)
-        em.add_field(name=get_string(ctx, 'sintassi'), value='$gaymeter <persona>')
+        em = discord.Embed(title='gaymeter', description=get_string(ctx, 'd_gm'), color = ctx.message.author.color)
+        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_gm'))
         em.add_field(name='alias', value='gm')
+        await ctx.send(embed=em)
+
+    @help.command()
+    async def furrymeter(self, ctx):
+        em = discord.Embed(title='furrymeter', description=get_string(ctx, 'd_fm'), color = ctx.message.author.color)
+        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_fm'))
+        em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
         await ctx.send(embed=em)
 
     @help.command()
