@@ -275,7 +275,18 @@ async def gaymeter(ctx, member : discord.Member):
         perc = 100
     quanti = int(perc/10)
     restanti = 10-quanti
-    await ctx.channel.send(f'{member.mention} è gay al {BARRA*quanti}{VUOTO*restanti} {perc}%\n')
+    await ctx.channel.send(f'{member.mention} {get_string(ctx, "gay")} {BARRA*quanti}{VUOTO*restanti} {perc}%\n')
+
+@bot.command(aliases=['gm'])
+async def furrymeter(ctx, member : discord.Member):
+    perc = ra.randint(0, 100)
+    BARRA = '█'
+    VUOTO = '░'
+    if str(member.id) == creator_id:
+        perc = 0
+    quanti = int(perc/10)
+    restanti = 10-quanti
+    await ctx.channel.send(f'{member.mention} {get_string(ctx, "furry:")} {BARRA*quanti}{VUOTO*restanti} {perc}%:cat:\n')
 
 @bot.command()
 async def coin(ctx):

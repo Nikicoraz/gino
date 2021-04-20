@@ -140,7 +140,9 @@ STRINGS = {
     'number_19':('Inserisci un numero tra 1 e 9!', 'Insert a number between 1 and 9!'),
     'occupato':("Casella già occupata!", 'This place is already occupied!'),
     'da_solo':("Vuoi giocare da solo? :thinking:", 'Do you want to play alone? :thinking:'),
-    'immaginary':("Non conosco il tuo amico immaginario :neutral_face:", 'I don\'t know your immaginary friend :neutral_face:')
+    'immaginary':("Non conosco il tuo amico immaginario :neutral_face:", 'I don\'t know your immaginary friend :neutral_face:'),
+    'gay':('è gay al', 'is gay at'),
+    'furry':('è furry al', 'is furry at')
 
 
     }
