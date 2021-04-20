@@ -15,9 +15,13 @@ import asyncio
 import copypasta
 import opencv
 from Network import get_html
+from threading import Thread
+from strings import get_string
+from strings import reload_lang
 
 #region init
 insulti = []
+langs = {}
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
@@ -35,6 +39,8 @@ bot.remove_command('help')
 #endregion
 
 # region Funzioni
+
+
 
 def use_database(command, fetch=False, commit=False):
     _ = None
@@ -67,12 +73,12 @@ def get_name(ctx):
 
 async def check_admin(ctx):
     if not ctx.message.author.guild_permissions.administrator and ctx.message.author.id != int(creator_id):
-        await ctx.send("Solo un admin può usare questo comando! " + genera_insulto())
+        await ctx.send(get_string(ctx, 'admin_error') + genera_insulto())
         raise Exception("Comando admin da persone non admin!")
 
 async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
-        await ctx.send("Solo il creatore di questo bot può usare questo comando! " + genera_insulto())
+        await ctx.send(get_string(ctx, 'creator_error') + genera_insulto())
         raise Exception("Comando creatore da persone non creatore!")
     
 def genera_insulto():
@@ -87,8 +93,6 @@ risposte_dic = {
     'grazie':'Prego',
     'uwu': 'OwO',
     ':pepesad:':'F',
-    ':(':':)))',
-    ':)':('embed', 'msgg = discord.Embed(description="[:(](https://www.youtube.com/watch?v=dQw4w9WgXcQ)")'),
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
     ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
@@ -131,13 +135,13 @@ async def on_ready():
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
 
 @bot.command()
-async def test(ctx : discord.Message, member : discord.Member,*,message):
+async def test(ctx : discord.Message):
     pass
 
-@bot.command(aliases=['p'])
+@bot.command(aliases=['p', 'probability'])
 async def probabilita(ctx, *, arg):
     import random
-    await ctx.send(f'{arg} ha una probabilità del {random.randint(0, 100)}%')
+    await ctx.send(arg + get_string(ctx, 'probabilita') + str(random.randint(0, 100)) + '%')
 
 @bot.command(aliases=['i'])
 async def insulta(ctx, *, member: discord.Member):
@@ -146,37 +150,37 @@ async def insulta(ctx, *, member: discord.Member):
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
-    m = await ctx.send(f'{member.mention} è stato avvertito per {reason}')
+    m = await ctx.send(f'{member.mention}' + get_string(ctx, 'warn') + f'{reason}')
     await ctx.message.add_reaction('<:pepefedora:822422976796295198>')
     data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S')
     reason = reason.replace("'", "")
     use_database(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')", commit=True)
 
-@bot.command(aliases=['mi'])
+@bot.command(aliases=['mi', 'show_infractions'])
 async def mostra_infrazioni(ctx, *, member: discord.Member = None):
     if not member:
         member = ctx.author
     infrazioni = use_database(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}', True)
     for i, infrazione in enumerate(infrazioni, 1):
-        await ctx.send(f'> infrazione {i}: `{infrazione[0]}` in data `{infrazione[1]}`')
+        await ctx.send(f'> {get_string(ctx, "infrazione")} {i}: `{infrazione[0]}` {get_string(ctx, "in_data")} `{infrazione[1]}`')
     if len(infrazioni) == 0:
-        await ctx.send(f"{member.mention} non ha mai fatto un'infrazione")
+        await ctx.send(f"{member.mention} {get_string(ctx, 'mai_infra')}")
 
-@bot.command(aliases=['pf'])
+@bot.command(aliases=['pf', 'clean_infractions'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
     await check_creator(ctx)
     use_database(f"DELETE FROM fedina WHERE user_id = {member.id}", commit=True)
-    await ctx.send(f'Fedina penale di {member.mention} pulita con successo!')
+    await ctx.send(f'{get_string(ctx, "fed_pen_di")} {member.mention} {get_string(ctx, "pulita_con_succ")}')
 
-@bot.command()
+@bot.command(aliases=['sum'])
 async def somma(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} + {b} = {a + b}')
 
-@bot.command()
+@bot.command(aliases=['divide'])
 async def dividi(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} / {b} = {a / b}')
 
-@bot.command()
+@bot.command(aliases=['multiply'])
 async def moltiplica(ctx, a : float, b : float):
     await ctx.send(f'{genera_insulto()}, non sai neanche fare {a} * {b} = {a * b}')
 
@@ -211,10 +215,10 @@ async def aggiungi_insulto(ctx, *, arg):
 async def kick(ctx, member : discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     if not ctx.message.author.guild_permissions.kick_members:
-        await ctx.channel.send('Non hai i permessi per kiccare le persone! ' + genera_insulto())
+        await ctx.channel.send(f'{get_string(ctx, "kick_error")} ' + genera_insulto())
         return
     elif member.guild_permissions.administrator:
-        await ctx.channel.send('Non si può kiccare l\'amministratore! :(')
+        await ctx.channel.send(f'{get_string(ctx, "kick_amm")}')
         return
     else:
         await member.kick(reason=reason)
@@ -223,10 +227,10 @@ async def kick(ctx, member : discord.Member, *, reason='no reason'):
 async def ban(ctx, member : discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     if not ctx.message.author.guild_permissions.ban_members:
-        await ctx.channel.send('Non hai i permessi per bannare le persone! ' + genera_insulto())
+        await ctx.channel.send(f'{get_string(ctx, "ban_error")} ' + genera_insulto())
         return
     elif member.guild_permissions.administrator:
-        await ctx.channel.send('Non si può bannare l\'amministratore! :(')
+        await ctx.channel.send(get_string(ctx, "ban_amm"))
         return
     else:
         await member.ban(reason=reason)
@@ -237,23 +241,25 @@ async def clean(ctx, arg):
     def check_member(ctx, arg):
         return ctx.author == arg
     try: 
-        if isinstance(arg, int) and int(arg) > 5000:
+        if int(arg) > 5000:
             if ctx.message.author.id != int(creator_id):
-                await ctx.channel.send('Non puoi cancellare più di 5000 messaggi!!!')
+                await ctx.channel.send(get_string(ctx, 'canc_errore'))
                 return
-        converter = commands.MemberConverter()
-        member = await converter.convert(ctx, arg)
-        await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
-    except errors.MemberNotFound:
-        await ctx.channel.purge(limit=int(arg))
-    m = await ctx.channel.send(f'Messaggi cancellati, ora pagami {ra.randint(10, 200)}$')
+    except:
+        try:
+            converter = commands.MemberConverter()
+            member = await converter.convert(ctx, arg)
+            await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
+        except errors.MemberNotFound:
+            await ctx.channel.purge(limit=int(arg))
+    m = await ctx.channel.send(f'{get_string(ctx, "costo")} {ra.randint(10, 200)}$')
     await m.add_reaction('🧹')
     await asyncio.sleep(4)
     await m.delete()
 
-@bot.command()
+@bot.command(aliases=['dice'])
 async def dado(ctx):
-    await ctx.channel.send(f'Lanciando il dado...')
+    await ctx.channel.send(get_string(ctx, 'dado'))
     await asyncio.sleep(2)
     await ctx.channel.send(ra.randint(1, 6))
 
@@ -273,8 +279,8 @@ async def gaymeter(ctx, member : discord.Member):
 @bot.command()
 async def coin(ctx):
     num = ra.randint(1, 2)
-    coin = 'testa' if num == 1 else 'croce' 
-    await ctx.channel.send(f"è uscito {coin}")
+    coin = get_string(ctx, 'testa') if num == 1 else get_string(ctx, 'croce') 
+    await ctx.channel.send(f"{get_string(ctx, 'uscito')}{coin}")
 
 @bot.command()
 async def modify_role(ctx, member : discord.Member, role_input : discord.Role, add_remove : bool):
@@ -285,7 +291,7 @@ async def modify_role(ctx, member : discord.Member, role_input : discord.Role, a
         await member.remove_roles(role_input)
     await ctx.message.delete()
 
-@bot.command()
+@bot.command(aliases=['grey', 'gray'])
 async def grigio(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -293,7 +299,7 @@ async def grigio(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['lines'])
 async def linee(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -309,7 +315,7 @@ async def buff(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['pirate'])
 async def pirata(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -317,12 +323,12 @@ async def pirata(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['inspire'])
 async def ispira(ctx):
     html = get_html('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
     em.set_image(url=html)
-    await ctx.channel.send('Eccoti una immagine motivante :wink:', embed=em)
+    await ctx.channel.send(get_string(ctx, 'motivante'), embed=em)
 
 @bot.command(aliases=['mc'])
 async def morracinese(ctx, *,scelta : str = ...):
@@ -340,7 +346,7 @@ async def morracinese(ctx, *,scelta : str = ...):
 
 @bot.command()
 async def avatar(ctx, member : discord.Member):
-    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''Scaricalo! [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
+    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''{get_string(ctx, 'scaricalo')} [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
      | [128]({str(member.avatar_url).replace("?size=1024", "?size=128")})
      | [256]({str(member.avatar_url).replace("?size=1024", "?size=256")})
      | [512]({str(member.avatar_url).replace("?size=1024", "?size=512")}) 
@@ -357,7 +363,7 @@ silenziati = []
 async def mute(ctx, member : discord.Member):
     global silenziati
     if member.id in set(silenziati):
-        await ctx.channel.send(f'{member.display_name} è già stato silenziato!')
+        await ctx.channel.send(f'{member.display_name} {get_string(ctx, "gia_silenziato")}')
         return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
@@ -371,13 +377,13 @@ async def mute(ctx, member : discord.Member):
     await member.add_roles(role)
     silenziati.append(member.id)
     use_database(f"INSERT INTO silenziati VALUES ('{member.id}')", commit=True)
-    await ctx.channel.send(f'{member.display_name} è stato silenziato')
+    await ctx.channel.send(f'{member.display_name} {get_string(ctx, "silenziato")}')
 
 @bot.command()
 async def unmute(ctx, member : discord.Member):
     global silenziati
     if member.id not in set(silenziati):
-        await ctx.channel.send(f'{member.display_name} non è stato silenziato!')
+        await ctx.channel.send(f'{member.display_name} {get_string(ctx, "no_silenziato")}')
         return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
@@ -388,9 +394,9 @@ async def unmute(ctx, member : discord.Member):
         await member.remove_roles(role)
         if len(silenziati) == 0:
             await role.delete()
-    await ctx.channel.send(f'{member.display_name} si è ricordato come parlare!')
+    await ctx.channel.send(f'{member.display_name} {get_string(ctx, "ricordato_parlare")}')
 
-@bot.command()
+@bot.command(aliases=['burn'])
 async def brucia(ctx, member : discord.Member = None):
     if not member:
         member = ctx.author
@@ -398,22 +404,41 @@ async def brucia(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
-@bot.command()
+@bot.command(aliases=['scegli'])
 async def choose(ctx, *, scelte : str = None):
     lista_scelte = scelte.split(',') if scelte != None else []
     if len(lista_scelte) <= 1 or all(x.strip() == lista_scelte[0] for x in lista_scelte):
-        await ctx.channel.send('Quando non hai scelta <:pepesad:806184708655808543>')
+        await ctx.channel.send(f'{get_string(ctx, "no_scelta")} <:pepesad:806184708655808543>')
         return
     num = ra.randint(0, len(lista_scelte) - 1)
     await ctx.channel.send(lista_scelte[num])
 
-@bot.command()
+@bot.command(aliases=['impersonate'])
 async def impersona(ctx, member: discord.Member, *, message):
     await ctx.message.delete()
     webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
     await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
     await webhook.delete()
 
+@bot.command()
+async def lang(ctx : discord.Message, language : str):
+    if language == 'it':
+        Thread(target=lambda:[
+            use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'it')", commit=True),
+            reload_lang()]
+            ).start()
+        await ctx.channel.send('Lingua messa in italiano!')
+    elif language == 'en':
+        Thread(target=lambda:[
+            use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True),
+            reload_lang()]
+            ).start()
+        await ctx.channel.send('Language set to english!')
+    else:
+        await ctx.channel.send(get_string(ctx, 'no_ling'))
+    
 
 #endregion
 
@@ -469,6 +494,7 @@ async def on_message(message: discord.Message):
 @dividi.error
 @moltiplica.error
 @clean.error
+@lang.error
 async def somma_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Hai messo tutti i parametri? :thinking:")
