@@ -31,7 +31,7 @@ reload_lang()
 def get_string(ctx : discord.Message, string_):
     if isinstance(ctx.channel, DMChannel):
         return STRINGS.get(string_)[0]
-    if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
+    elif langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
         return STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
     elif langs.get(ctx.guild.id) == 'en':
         return STRINGS.get(string_, 'TRANSLATION ERROR')[1]
