@@ -441,6 +441,13 @@ async def lang(ctx : discord.Message, language : str):
             reload_lang()]
             ).start()
         await ctx.channel.send('Lingua messa in italiano!')
+    elif language == 'en':
+        Thread(target=lambda:[
+            use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
+            use_database(f"INSERT INTO lang VALUES({ctx.guild.id}, 'en')", commit=True),
+            reload_lang()]
+            ).start()
+        await ctx.channel.send('Language set to english!')
     elif language == 'OwO':
         Thread(target=lambda:[
             use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
