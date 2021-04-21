@@ -28,16 +28,21 @@ def reload_lang():
         langs[ch] = la
 reload_lang()
 
-def get_string(ctx : discord.Message, string_):
+def get_string(ctx, string_):
     if isinstance(ctx.channel, DMChannel):
         return STRINGS.get(string_)[0]
     elif langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
-        return STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
-    elif langs.get(ctx.guild.id) == 'en':
-        return STRINGS.get(string_, 'TRANSLATION ERROR')[1]
-    elif langs.get(ctx.guild.id) == 'OwO':
-        return STRINGS.get(string_, 'TRWANSLATWION EWRROR o.O')[2]
-
+        return STRINGS.get(string_, ('ERRORE DI TRADUZIONE'))[0]
+    try:
+        if langs.get(ctx.guild.id) == 'en':
+            return STRINGS.get(string_, (...,'TRANSLATION ERROR'))[1]
+        elif langs.get(ctx.guild.id) == 'OwO':
+            return STRINGS.get(string_, (...,...,'TRWANSLATWION EWRROR o.O'))[2]
+    except IndexError:
+        try:
+            return STRINGS.get(string_, (...,'TRANSLATION ERROR'))[1]
+        except IndexError:
+            return STRINGS.get(string_, ('ERRORE DI TRADUZIONE'))[0]
 
 
 
@@ -153,6 +158,4 @@ STRINGS = {
     'v_gm':('$gaymeter <persona>', '$gaymeter <person>','$gaymeter <pwerson>'),
     'd_fm':('Indica quanto è furry una persona', 'Show how much a person is a furry', 'Show how mwuch a pwerson is a fwurry OwO'),
     'v_fm':('$furrymeter <persona>', '$furrymeter <person>', '$furrymeter <pwerson>')
-
-
     }

@@ -234,6 +234,7 @@ class Help(commands.Cog):
         em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_impersona'))
         em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
         await ctx.send(embed=em)
+        
     
     
     
