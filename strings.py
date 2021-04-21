@@ -2,6 +2,7 @@ import mysql.connector
 import os
 import discord.message
 from dotenv import load_dotenv
+from discord.channel import DMChannel
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
@@ -28,6 +29,8 @@ def reload_lang():
 reload_lang()
 
 def get_string(ctx : discord.Message, string_):
+    if isinstance(ctx.channel, DMChannel):
+        return STRINGS.get(string_)[0]
     if langs.get(ctx.guild.id) == 'it' or langs.get(ctx.guild.id, None) == None:
         return STRINGS.get(string_, 'ERRORE DI TRADUZIONE')[0]
     elif langs.get(ctx.guild.id) == 'en':
