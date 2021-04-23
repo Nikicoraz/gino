@@ -464,6 +464,7 @@ async def lang(ctx : discord.Message, language : str):
         await ctx.channel.send('Language set to OwO!')
     else:
         await ctx.channel.send(get_string(ctx, 'no_ling'))
+
     
 
 #endregion
