@@ -26,6 +26,7 @@ langs = {}
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
 animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
+emoji_pattern = r'^<:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
@@ -109,7 +110,7 @@ risposte_dic = {
     ':pepesad:': '<:pepesad:806184708655808543>',
 
     # Emoji Animate
-    
+
     ':love:': '<a:love:807947104164118558>',
     ':index:': '<a:index:807948759047733268>',
     ':ncry:': '<a:ncry:807989716011712532>',
@@ -508,7 +509,7 @@ async def on_message(message: discord.Message):
             loc = {}
             exec(messaggio[1], globals(), loc)
             await message.channel.send(embed=loc['msgg'])
-        elif re.match(animated_emoji_pattern, messaggio):
+        elif re.match(animated_emoji_pattern, messaggio) or re.match(emoji_pattern, messaggio):
             author = message.author
             await message.delete()
             webhook = await message.channel.create_webhook(name='IDKWNTPH')
