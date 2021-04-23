@@ -93,7 +93,6 @@ risposte_dic = {
     'grazie':'Prego',
     'uwu': 'OwO',
     'owo':'UwU',
-    ':pepesad:':'F',
     'flymetothemoon':'🚀🌑🌠',
     'mussolini':['VIVA IL DVCE!✋', 'https://youtu.be/i4J4xSzpSuA'],
     ':nonni:':[':Nonni:', '^\n|', 'Epic Nonni fail'],
@@ -104,6 +103,13 @@ risposte_dic = {
     'ahegao':copypasta.AHEGAO,
     'bitcoin':copypasta.BITCOIN,
     'bruh':copypasta.BRUH,
+
+    # Emoji
+
+    ':pepesad:': '<:pepesad:806184708655808543>',
+
+    # Emoji Animate
+    
     ':love:': '<a:love:807947104164118558>',
     ':index:': '<a:index:807948759047733268>',
     ':ncry:': '<a:ncry:807989716011712532>',
