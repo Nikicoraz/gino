@@ -426,10 +426,17 @@ async def choose(ctx, *, scelte : str = None):
     await ctx.channel.send(lista_scelte[num])
 
 @bot.command(aliases=['impersonate'])
-async def impersona(ctx, member: discord.Member, *, message):
+async def impersona(ctx, member, *, message):
     await ctx.message.delete()
+    try:
+        member = commands.MemberConverter(member)
+        nome = member.display_name
+        avatar = member.avatar_url
+    except:
+        nome = member
+        avatar = None
     webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
-    await webhook.send(content=message, username=member.display_name, avatar_url=member.avatar_url)
+    await webhook.send(content=message, username=nome, avatar_url=avatar)
     await webhook.delete()
 
 @bot.command()
