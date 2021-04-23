@@ -271,7 +271,9 @@ class Tris(commands.Cog):
 
     @commands.command()
     async def tris(self, ctx, member : discord.Member):
+        # Inizio
         react = ['✅', '❌']
+        # Devo sistemarla in qualche modo xDDD
         if self.running == True:
             await ctx.channel.send(get_string(ctx, 'partita_in_corso'))
             return
@@ -283,9 +285,12 @@ class Tris(commands.Cog):
             return
         msg = await ctx.channel.send(f"{member.mention} {get_string(ctx, 'sfida')}")
         self.running = True
+        # Aggiungi reazioni ad un messaggio per fare la sfida
         for r in react:
             await msg.add_reaction(r)
+
         def check_react(reaction, user):
+            # Controllo cosa mette l'utente
             if user != member or reaction.message.id != msg.id or not str(reaction.emoji) in react:
                 return False
             return True
@@ -296,24 +301,29 @@ class Tris(commands.Cog):
             self.running = False
             return
 
+        # In caso accetta
         if react[0] in str(res.emoji):
             await ctx.channel.send(f'{member.mention} {get_string(ctx, "accept")}')
+        # Se rifiuta
         elif react[1] in str(res.emoji):
             await ctx.channel.send(f'{member.mention} {get_string(ctx, "decline")}')
             self.running = False
             return
 
+        # Numeri per far vedere come si gioca
         num_tris_board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
         await ctx.channel.send('Iniziando sessione di tris...')
         if member == self.bot.user:
             await ctx.send.channel('Non puoi sfidare il bot!')
             return
+        # Disegno tavola iniziale
         await self.DrawBoard(ctx, num_tris_board)
         await ctx.channel.send(get_string(ctx, 'reg_tris'))
         self.tris = True
         self.initializer = ctx.author
         self.guest = member
         loop = asyncio.get_event_loop()
+        # Inizio timer della morte
         self.timeout_timer.call_at_end(lambda:(self.timeout(ctx, loop)))
         t = Thread(target=self.timeout_timer.start)
         t.start()
@@ -324,10 +334,13 @@ class Tris(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
+        # Controllo se persona ha i diritti di giocare
         if not self.tris or ctx.author == self.bot.user or (ctx.author != self.initializer and ctx.author != self.guest):
             return
         else:
+            # Controllo se ha scritto un numero
             num = re.search(numbers, ctx.content)
+            # Controllo di chi e' il turno
             if self.turn % 2 == 0 and ctx.author != self.initializer:
                 await ctx.channel.send(get_string(ctx, 'turno_di') + self.initializer.mention + '!')
                 return
@@ -338,16 +351,20 @@ class Tris(commands.Cog):
                 await ctx.channel.send(get_string(ctx, 'number_19'))
                 return
             num = int(num.group()) - 1
+            # Controllo se casella gia' occupata
             if self.tris_board[num] != ' ':
                 await ctx.channel.send(get_string(ctx, 'occupato'))
                 await self.DrawBoard(ctx, self.tris_board)
                 return
             self.tris_board[num] = 'x' if self.turn % 2 == 0 else 'o'
+            # Aumento turno
             self.turn += 1
             if self.lastBoard != None:
                 await self.lastBoard.delete()
                 await ctx.delete()
+            # Disegno tavola
             await self.DrawBoard(ctx, self.tris_board)
+            # Reset timer della morte
             self.timeout_timer.reset()
     
     def check_board(self):
@@ -376,6 +393,7 @@ class Tris(commands.Cog):
         return False
 
     def end_game(self):
+        # Reset allo stato iniziale
         self.tris = False
         self.initializer = None
         self.guest = None

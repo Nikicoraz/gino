@@ -25,8 +25,7 @@ langs = {}
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
-animated_emoji_pattern = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
-emoji_pattern = r'^<:[a-zA-Z0-9_-]+:[0-9]+>$'
+emoji_patterns = r'^<a*:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
@@ -127,6 +126,7 @@ risposte_dic = {
     '🔫': '<:pistola:821669164107825174>'
     }
 def switch_messaggi(msg):
+    # Piccola funzione molto utile
     for key in risposte_dic.keys():
         if msg.__contains__(key):
             return risposte_dic[key]
@@ -153,6 +153,7 @@ async def probabilita(ctx, *, arg):
 
 @bot.command(aliases=['i'])
 async def insulta(ctx, *, member: discord.Member):
+    # Prende un insulto dalla lista scaricata precedentemente dal database
     await ctx.send(f'{member.mention} è un {genera_insulto().lower()}\n\n> -Messaggio cordialmente inviato da *{get_name(ctx)}*')
 
 @bot.command()
@@ -160,7 +161,7 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
     await check_admin(ctx)
     m = await ctx.send(f'{member.mention}' + get_string(ctx, 'warn') + f'{reason}')
     await ctx.message.add_reaction('<:pepefedora:822422976796295198>')
-    data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S')
+    data = datetime.now().strftime(r'%Y-%m-%d %H:%M:%S') # Formattazione ora
     reason = reason.replace("'", "")
     use_database(f"INSERT INTO fedina VALUES ({member.id}, '{reason}', '{data}')", commit=True)
 
@@ -249,16 +250,19 @@ async def clean(ctx, arg):
     def check_member(ctx, arg):
         return ctx.author == arg
     try: 
+        # Se si vuole cancellare oltre 5000 messaggi no
         if int(arg) > 5000:
             if ctx.message.author.id != int(creator_id):
                 await ctx.channel.send(get_string(ctx, 'canc_errore'))
                 return
     except:
         try:
+            # Se e' un membro cancella messaggi suoi
             converter = commands.MemberConverter()
             member = await converter.convert(ctx, arg)
             await ctx.channel.purge(check=lambda ctx:check_member(ctx, member))
         except errors.MemberNotFound:
+            # Altrimenti cancella il numero indicato
             await ctx.channel.purge(limit=int(arg))
     m = await ctx.channel.send(f'{get_string(ctx, "costo")} {ra.randint(10, 200)}$')
     await m.add_reaction('🧹')
@@ -342,8 +346,10 @@ async def pirata(ctx, member : discord.Member = None):
     await ctx.channel.send(file=file)
     os.remove(filename)
 
+
 @bot.command(aliases=['inspire'])
 async def ispira(ctx):
+    # Ottenimento link immagine e spedizione via embed di discord
     html = get_html('https://inspirobot.me/api?generate=true')
     em = discord.Embed()
     em.set_image(url=html)
@@ -351,6 +357,7 @@ async def ispira(ctx):
 
 @bot.command(aliases=['mc'])
 async def morracinese(ctx, *,scelta : str = ...):
+    # Controllo di ogni scelta e vincita del bot
     if scelta.strip().lower() == 'carta':
         msg = 'Ho scelto forbici, ho vinto io'
     elif scelta.strip().lower() == 'forbici' or scelta.strip().lower() == 'forbice':
@@ -363,6 +370,7 @@ async def morracinese(ctx, *,scelta : str = ...):
         msg = 'Non ho riconosciuto una opzione valida, ho vinto io'
     await ctx.channel.send(msg)
 
+# Comando per scaricare avatar
 @bot.command()
 async def avatar(ctx, member : discord.Member):
     em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''{get_string(ctx, 'scaricalo')} [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
@@ -385,6 +393,7 @@ async def mute(ctx, member : discord.Member):
         await ctx.channel.send(f'{member.display_name} {get_string(ctx, "gia_silenziato")}')
         return
     await check_admin(ctx)
+    # Inserimento persona dentro lista silenziati
     ROLE_NAME = 'Silenziato'
     guild = ctx.guild
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
@@ -401,15 +410,17 @@ async def mute(ctx, member : discord.Member):
 @bot.command()
 async def unmute(ctx, member : discord.Member):
     global silenziati
-    if member.id not in set(silenziati):
+    if member.id not in set(silenziati):                                                    # Toglimento persona dentro lista silenziati
         await ctx.channel.send(f'{member.display_name} {get_string(ctx, "no_silenziato")}')
         return
     await check_admin(ctx)
     ROLE_NAME = 'Silenziato'
-    role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
+    role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)                               # Ottenimento ruolo
     del silenziati[silenziati.index(member.id)]
+    # Togli la persona dal database
     use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True)
     if role:
+        # Rimozione ruolo
         await member.remove_roles(role)
         if len(silenziati) == 0:
             await role.delete()
@@ -426,28 +437,32 @@ async def brucia(ctx, member : discord.Member = None):
 @bot.command(aliases=['scegli'])
 async def choose(ctx, *, scelte : str = None):
     lista_scelte = scelte.split(',') if scelte != None else []
-    if len(lista_scelte) <= 1 or all(x.strip() == lista_scelte[0] for x in lista_scelte):
+    if len(lista_scelte) <= 1 or all(x.strip() == lista_scelte[0] for x in lista_scelte):       # se le scelte sono <= 1 allora non si ha vera scelta
         await ctx.channel.send(f'{get_string(ctx, "no_scelta")} <:pepesad:806184708655808543>')
         return
     num = ra.randint(0, len(lista_scelte) - 1)
     await ctx.channel.send(lista_scelte[num])
 
+
 @bot.command(aliases=['impersonate'])
 async def impersona(ctx, member, *, message):
     await ctx.message.delete()
     try:
-        member = commands.MemberConverter(member)
-        nome = member.display_name
-        avatar = member.avatar_url
+        member = commands.MemberConverter(member)   # Se esiste un membro convertilo
+        nome = member.display_name                  # altrimenti usa come nome la stringa
+        avatar = member.avatar_url                  # e come avatar il default
     except:
         nome = member
         avatar = None
     webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
     await webhook.send(content=message, username=nome, avatar_url=avatar)
-    await webhook.delete()
-
+    await webhook.delete()                          # Cancellazione webhook dopo utilizzo siccome se ne possono 
+                                                    # Avere massimo 20 per server
+# Comando per cambiare le lingue
 @bot.command()
 async def lang(ctx : discord.Message, language : str):
+    # Controllo lingua selezionata e inserimento nel database dopo cancellamento
+    # con un thread per mandare il messaggio prima
     if language == 'it':
         Thread(target=lambda:[
             use_database(f"DELETE FROM lang WHERE ch_id = {ctx.guild.id}", commit=True),
@@ -480,6 +495,7 @@ async def lang(ctx : discord.Message, language : str):
 
 @bot.event
 async def on_message(message: discord.Message):
+    # Controlla se il messaggio e' stato inviato dal bot
     if message.author == bot.user or message.webhook_id:
         return
     
@@ -490,31 +506,38 @@ async def on_message(message: discord.Message):
 
     msg = message.content.replace(' ', '').lower()
     messaggio = switch_messaggi(msg)
+    # Se messaggio ritorna un valore
     if messaggio != 404:
+        # Se e' una lista manda tutte le cose nella lista
         if isinstance(messaggio, list):
             for m in messaggio:
+                # Se e' un URL manda un immagine
                 if re.match(url_pattern, m) and not re.match(youtube_url, m):
                     e = discord.Embed()
                     e.set_image(url=m)
                     await message.channel.send(embed=e)
                 else:
                     await message.channel.send(m)
+        # Se contiene func allora esegui la funzione e scrivi il messaggio msgg
         elif messaggio[0] == 'func':
             loc = {}
             exec(messaggio[1], globals(), loc)
             if loc['msgg'].__contains__('NON SI BESTEMMIA') or loc['msgg'].__contains__('IL MIO ACERRIMO NEMICO') and message.channel.guild.id == 829765996771803157:
                 return
             await message.channel.send(loc['msgg'])
+        # Se contiene embed allora manda un embed del messaggio dopo aver eseguito il codice
         elif messaggio[0] == 'embed':
             loc = {}
             exec(messaggio[1], globals(), loc)
             await message.channel.send(embed=loc['msgg'])
-        elif re.match(animated_emoji_pattern, messaggio) or re.match(emoji_pattern, messaggio):
+        # Se e' una emoji allora sostituisci e manda
+        elif re.match(emoji_patterns, messaggio):
             author = message.author
             await message.delete()
             webhook = await message.channel.create_webhook(name='IDKWNTPH')
             await webhook.send(content=messaggio, username=author.display_name, avatar_url=author.avatar_url)
             await webhook.delete()
+        # Altrimenti manda il messaggio e basta
         else:
             await message.channel.send(messaggio)
         

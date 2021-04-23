@@ -23,11 +23,14 @@ def use_database(command, fetch=False, commit=False):
     conn.close()
     return _
 
+
+# Ricarica lingue database
 def reload_lang():
     for ch, la in use_database('SELECT * FROM lang', fetch=True):
         langs[ch] = la
 reload_lang()
 
+# Funzione magica per le traduzioni
 def get_string(ctx, string_):
     if isinstance(ctx.channel, DMChannel):
         return STRINGS.get(string_)[0]
