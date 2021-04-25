@@ -107,6 +107,7 @@ risposte_dic = {
     # Emoji
 
     ':pepesad:': '<:pepesad:806184708655808543>',
+    '🔫': '<:pistola:821669164107825174>',
 
     # Emoji Animate
 
@@ -123,7 +124,9 @@ risposte_dic = {
     ':cringepepepet:': '<a:cringepepepet:808006318359052378>',
     ':dogdance:': '<a:ultrayaya:808006262834724866>',
     ':frogroll:': '<a:frogroll:820979762977439744>',
-    '🔫': '<:pistola:821669164107825174>'
+    ':frogspeed:': '<a:frogspeed:835822136731762749>',
+    ':frograinbow:': '<a:frograinbow:835822233740902412>'
+
     }
 def switch_messaggi(msg):
     # Piccola funzione molto utile
