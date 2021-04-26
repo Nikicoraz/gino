@@ -125,7 +125,10 @@ risposte_dic = {
     ':dogdance:': '<a:ultrayaya:808006262834724866>',
     ':frogroll:': '<a:frogroll:820979762977439744>',
     ':frogspeed:': '<a:frogspeed:835822136731762749>',
-    ':frograinbow:': '<a:frograinbow:835822233740902412>'
+    ':frograinbow:': '<a:frograinbow:835822233740902412>',
+    ':flushedwiggle:': '<a:flushedwiggle:836159484111486976>',
+    ':pepehey:':'<a:pepehey:836159681915256842>',
+    ':catmad:':'<a:catmad:836159843751690281>'
 
     }
 def switch_messaggi(msg):
