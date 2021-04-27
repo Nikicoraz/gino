@@ -25,7 +25,7 @@ langs = {}
 
 url_pattern = r'(http|https)://.*'
 youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
-emoji_patterns = r'^<a*:[a-zA-Z0-9_-]+:[0-9]+>$'
+emoji_patterns = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
@@ -106,7 +106,6 @@ risposte_dic = {
 
     # Emoji
 
-    ':pepesad:': '<:pepesad:806184708655808543>',
     '🔫': '<:pistola:821669164107825174>',
 
     # Emoji Animate
