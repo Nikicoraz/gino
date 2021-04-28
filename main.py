@@ -392,13 +392,14 @@ silenziati = []
 [silenziati.append(int(x[0])) for x in use_database('SELECT * FROM silenziati', True)]
 
 @bot.command()
-async def mute(ctx, member : discord.Member):
+async def mute(ctx : discord.Message, member : discord.Member):
     global silenziati
     if member.id in set(silenziati):
         await ctx.channel.send(f'{member.display_name} {get_string(ctx, "gia_silenziato")}')
         return
     await check_admin(ctx)
     # Inserimento persona dentro lista silenziati
+    Thread(target=lambda:use_database(f"INSERT INTO silenziati VALUES ('{member.id}')", commit=True)).start()
     ROLE_NAME = 'Silenziato'
     guild = ctx.guild
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)
@@ -409,27 +410,28 @@ async def mute(ctx, member : discord.Member):
         await channel.set_permissions(role, speak=False, send_messages=False)
     await member.add_roles(role)
     silenziati.append(member.id)
-    use_database(f"INSERT INTO silenziati VALUES ('{member.id}')", commit=True)
     await ctx.channel.send(f'{member.display_name} {get_string(ctx, "silenziato")}')
+    ctx.add_reaction('<:evilpepe:837050861586087977>')
 
 @bot.command()
-async def unmute(ctx, member : discord.Member):
+async def unmute(ctx : discord.Message, member : discord.Member):
     global silenziati
     if member.id not in set(silenziati):                                                    # Toglimento persona dentro lista silenziati
         await ctx.channel.send(f'{member.display_name} {get_string(ctx, "no_silenziato")}')
         return
     await check_admin(ctx)
+    # Togli la persona dal database
+    Thread(target=lambda:use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True))
     ROLE_NAME = 'Silenziato'
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)                               # Ottenimento ruolo
     del silenziati[silenziati.index(member.id)]
-    # Togli la persona dal database
-    use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True)
     if role:
         # Rimozione ruolo
         await member.remove_roles(role)
         if len(silenziati) == 0:
             await role.delete()
     await ctx.channel.send(f'{member.display_name} {get_string(ctx, "ricordato_parlare")}')
+    ctx.add_reaction('<:feelsgrugman:837051421102047242>')
 
 @bot.command(aliases=['burn'])
 async def brucia(ctx, member : discord.Member = None):
