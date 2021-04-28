@@ -453,7 +453,7 @@ async def choose(ctx, *, scelte : str = None):
 async def impersona(ctx, member, *, message):
     await ctx.message.delete()
     try:
-        member = commands.MemberConverter(member)   # Se esiste un membro convertilo
+        member = await commands.MemberConverter().convert(ctx, member)   # Se esiste un membro convertilo
         nome = member.display_name                  # altrimenti usa come nome la stringa
         avatar = member.avatar_url                  # e come avatar il default
     except:
