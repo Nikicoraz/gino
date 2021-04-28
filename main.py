@@ -411,7 +411,7 @@ async def mute(ctx, member : discord.Member):
     await member.add_roles(role)
     silenziati.append(member.id)
     await ctx.channel.send(f'{member.display_name} {get_string(ctx, "silenziato")}')
-    ctx.message.add_reaction('<:evilpepe:837050861586087977>')
+    await ctx.message.add_reaction('<:evilpepe:837050861586087977>')
 
 @bot.command()
 async def unmute(ctx, member : discord.Member):
@@ -431,7 +431,7 @@ async def unmute(ctx, member : discord.Member):
         if len(silenziati) == 0:
             await role.delete()
     await ctx.channel.send(f'{member.display_name} {get_string(ctx, "ricordato_parlare")}')
-    ctx.message.add_reaction('<:feelsgrugman:837051421102047242>')
+    await ctx.message.add_reaction('<:feelsgrugman:837051421102047242>')
 
 @bot.command(aliases=['burn'])
 async def brucia(ctx, member : discord.Member = None):
