@@ -172,13 +172,15 @@ async def warn(ctx, member: discord.Member, *, reason='no reason'):
 
 @bot.command(aliases=['mi', 'show_infractions'])
 async def mostra_infrazioni(ctx, *, member: discord.Member = None):
+    msg = ''
     if not member:
         member = ctx.author
     infrazioni = use_database(f'SELECT reason, date FROM fedina WHERE user_id = {member.id}', True)
     for i, infrazione in enumerate(infrazioni, 1):
-        await ctx.send(f'> {get_string(ctx, "infrazione")} {i}: `{infrazione[0]}` {get_string(ctx, "in_data")} `{infrazione[1]}`')
+        msg += f'> {get_string(ctx, "infrazione")} {i}: `{infrazione[0]}` {get_string(ctx, "in_data")} `{infrazione[1]}`\n'
     if len(infrazioni) == 0:
         await ctx.send(f"{member.mention} {get_string(ctx, 'mai_infra')}")
+    await ctx.send(msg)
 
 @bot.command(aliases=['pf', 'clean_infractions'])
 async def pulisci_fedina(ctx, *, member: discord.Member):
