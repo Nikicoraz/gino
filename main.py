@@ -500,10 +500,13 @@ async def lang(ctx : discord.Message, language : str):
 async def visualizza_mutati(ctx):
     await check_admin(ctx)
     msg = ''
-    if len(set(silenziati) == 0):
+    if not set(silenziati):
         msg = get_string(ctx, 'ness_silenziato')
-    for user in set(silenziati):
-        msg += f'> {user}\n'
+    else:
+        converter = commands.MemberConverter()
+        for user in set(silenziati):
+            member = await converter.convert(ctx, f'<@!{user}>')
+            msg += f'> {member.display_name}\n'
     await ctx.channel.send(msg)
 
     
