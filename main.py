@@ -423,7 +423,7 @@ async def unmute(ctx, member : discord.Member):
         return
     await check_admin(ctx)
     # Togli la persona dal database
-    Thread(target=lambda:use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True))
+    Thread(target=lambda:use_database(f"DELETE FROM silenziati WHERE user_id = '{member.id}'", commit=True)).start()
     ROLE_NAME = 'Silenziato'
     role = discord.utils.get(ctx.guild.roles, name=ROLE_NAME)                               # Ottenimento ruolo
     del silenziati[silenziati.index(member.id)]
@@ -495,6 +495,14 @@ async def lang(ctx : discord.Message, language : str):
         await ctx.channel.send('Language set to OwO!')
     else:
         await ctx.channel.send(get_string(ctx, 'no_ling'))
+
+@bot.command(aliases=['vm', 'sm'])
+async def visualizza_mutati(ctx):
+    await check_admin(ctx)
+    msg = ''
+    for user in set(silenziati):
+        msg += f'> {user}\n'
+    await ctx.channel.send(msg)
 
     
 
