@@ -19,7 +19,7 @@ class Help(commands.Cog):
     async def help(self, ctx):
         em = discord.Embed(title='Help', description=get_string(ctx, 'help'))
         em.add_field(name=get_string(ctx, 'creatore'), value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
-        em.add_field(name='Admin', value='warn, kick, ban, clean, mute, unmute')
+        em.add_field(name='Admin', value=get_string(ctx, 'v_admin'))
         em.add_field(name='Casual', value=get_string(ctx, 'v_casual'))
         em.add_field(name=get_string(ctx, 'immagini'), value=get_string(ctx, 'v_immagini'))
         em.add_field(name=get_string(ctx, 'matematica'), value=get_string(ctx, 'v_matematica'))
@@ -233,6 +233,13 @@ class Help(commands.Cog):
         em = discord.Embed(title=get_string(ctx, 'impersona'), description=get_string(ctx, 'd_impersona'), color = ctx.message.author.color)
         em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_impersona'))
         em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
+        await ctx.send(embed=em)
+    
+    @help.command(aliases=['vm', 'sm', 'show_muted'])
+    async def visualizza_mutati(self, ctx):
+        em = discord.Embed(title=get_string(ctx, 'visualizza_mutati'), description=get_string(ctx, 'd_v_mutati'), color = ctx.message.author.color)
+        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_v_mutati'))
+        em.add_field(name='alias', value='vm, sm')
         await ctx.send(embed=em)
         
     

@@ -496,10 +496,12 @@ async def lang(ctx : discord.Message, language : str):
     else:
         await ctx.channel.send(get_string(ctx, 'no_ling'))
 
-@bot.command(aliases=['vm', 'sm'])
+@bot.command(aliases=['vm', 'sm', 'show_muted'])
 async def visualizza_mutati(ctx):
     await check_admin(ctx)
     msg = ''
+    if len(set(silenziati) == 0):
+        msg = get_string(ctx, 'ness_silenziato')
     for user in set(silenziati):
         msg += f'> {user}\n'
     await ctx.channel.send(msg)

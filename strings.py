@@ -84,6 +84,7 @@ STRINGS = {
          crediti, morracinese(mc), choose, impersona, furrymeter''', '''show_infractions(mi), probability(p), dice, tris, coin, animated_emojis, inspire,
          credits, choose, impersonate, furrymeter''', '''show_inwfractions(mi), prowbability(p), dwice, twris, cowin, anwimated_emowjis, inwspire,
          credits, chwoose, imwpersonate, fuwrrymeter'''),
+    'v_admin':('''warn, kick, ban, clean, mute, unmute, visualizza_mutati''', '''warn, kick, ban, clean, mute, unmute, show_muted'''),
     'immagini':('Immagini', 'Images', 'Iwmages'),
     'v_immagini':('avatar, grigio, linee, buff, pirata, brucia', 'avatar, gray, lines, buff, pirate, burn', 'awvatar, gwray, lwines, bwuff, pwirate, bwurn'),
     'matematica':('Matematica', 'Math', 'Mwath'),
@@ -160,5 +161,10 @@ STRINGS = {
     'd_gm':('Indica quanto è gay una persona', 'Show how much a person is gay', 'Show how mwuch a pwerson is gway OwO'),
     'v_gm':('$gaymeter <persona>', '$gaymeter <person>','$gaymeter <pwerson>'),
     'd_fm':('Indica quanto è furry una persona', 'Show how much a person is a furry', 'Show how mwuch a pwerson is a fwurry OwO'),
-    'v_fm':('$furrymeter <persona>', '$furrymeter <person>', '$furrymeter <pwerson>')
+    'v_fm':('$furrymeter <persona>', '$furrymeter <person>', '$furrymeter <pwerson>'),
+    'ness_silenziato':('Nessuno è stato silenziato', 'No one has been silenced'),
+    'visualizza_mutati':('Visualizza Mutati', 'Show Muted'),
+    'd_v_mutati':('Mostra le persone silenziate dalle autorità', 'Show who has been silenced by the authorities'),
+    'v_v_mutati':('$visualizza_mutati', '$show_muted')
+
     }
