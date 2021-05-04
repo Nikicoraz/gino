@@ -509,7 +509,15 @@ async def visualizza_mutati(ctx):
             msg += f'> {member.display_name}\n'
     await ctx.channel.send(msg)
 
-    
+@bot.command()
+async def reset(ctx):
+    await check_creator(ctx)
+    for webhook in await ctx.channel.webhooks():
+        webhook.delete()
+    msg = await ctx.channel.send('Reset completato')
+    await asyncio.sleep(2)
+    msg.delete()
+
 
 #endregion
 
@@ -555,7 +563,10 @@ async def on_message(message: discord.Message):
         # Se e' una emoji allora sostituisci e manda
         elif re.match(emoji_patterns, messaggio):
             author = message.author
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
             webhook = await message.channel.create_webhook(name='IDKWNTPH')
             await webhook.send(content=messaggio, username=author.display_name, avatar_url=author.avatar_url)
             await webhook.delete()
