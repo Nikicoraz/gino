@@ -145,6 +145,7 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
     for guild in bot.guilds:
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you"))
 
 @bot.command()
 async def test(ctx : discord.Message):
