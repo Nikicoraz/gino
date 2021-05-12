@@ -80,6 +80,16 @@ async def check_creator(ctx):
     if ctx.message.author.id != int(creator_id):
         await ctx.send(get_string(ctx, 'creator_error') + genera_insulto())
         raise Exception("Comando creatore da persone non creatore!")
+
+async def send_webhook(ctx, message, user, avatar):
+    wbhk = [x for x in await ctx.channel.webhooks()]
+    if ctx.channel.name not in set([x.name for x in set(wbhk)]):
+        await ctx.channel.send('Nessun webhook rilevato, creazione in corso')
+        whk = await ctx.channel.create_webhook(name=ctx.channel.name)
+    else:
+        whk = [x for x in set(wbhk)][0]
+    await whk.send(content=message, username=user, avatar_url=avatar)
+        
     
 def genera_insulto():
     return insulti[ra.randint(0, len(insulti) - 1)]
@@ -145,6 +155,7 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
     for guild in bot.guilds:
         print(f"Bot is being used in {guild.name} (id:{guild.id})")
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you"))
 
 @bot.command()
 async def test(ctx : discord.Message):
@@ -462,10 +473,8 @@ async def impersona(ctx, member, *, message):
     except:
         nome = member
         avatar = None
-    webhook = await ctx.channel.create_webhook(name='IDKWNTPH')
-    await webhook.send(content=message, username=nome, avatar_url=avatar)
-    await webhook.delete()                          # Cancellazione webhook dopo utilizzo siccome se ne possono 
-                                                    # Avere massimo 20 per server
+    await send_webhook(ctx, message, nome, avatar)
+
 # Comando per cambiare le lingue
 @bot.command()
 async def lang(ctx : discord.Message, language : str):
@@ -507,15 +516,6 @@ async def visualizza_mutati(ctx):
             member = await converter.convert(ctx, f'<@!{user}>')
             msg += f'> {member.display_name}\n'
     await ctx.channel.send(msg)
-
-@bot.command()
-async def reset(ctx):
-    await check_creator(ctx)
-    for webhook in await ctx.channel.webhooks():
-        webhook.delete()
-    msg = await ctx.channel.send('Reset completato')
-    await asyncio.sleep(2)
-    msg.delete()
 
 
 #endregion
@@ -566,9 +566,7 @@ async def on_message(message: discord.Message):
                 await message.delete()
             except:
                 pass
-            webhook = await message.channel.create_webhook(name='IDKWNTPH')
-            await webhook.send(content=messaggio, username=author.display_name, avatar_url=author.avatar_url)
-            await webhook.delete()
+            await send_webhook(message, messaggio, author.display_name, author.avatar_url)
         # Altrimenti manda il messaggio e basta
         else:
             await message.channel.send(messaggio)
