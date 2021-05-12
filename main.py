@@ -84,7 +84,6 @@ async def check_creator(ctx):
 async def send_webhook(ctx, message, user, avatar):
     wbhk = [x for x in await ctx.channel.webhooks()]
     if ctx.channel.name not in set([x.name for x in set(wbhk)]):
-        await ctx.channel.send('Nessun webhook rilevato, creazione in corso')
         whk = await ctx.channel.create_webhook(name=ctx.channel.name)
     else:
         whk = [x for x in set(wbhk)][0]
