@@ -10,10 +10,10 @@ langs = {}
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
-    host='freedb.tech',
-    user='freedbtech_Nikicoraz',
+    host='remotemysql.com',
+    user='4IMMhUUnvb',
     password=DATABASE_PASSWORD,
-    database='freedbtech_generale')
+    database='4IMMhUUnvb')
     c = conn.cursor()
     c.execute(command)
     if fetch:
@@ -22,6 +22,7 @@ def use_database(command, fetch=False, commit=False):
         conn.commit()
     conn.close()
     return _
+
 
 
 # Ricarica lingue database
