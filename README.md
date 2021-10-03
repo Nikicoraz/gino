@@ -8,6 +8,7 @@ Ho appena imparato come usarlo quindi potrebbero esserci problemi
 Creato solo per fare casino, la cosa migliore deve essere il database di insulti  
 # TODO
 - Gino diventera' un DJ presto (Credo...)
+- Aggiungere più error handling per i comandi che non danno indietro feedback se sbagliati
 
 # Curiosita' e breakdown mentali
 > P.S. Database di insulti cancellato perchè il sito ([Freedb](https://freedb.tech/)) credo abbia fatto una ristrutturazione e mi ha cancellato il db :cry:

@@ -166,6 +166,10 @@ STRINGS = {
     'ness_silenziato':('Nessuno è stato silenziato', 'No one has been silenced'),
     'visualizza_mutati':('Visualizza Mutati', 'Show Muted'),
     'd_v_mutati':('Mostra le persone silenziate dalle autorità', 'Show who has been silenced by the authorities'),
-    'v_v_mutati':('$visualizza_mutati', '$show_muted')
+    'v_v_mutati':('$visualizza_mutati', '$show_muted'),
+    'no_can_voc':('Non sei in un canale vocale!', 'You\'re not in a voice channel!'),
+    'now_playing':('Riproduzione in corso di ', 'Now playing '),
+    'pausa':('Riproduzione messa in pausa', 'Paused'),
+    'riprendi':('Riproduzione ripresa', 'Resumed')
 
     }
