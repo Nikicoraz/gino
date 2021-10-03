@@ -518,7 +518,6 @@ async def visualizza_mutati(ctx):
             msg += f'> {member.display_name}\n'
     await ctx.channel.send(msg)
 
-
 #region Musica
 
 @bot.command()
