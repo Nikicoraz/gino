@@ -528,6 +528,8 @@ async def join(ctx):
     canale = ctx.author.voice.channel
     if ctx.voice_client is None:
         await canale.connect()
+    elif ctx.voice_client:
+        return
     else:
         await ctx.voice_client_move_to(canale)
 
@@ -536,18 +538,26 @@ async def disconnect(ctx):
     await ctx.voice_client.disconnect()
 
 @bot.command()
-async def play(ctx, url):
+async def play(ctx, *, url):
+    await join(ctx)
     ctx.voice_client.stop()
     FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
     YDL_OPTIONS = {'format': 'bestaudio'}
     vc = ctx.voice_client
     
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-        info = ydl.extract_info(url, download=False)
-        url2 = info['formats'][0]['url']
+        if re.fullmatch(url_pattern, url):
+            info = ydl.extract_info(url, download=False)
+            url2 = info['formats'][0]['url']
+            title = info['title']
+        else:
+            info = ydl.extract_info(f'ytsearch:{url}', download=False)
+            url2 = info['entries'][0]['formats'][0]['url']
+            title = info['entries'][0]['title']
+
         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
         vc.play(source)
-        await ctx.send(get_string(ctx, 'now_playing') + url2)
+        await ctx.send(get_string(ctx, 'now_playing') + title)
 
 @bot.command()
 async def pause(ctx):
