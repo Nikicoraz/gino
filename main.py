@@ -542,7 +542,7 @@ async def play(ctx, *, url):
     await join(ctx)
     ctx.voice_client.stop()
     FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
-    YDL_OPTIONS = {'format': 'bestaudio'}
+    YDL_OPTIONS = {'format': 'worstaudio'}
     vc = ctx.voice_client
     
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
