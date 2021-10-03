@@ -2,7 +2,6 @@
 import discord
 from discord import permissions
 from discord import webhook
-from discord import channel
 from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import mysql.connector
@@ -19,7 +18,6 @@ from Network import get_html
 from threading import Thread
 from strings import get_string
 from strings import reload_lang
-import youtube_dl
 
 #region init
 insulti = []
@@ -517,63 +515,6 @@ async def visualizza_mutati(ctx):
             member = await converter.convert(ctx, f'<@!{user}>')
             msg += f'> {member.display_name}\n'
     await ctx.channel.send(msg)
-
-
-#region Musica
-
-@bot.command()
-async def join(ctx):
-    if ctx.author.voice is None:
-        await ctx.send(get_string(ctx, 'no_can_voc'))
-    canale = ctx.author.voice.channel
-    if ctx.voice_client is None:
-        await canale.connect()
-    elif ctx.voice_client:
-        return
-    else:
-        await ctx.voice_client_move_to(canale)
-
-@bot.command()
-async def disconnect(ctx):
-    await ctx.voice_client.disconnect()
-
-@bot.command()
-async def play(ctx, *, url):
-    await join(ctx)
-    ctx.voice_client.stop()
-    FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
-    YDL_OPTIONS = {'format': 'worstaudio'}
-    vc = ctx.voice_client
-    
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-        if re.fullmatch(url_pattern, url):
-            info = ydl.extract_info(url, download=False)
-            url2 = info['formats'][0]['url']
-            title = info['title']
-        else:
-            info = ydl.extract_info(f'ytsearch:{url}', download=False)
-            url2 = info['entries'][0]['formats'][0]['url']
-            title = info['entries'][0]['title']
-
-        source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-        vc.play(source)
-        await ctx.send(get_string(ctx, 'now_playing') + title)
-
-@bot.command()
-async def pause(ctx):
-    ctx.voice_client.pause()
-    await ctx.send(get_string(ctx, 'pausa'))
-
-@bot.command()
-async def resume(ctx):
-    ctx.voice_client.resume()
-    await ctx.send(get_string(ctx, 'riprendi'))
-
-@bot.command()
-async def stop(ctx):
-    ctx.voice_client.stop()
-
-#endregion
 
 
 #endregion
