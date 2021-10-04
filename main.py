@@ -538,38 +538,48 @@ async def disconnect(ctx):
 
 @bot.command()
 async def play(ctx, *, url):
+    # Si unisce al canale
     await join(ctx)
+    # Ferma la canzone precedente (sarebbe da implementare la coda)
     ctx.voice_client.stop()
+    # Opzione di FFMPEG
     FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
+    # Opzione youtube_dl
     YDL_OPTIONS = {'format': 'worstaudio'}
     vc = ctx.voice_client
     
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+        # Se e' un link allora lo fa partire cosi'
         if re.fullmatch(url_pattern, url):
             info = ydl.extract_info(url, download=False)
             url2 = info['formats'][0]['url']
             title = info['title']
         else:
+            # Altrimenti cerca su youtube la canzone
             info = ydl.extract_info(f'ytsearch:{url}', download=False)
             url2 = info['entries'][0]['formats'][0]['url']
             title = info['entries'][0]['title']
-
+        
+        # Source e' il link dell'audio estratto
         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
         vc.play(source)
         await ctx.send(get_string(ctx, 'now_playing') + title)
 
 @bot.command()
 async def pause(ctx):
+    # Mette in pausa la riproduzione di una canzone
     ctx.voice_client.pause()
     await ctx.send(get_string(ctx, 'pausa'))
 
 @bot.command()
 async def resume(ctx):
+    # Ricomincia a riprodurrre l'audio dopo un pause
     ctx.voice_client.resume()
     await ctx.send(get_string(ctx, 'riprendi'))
 
 @bot.command()
 async def stop(ctx):
+    # Smette di riprodurre l'audio
     ctx.voice_client.stop()
 
 #endregion
