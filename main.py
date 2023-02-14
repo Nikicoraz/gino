@@ -31,7 +31,7 @@ emoji_patterns = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix='$', intents=discord.Intents().all())
 TOKEN = os.environ.get('TOKEN')
 creator_id = os.environ.get("CREATORE")
 bot.remove_command('help')
@@ -47,10 +47,11 @@ bot.remove_command('help')
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
-    host='remotemysql.com',
-    user='4IMMhUUnvb',
+    host='192.168.13.123',
+    user='discord',
     password=DATABASE_PASSWORD,
-    database='4IMMhUUnvb')
+    database='discord')
+
     c = conn.cursor()
     c.execute(command)
     if fetch:
@@ -323,15 +324,6 @@ async def coin(ctx):
     coin = get_string(ctx, 'testa') if num == 1 else get_string(ctx, 'croce') 
     await ctx.channel.send(f"{get_string(ctx, 'uscito')}{coin}")
 
-@bot.command()
-async def modify_role(ctx, member : discord.Member, role_input : discord.Role, add_remove : bool):
-    await check_creator(ctx)
-    if add_remove:
-        await member.add_roles(role_input)
-    else:
-        await member.remove_roles(role_input)
-    await ctx.message.delete()
-
 @bot.command(aliases=['grey', 'gray'])
 async def grigio(ctx, member : discord.Member = None):
     if not member:
@@ -391,14 +383,14 @@ async def morracinese(ctx, *,scelta : str = ...):
 # Comando per scaricare avatar
 @bot.command()
 async def avatar(ctx, member : discord.Member):
-    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''{get_string(ctx, 'scaricalo')} [64]({str(member.avatar_url).replace("?size=1024", "?size=64")})
-     | [128]({str(member.avatar_url).replace("?size=1024", "?size=128")})
-     | [256]({str(member.avatar_url).replace("?size=1024", "?size=256")})
-     | [512]({str(member.avatar_url).replace("?size=1024", "?size=512")}) 
-     | [1024]({str(member.avatar_url)}) 
-     | [2048]({str(member.avatar_url).replace("?size=1024", "?size=2048")}) 
-     | [4096]({str(member.avatar_url).replace("?size=1024", "?size=4096")})'''.replace('\n', ""))
-    em.set_image(url=str(member.avatar_url))
+    em = discord.Embed(title=f'Avatar di {member.display_name}', description=f'''{get_string(ctx, 'scaricalo')} [64]({str(member.avatar).replace("?size=1024", "?size=64")})
+     | [128]({str(member.avatar).replace("?size=1024", "?size=128")})
+     | [256]({str(member.avatar).replace("?size=1024", "?size=256")})
+     | [512]({str(member.avatar).replace("?size=1024", "?size=512")}) 
+     | [1024]({str(member.avatar)}) 
+     | [2048]({str(member.avatar).replace("?size=1024", "?size=2048")}) 
+     | [4096]({str(member.avatar).replace("?size=1024", "?size=4096")})'''.replace('\n', ""))
+    em.set_image(url=str(member.avatar))
     await ctx.channel.send(embed=em)
 
 silenziati = []
@@ -470,7 +462,7 @@ async def impersona(ctx, member, *, message):
     try:
         member = await commands.MemberConverter().convert(ctx, member)   # Se esiste un membro convertilo
         nome = member.display_name                  # altrimenti usa come nome la stringa
-        avatar = member.avatar_url                  # e come avatar il default
+        avatar = member.avatar                      # e come avatar il default
     except:
         nome = member
         avatar = None
@@ -633,7 +625,7 @@ async def on_message(message: discord.Message):
                 await message.delete()
             except:
                 pass
-            await send_webhook(message, messaggio, author.display_name, author.avatar_url)
+            await send_webhook(message, messaggio, author.display_name, author.avatar)
         # Altrimenti manda il messaggio e basta
         else:
             await message.channel.send(messaggio)
@@ -659,6 +651,7 @@ async def somma_error(ctx, error):
 @insulta.error
 @kick.error
 @gaymeter.error
+@furrymeter.error
 @grigio.error
 @linee.error
 @buff.error
@@ -684,8 +677,8 @@ async def cosa_non_trovata(ctx, error):
 
 #region help
 from bonus import Help, Tris
-bot.add_cog(Help(bot, risposte_dic))
-bot.add_cog(Tris(bot))
+asyncio.run(bot.add_cog(Help(bot, risposte_dic)))
+asyncio.run(bot.add_cog(Tris(bot)))
 
 #endregion
 

@@ -7,13 +7,16 @@ from discord.channel import DMChannel
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
 langs = {}
+
+
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
-    host='remotemysql.com',
-    user='4IMMhUUnvb',
+    host='192.168.13.123',
+    user='discord',
     password=DATABASE_PASSWORD,
-    database='4IMMhUUnvb')
+    database='discord')
+
     c = conn.cursor()
     c.execute(command)
     if fetch:
@@ -22,8 +25,6 @@ def use_database(command, fetch=False, commit=False):
         conn.commit()
     conn.close()
     return _
-
-
 
 # Ricarica lingue database
 def reload_lang():

@@ -35,7 +35,7 @@ def resize(img, width=500):
 
 async def avatar_url_to_image(Member : discord.Member):
     filename = f"{ra.randint(0, 1000)}.jpg"
-    await Member.avatar_url.save(filename)
+    await Member.avatar.save(filename)
     file = discord.File(fp=filename)
     return (file, filename)
 
