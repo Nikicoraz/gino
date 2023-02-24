@@ -174,5 +174,7 @@ STRINGS = {
     'riprendi':('Riproduzione ripresa', 'Resumed'),
     'd_join':('Fa unire il bot al canale vocale', 'Make the bot join the voice channel'),
     'v_join':('$join'),
-    'musica':('Musica', 'Music')
+    'musica':('Musica', 'Music'),
+    'd_play':('Riproduce una canzone dal titolo di Youtube, prima bisogna invocare il comando $join mentre si è dentro un canale vocale'),
+    'v_play':('$play <Link o titolo>')
     }

@@ -246,12 +246,16 @@ class Help(commands.Cog):
     @help.command()
     async def join(self, ctx):
         em = discord.Embed(title='join', description=get_string(ctx, 'd_join'), color = ctx.message.author.color)
-        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_v_mutati'))
+        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_join'))
         em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
         await ctx.send(embed=em)
         
-    
-    
+    @help.command()
+    async def play(self, ctx):
+        em = discord.Embed(title='play', description=get_string(ctx, 'd_play'), color = ctx.message.author.color)
+        em.add_field(name=get_string(ctx, 'sintassi'), value=get_string(ctx, 'v_play'))
+        em.add_field(name='alias', value=get_string(ctx, 'nessuno'))
+        await ctx.send(embed=em)    
     
 
 
