@@ -21,7 +21,7 @@ class Help(commands.Cog):
         em.add_field(name=get_string(ctx, 'creatore'), value='pulisci_fedina(pf), cancella_insulto_dalla_lista, visualizza_lista_insulti')
         em.add_field(name='Admin', value=get_string(ctx, 'v_admin'))
         em.add_field(name='Casual', value=get_string(ctx, 'v_casual'))
-        em.add_field(name=get_string(ctx, 'music'), value='play, stop, pause, resume, join, disconnect')
+        em.add_field(name=get_string(ctx, 'music'), value='play, stop, pause, resume, join, disconnect, skip')
         em.add_field(name=get_string(ctx, 'immagini'), value=get_string(ctx, 'v_immagini'))
         em.add_field(name=get_string(ctx, 'matematica'), value=get_string(ctx, 'v_matematica'))
         await ctx.send(embed = em)

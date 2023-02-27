@@ -1,4 +1,5 @@
 ﻿#!venv/Scripts/python.exe
+import time
 import discord
 from discord import permissions
 from discord import webhook
@@ -20,6 +21,7 @@ from threading import Thread
 from strings import get_string
 from strings import reload_lang
 import youtube_dl
+import queue
 
 #region init
 insulti = []
@@ -528,17 +530,25 @@ async def join(ctx):
 async def disconnect(ctx):
     await ctx.voice_client.disconnect()
 
-@bot.command()
-async def play(ctx, *, url):
-    # Si unisce al canale
-    await join(ctx)
-    # Ferma la canzone precedente (sarebbe da implementare la coda)
-    ctx.voice_client.stop()
+
+coda_canzoni = queue.Queue()
+_skip = False
+async def play_loop(ctx, loop):
+    global _skip
+    while not coda_canzoni.empty():
+        if ctx.voice_client.is_playing() and not ctx.voice_client.is_paused() and not _skip:
+            time.sleep(1)
+        else:
+            _skip = False
+            await play_func(ctx, coda_canzoni.get(), loop)
+
+async def play_func(ctx, url, loop : asyncio.AbstractEventLoop):
     # Opzione di FFMPEG
     FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
     # Opzione youtube_dl
     YDL_OPTIONS = {'format': 'worstaudio'}
     vc = ctx.voice_client
+    vc.stop()
     
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
         # Se e' un link allora lo fa partire cosi'
@@ -555,8 +565,21 @@ async def play(ctx, *, url):
         # Source e' il link dell'audio estratto
         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
         vc.play(source)
-        await ctx.send(get_string(ctx, 'now_playing') + title)
+        
+        loop.create_task(ctx.send(get_string(ctx, 'now_playing') + title))
 
+
+@bot.command()
+async def play(ctx, *, url):
+    # Si unisce al canale
+    await join(ctx)
+    await ctx.send(get_string(ctx, 'now_enqueued'))
+    loop = asyncio.get_event_loop()
+    if coda_canzoni.empty():
+        coda_canzoni.put(url)
+        Thread(target=lambda: asyncio.run(play_loop(ctx, loop))).start()
+    else:
+        coda_canzoni.put(url)
 @bot.command()
 async def pause(ctx):
     # Mette in pausa la riproduzione di una canzone
@@ -573,7 +596,20 @@ async def resume(ctx):
 async def stop(ctx):
     # Smette di riprodurre l'audio
     ctx.voice_client.stop()
+    
+@bot.command()
+async def skip(ctx):
+    global _skip
+    if coda_canzoni.empty():
+        await stop(ctx)
+    else:
+        _skip = True
 
+@bot.command()
+async def clear(ctx):
+    while not coda_canzoni.empty():
+        coda_canzoni.get()
+    await stop(ctx)
 #endregion
 
 

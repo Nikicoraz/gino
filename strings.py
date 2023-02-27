@@ -176,5 +176,6 @@ STRINGS = {
     'v_join':('$join'),
     'musica':('Musica', 'Music'),
     'd_play':('Riproduce una canzone dal titolo di Youtube, prima bisogna invocare il comando $join mentre si è dentro un canale vocale'),
-    'v_play':('$play <Link o titolo>')
+    'v_play':('$play <Link o titolo>'),
+    'now_enqueued':('Canzone aggiunta alla coda', "Song added to the queue")
     }
