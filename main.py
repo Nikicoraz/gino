@@ -116,6 +116,7 @@ risposte_dic = {
     'bitcoin':copypasta.BITCOIN,
     'bruh':copypasta.BRUH,
     'ciao':'https://tenor.com/view/culo-jodete-fuck-you-drunk-gif-10066511',
+    'tasse':'Io le tasse non le pago!',
 
     # Emoji
 
