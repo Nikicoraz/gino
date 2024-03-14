@@ -20,7 +20,7 @@ from Network import get_html
 from threading import Thread
 from strings import get_string
 from strings import reload_lang
-import youtube_dl
+import yt_dlp as youtube_dl
 import queue
 
 #region init
@@ -32,6 +32,7 @@ youtube_url = r'(http|https)://(www.youtube.com|youtu.be)/.*'
 emoji_patterns = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 
 load_dotenv()
+DATABASE_HOST = os.environ.get('DB_HOST')
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
 bot = commands.Bot(command_prefix='$', intents=discord.Intents().all())
 TOKEN = os.environ.get('TOKEN')
@@ -49,7 +50,7 @@ bot.remove_command('help')
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
-    host='192.168.13.123',
+    host=DATABASE_HOST,
     user='discord',
     password=DATABASE_PASSWORD,
     database='discord')

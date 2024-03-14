@@ -6,13 +6,14 @@ from discord.channel import DMChannel
 
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
+DATABASE_HOST = os.environ.get('DB_HOST')
 langs = {}
 
 
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
-    host='192.168.13.123',
+    host=DATABASE_HOST,
     user='discord',
     password=DATABASE_PASSWORD,
     database='discord')
@@ -174,7 +175,7 @@ STRINGS = {
     'riprendi':('Riproduzione ripresa', 'Resumed'),
     'd_join':('Fa unire il bot al canale vocale', 'Make the bot join the voice channel'),
     'v_join':('$join'),
-    'musica':('Musica', 'Music'),
+    'music':('Musica', 'Music'),
     'd_play':('Riproduce una canzone dal titolo di Youtube, prima bisogna invocare il comando $join mentre si è dentro un canale vocale'),
     'v_play':('$play <Link o titolo>'),
     'now_enqueued':('Canzone aggiunta alla coda', "Song added to the queue")
