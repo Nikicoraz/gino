@@ -20,7 +20,7 @@ from Network import get_html
 from threading import Thread
 from strings import get_string
 from strings import reload_lang
-import yt_dlp as youtube_dl
+import yt_dlp
 import queue
 
 #region init
@@ -34,12 +34,11 @@ emoji_patterns = r'^<a:[a-zA-Z0-9_-]+:[0-9]+>$'
 load_dotenv()
 DATABASE_HOST = os.environ.get('DB_HOST')
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
+DATABASE_PORT  = os.environ.get('DB_PORT') or 3306
 bot = commands.Bot(command_prefix='$', intents=discord.Intents().all())
 TOKEN = os.environ.get('TOKEN')
 creator_id = os.environ.get("CREATORE")
 bot.remove_command('help')
-
-
 
 #endregion
 
@@ -53,7 +52,9 @@ def use_database(command, fetch=False, commit=False):
     host=DATABASE_HOST,
     user='discord',
     password=DATABASE_PASSWORD,
-    database='discord')
+    database='discord',
+    port=DATABASE_PORT
+    )
 
     c = conn.cursor()
     c.execute(command)
@@ -552,16 +553,18 @@ async def play_func(ctx, url, loop : asyncio.AbstractEventLoop):
     vc = ctx.voice_client
     vc.stop()
     
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-        # Se e' un link allora lo fa partire cosi'
+    with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
+        # Nota: la variabile url2 deve essere formats[indice audio, quindi asr] 
+        
         if re.fullmatch(url_pattern, url):
+            # Se e' un link allora lo fa partire cosi'
             info = ydl.extract_info(url, download=False)
-            url2 = info['formats'][0]['url']
+            url2 = info['formats'][6]['url']
             title = info['title']
         else:
             # Altrimenti cerca su youtube la canzone
             info = ydl.extract_info(f'ytsearch:{url}', download=False)
-            url2 = info['entries'][0]['formats'][0]['url']
+            url2 = info['entries'][0]['formats'][6]['url']
             title = info['entries'][0]['title']
         
         # Source e' il link dell'audio estratto

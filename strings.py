@@ -7,16 +7,18 @@ from discord.channel import DMChannel
 load_dotenv()
 DATABASE_PASSWORD = os.environ.get('DB_PASS')
 DATABASE_HOST = os.environ.get('DB_HOST')
+DATABASE_PORT = os.environ.get('DB_PORT') or 3306
 langs = {}
-
 
 def use_database(command, fetch=False, commit=False):
     _ = None
     conn = mysql.connector.connect(
     host=DATABASE_HOST,
     user='discord',
+    port=DATABASE_PORT,
     password=DATABASE_PASSWORD,
-    database='discord')
+    database='discord'
+    )
 
     c = conn.cursor()
     c.execute(command)
