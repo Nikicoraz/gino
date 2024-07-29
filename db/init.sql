@@ -14,55 +14,55 @@
 -- Table structure for table `fedina`
 --
 
-DROP TABLE IF EXISTS `fedina`;
+CREATE DATABASE IF NOT EXISTS discord;
+
+GRANT ALL ON discord.* TO 'discord'@'%' IDENTIFIED BY 'changeme';
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `fedina` (
+CREATE TABLE IF NOT EXISTS `discord`.`fedina` (
   `user_id` varchar(50) NOT NULL,
   `reason` text DEFAULT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`user_id`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `insulti`
 --
 
-DROP TABLE IF EXISTS `insulti`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `insulti` (
+CREATE TABLE IF NOT EXISTS `discord`.`insulti` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `insulto` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `lang`
 --
 
-DROP TABLE IF EXISTS `lang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `lang` (
+CREATE TABLE IF NOT EXISTS `discord`.`lang` (
   `ch_id` varchar(50) DEFAULT NULL,
   `lang` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `silenziati`
 --
 
-DROP TABLE IF EXISTS `silenziati`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `silenziati` (
+CREATE TABLE IF NOT EXISTS `discord`.`silenziati`  (
   `user_id` varchar(50) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

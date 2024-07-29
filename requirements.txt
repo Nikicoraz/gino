@@ -1,6 +1,6 @@
 discord
 python-dotenv
-mysql-connector-python
+mysql-connector-python==8.0.16
 opencv-python-headless
 PyNaCl 
 yt-dlp
