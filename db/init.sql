@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `discord`.`fedina` (
   `reason` text DEFAULT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`user_id`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `discord`.`insulti` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `insulto` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `discord`.`insulti` (
 CREATE TABLE IF NOT EXISTS `discord`.`lang` (
   `ch_id` varchar(50) DEFAULT NULL,
   `lang` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `discord`.`lang` (
 CREATE TABLE IF NOT EXISTS `discord`.`silenziati`  (
   `user_id` varchar(50) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
