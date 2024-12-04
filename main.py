@@ -560,7 +560,7 @@ async def play_func(ctx, url, loop : asyncio.AbstractEventLoop):
     # Opzione di FFMPEG
     FFMPEG_OPTIONS = {'before_options' : '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options' : '-vn'}
     # Opzione youtube_dl
-    YDL_OPTIONS = {'format': 'worstaudio'}
+    YDL_OPTIONS = {'format': 'bestaudio'}
     vc = ctx.voice_client
     vc.stop()
     
