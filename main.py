@@ -54,7 +54,9 @@ def use_database(command, fetch=False, commit=False):
     user='discord',
     password=DATABASE_PASSWORD,
     database='discord',
-    port=DATABASE_PORT
+    port=DATABASE_PORT,
+    charset="utf8mb4",
+    collation="utf8mb4_general_ci"
     )
 
     c = conn.cursor()
