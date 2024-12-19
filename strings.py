@@ -1,4 +1,6 @@
 import mysql.connector
+from mysql.connector.locales.eng import client_error
+from mysql.connector.plugins import mysql_native_password
 import os
 import discord.message
 from dotenv import load_dotenv
@@ -19,7 +21,7 @@ def use_database(command, fetch=False, commit=False):
     password=DATABASE_PASSWORD,
     database='discord',
     charset="utf8mb4",
-    collation="utf8mb4_general_ci"
+    collation="utf8mb4_general_ci",
     )
 
     c = conn.cursor()

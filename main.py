@@ -7,6 +7,8 @@ from discord import channel
 from discord.ext.commands.core import check
 from dotenv import load_dotenv
 import mysql.connector
+from mysql.connector.locales.eng import client_error
+from mysql.connector.plugins import mysql_native_password
 from discord.ext import commands
 import os
 from discord.ext.commands import errors
@@ -56,7 +58,7 @@ def use_database(command, fetch=False, commit=False):
     database='discord',
     port=DATABASE_PORT,
     charset="utf8mb4",
-    collation="utf8mb4_general_ci"
+    collation="utf8mb4_general_ci",
     )
 
     c = conn.cursor()

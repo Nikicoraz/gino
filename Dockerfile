@@ -1,11 +1,18 @@
-FROM python:3.10-slim
+FROM python:3.9-alpine AS builder
+RUN mkdir /build
+WORKDIR /build
 
-WORKDIR /home/nicola/gino
+RUN apk add --no-cache build-base binutils musl-dev libc-dev linux-headers
 
-RUN apt update && apt install ffmpeg -y && rm -rf /var/lib/apt/lists/*
+RUN python -m ensurepip --upgrade
+COPY ./requirements.txt .
+RUN pip install --prefer-binary -r requirements.txt --break-system-packages --verbose
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install pyinstaller --break-system-packages
 COPY . .
-CMD ["python", "./main.py"]
+RUN pyinstaller --noconfirm --onefile --clean main.py
+
+FROM alpine AS release
+COPY --from=builder /build/dist/main /main
+COPY .env /
+ENTRYPOINT ["/main"]
