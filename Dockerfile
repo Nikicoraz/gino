@@ -10,9 +10,10 @@ RUN pip install --prefer-binary -r requirements.txt --break-system-packages --ve
 
 RUN pip install pyinstaller --break-system-packages
 COPY . .
-RUN pyinstaller --noconfirm --onefile --clean main.py
+RUN pyinstaller --noconfirm --onefile --clean --hiddenimport _cffi_backend main.py
 
 FROM alpine AS release
 COPY --from=builder /build/dist/main /main
 COPY .env /
+RUN apk add --no-cache ffmpeg
 ENTRYPOINT ["/main"]
