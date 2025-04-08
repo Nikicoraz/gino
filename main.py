@@ -545,7 +545,9 @@ coda_canzoni = queue.Queue()
 _skip = False
 song_disconnect_timer = Timer(60)   # Time before the bot disconnects
 async def play_loop(ctx, loop):
-    song_disconnect_timer.call_at_end(lambda: loop.create_task(disconnect(ctx)))
+    song_disconnect_timer.call_at_end(lambda: loop.create_task(disconnect(ctx)) if coda_canzoni.empty() else None)
+    song_disconnect_timer.stop()
+    
     global _skip
     while not coda_canzoni.empty():
         if song_disconnect_timer.running:
@@ -558,6 +560,7 @@ async def play_loop(ctx, loop):
             
     while ctx.voice_client.is_playing() or ctx.voice_client.is_paused():
         time.sleep(1)
+    
     Thread(target=song_disconnect_timer.start).start()
     
 async def play_func(ctx, url, loop : asyncio.AbstractEventLoop):

@@ -1,0 +1,6 @@
+discord
+python-dotenv
+mysql-connector-python==9.1.0
+PyNaCl 
+yt-dlp
+opencv-python-headless
